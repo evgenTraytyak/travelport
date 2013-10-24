@@ -1,0 +1,184 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<USERNAME>:<PASSWORD>@emea.copy-webservices.travelport.com/B2BGateway/connect/uAPI/HotelService
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"
+        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:wsdl=\"http://www.travelport.com/service/hotel_v19_0\"
+        xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Body><HotelDetailsReq
+        TargetBranch=\"P7004157\" xmlns=\"http://www.travelport.com/schema/hotel_v19_0\"><BillingPointOfSaleInfo
+        xmlns=\"http://www.travelport.com/schema/common_v17_0\" OriginApplication=\"uAPI\"/><HotelProperty
+        HotelChain=\"CP\" HotelCode=\"02743\" Availability=\"Available\"/><HotelDetailsModifiers
+        NumberOfAdults=\"1\" RateRuleDetail=\"Complete\">\n  <HotelStay>\n    <CheckinDate>2012-11-19</CheckinDate>\n
+        \   <CheckoutDate>2012-11-24</CheckoutDate>\n  </HotelStay>\n  <RateCategory>All</RateCategory>\n</HotelDetailsModifiers></HotelDetailsReq></env:Body></env:Envelope>"
+    headers:
+      soapaction:
+      - ''
+      content-type:
+      - text/xml;charset=UTF-8
+      content-length:
+      - '834'
+      accept:
+      - ! '*/*'
+      user-agent:
+      - Ruby
+      authorization:
+      - Basic VW5pdmVyc2FsIEFQSS91QVBJODcyMDU2MzM1My04ZDk1MWQ2MzpXcUdiUG5yRWp6eGdYQUdzZ000YzJBeXRa
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - Apache-Coyote/1.1
+      content-type:
+      - text/xml;charset=UTF-8
+      transfer-encoding:
+      - chunked
+      date:
+      - Wed, 14 Nov 2012 03:23:45 GMT
+      vary:
+      - Accept-Encoding, User-Agent
+    body:
+      encoding: US-ASCII
+      string: <SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><hotel:HotelDetailsRsp
+        xmlns:hotel="http://www.travelport.com/schema/hotel_v19_0" xmlns:common_v17_0="http://www.travelport.com/schema/common_v17_0"
+        TransactionId="FCF189480A07611300BB82CA28BB6C85" ResponseTime="3779"><hotel:RequestedHotelDetails><hotel:HotelProperty
+        HotelChain="CP" HotelCode="02743" HotelLocation="NYC" Name="CROWNE PLAZA TIME
+        SQ MANHATTAN"><hotel:PropertyAddress><hotel:Address>1605 BROADWAY </hotel:Address><hotel:Address>NEW
+        YORK NY 10019 US </hotel:Address><hotel:Address>AT 49TH STREET </hotel:Address></hotel:PropertyAddress><common_v17_0:PhoneNumber
+        Type="Business" Number="1 212-977-4000"/><common_v17_0:PhoneNumber Type="Fax"
+        Number="1 212-333-7393"/><common_v17_0:Distance Value="1" Direction="E"/><hotel:HotelRating
+        RatingProvider="AAA"><hotel:Rating>3</hotel:Rating></hotel:HotelRating></hotel:HotelProperty><hotel:HotelDetailItem
+        Name="Marketing Message"><hotel:Text>CHECK OUT * WWW.IHGAGENT.COM *</hotel:Text></hotel:HotelDetailItem><hotel:HotelRateDetail
+        RatePlanType="KNG013A" Base="USD1790.39" Total="USD1790.39"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEXIBLE RATE.KING BED TRADITIONAL ROOM
+        NONSMOKING FLRS 16.AND HIGHER SPACIOUS 323 SQ FT OR 30 SQM WITH.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD159.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KLN013A" Base="USD2077.26" Total="USD2077.26"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEXIBLE RATE.KING BED TIMES SQUARE VIEW
+        NONSMOKING EAST.FACING ROOM OVERLOOKING BROADWAY AND TIMES.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD209.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KEN013A" Base="USD2249.39" Total="USD2249.39"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEXIBLE RATE.KING BED CONCIERGE ROOM
+        NONSMOKING ENJOY A VIEW.IN SPACIOUS 323 SQ FT OR 30 SQM ROOM ON A HIGH.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD239.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="STN013A" Base="USD2077.26" Total="USD2077.26"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEXIBLE RATE.STANDARD ROOM BED TYPE AND
+        SMOKING PREFERENCES.ARE SUBJECT TO AVAILABILITY AND CANNOT BE.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD209.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KNGV0RF" Base="USD1790.44" Total="USD1790.44"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>PARK FOR A PENNY OVERNIGHT VALET COVERED.PARKING
+        INCLUDED WITH BEAUTIFUL GUEST ROOM.KING BED TRADITIONAL ROOM NONSMOKING FLRS
+        16.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription Name="Rate
+        Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD159.01"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KLNV0RF" Base="USD2077.31" Total="USD2077.31"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>PARK FOR A PENNY OVERNIGHT VALET COVERED.PARKING
+        INCLUDED WITH BEAUTIFUL GUEST ROOM.KING BED TIMES SQUARE VIEW NONSMOKING EAST.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD209.01"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KENV0RF" Base="USD2249.44" Total="USD2249.44"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>PARK FOR A PENNY OVERNIGHT VALET COVERED.PARKING
+        INCLUDED WITH BEAUTIFUL GUEST ROOM.KING BED CONCIERGE ROOM NONSMOKING ENJOY
+        A VIEW.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD239.01"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="STNV0RF" Base="USD2077.31" Total="USD2077.31"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>PARK FOR A PENNY OVERNIGHT VALET COVERED.PARKING
+        INCLUDED WITH BEAUTIFUL GUEST ROOM.STANDARD ROOM BED TYPE AND SMOKING PREFERENCES.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD209.01"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KNG08PG" Base="USD2058.90" Total="USD2058.90"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEX WITH BKFST FULLY FLEXIBLE RATE..INCLUDES
+        BREAKFAST FOR ONE OR TWO ADULTS.KING BED TRADITIONAL ROOM NONSMOKING FLRS
+        16.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription Name="Include
+        in Rate"><hotel:Text>Breakfast Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD189.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KLN08PG" Base="USD2345.78" Total="USD2345.78"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEX WITH BKFST FULLY FLEXIBLE RATE..INCLUDES
+        BREAKFAST FOR ONE OR TWO ADULTS.KING BED TIMES SQUARE VIEW NONSMOKING EAST.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Breakfast Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD239.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="STN08PG" Base="USD2345.78" Total="USD2345.78"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEX WITH BKFST FULLY FLEXIBLE RATE..INCLUDES
+        BREAKFAST FOR ONE OR TWO ADULTS.STANDARD ROOM BED TYPE AND SMOKING PREFERENCES.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Breakfast Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD239.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="DXN08PG" Base="USD2517.90" Total="USD2517.90"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>BEST FLEX WITH BKFST FULLY FLEXIBLE RATE..INCLUDES
+        BREAKFAST FOR ONE OR TWO ADULTS.DELUXE ROOM BED TYPE AND SMOKING PREFERENCES.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Breakfast Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD269.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KNGJ9EB" Base="USD2295.29" Total="USD2295.29"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>IN HOTEL DINNER PKG PACKAGE INCLUDES ROOM AND.ONE
+        APPETIZER AND ONE MAIN COURSE AND ONE.KING BED TRADITIONAL ROOM NONSMOKING
+        FLRS 16.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Dinner Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD247.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KLNJ9EB" Base="USD2582.16" Total="USD2582.16"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>IN HOTEL DINNER PKG PACKAGE INCLUDES ROOM AND.ONE
+        APPETIZER AND ONE MAIN COURSE AND ONE.KING BED TIMES SQUARE VIEW NONSMOKING
+        EAST.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription Name="Include
+        in Rate"><hotel:Text>Dinner Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD297.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="KENJ9EB" Base="USD2754.29" Total="USD2754.29"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>IN HOTEL DINNER PKG PACKAGE INCLUDES ROOM AND.ONE
+        APPETIZER AND ONE MAIN COURSE AND ONE.KING BED CONCIERGE ROOM NONSMOKING ENJOY
+        A VIEW.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Dinner Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD327.00"/></hotel:HotelRateDetail><hotel:HotelRateDetail
+        RatePlanType="STNJ9EB" Base="USD2582.16" Total="USD2582.16"><hotel:RoomRateDescription
+        Name="Total Includes"><hotel:Text>The Total includes taxes, surcharges, fees.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Description"><hotel:Text>IN HOTEL DINNER PKG PACKAGE INCLUDES ROOM AND.ONE
+        APPETIZER AND ONE MAIN COURSE AND ONE.STANDARD ROOM BED TYPE AND SMOKING PREFERENCES.</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Include in Rate"><hotel:Text>Dinner Included</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Rate Change Indicator"><hotel:Text>Yes</hotel:Text></hotel:RoomRateDescription><hotel:RoomRateDescription
+        Name="Guarantee"><hotel:Text>Guarantee Required</hotel:Text></hotel:RoomRateDescription><hotel:HotelRateByDate
+        EffectiveDate="2012-11-19" ExpireDate="2012-11-24" Base="USD297.00"/></hotel:HotelRateDetail></hotel:RequestedHotelDetails></hotel:HotelDetailsRsp></SOAP:Body></SOAP:Envelope>
+    http_version: '1.1'
+  recorded_at: Wed, 14 Nov 2012 03:23:45 GMT
+recorded_with: VCR 2.3.0

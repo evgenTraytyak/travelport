@@ -1,0 +1,257 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<USERNAME>:<PASSWORD>@emea.copy-webservices.travelport.com/B2BGateway/connect/uAPI/HotelService
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"
+        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:wsdl=\"http://www.travelport.com/service/hotel_v19_0\"
+        xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Body><HotelSearchAvailabilityReq
+        TargetBranch=\"P7004157\" xmlns=\"http://www.travelport.com/schema/hotel_v19_0\"><BillingPointOfSaleInfo
+        xmlns=\"http://www.travelport.com/schema/common_v17_0\" OriginApplication=\"uAPI\"/><HotelLocation
+        Location=\"NYC\"/><HotelSearchModifiers NumberOfAdults=\"1\" NumberOfRooms=\"1\"/><HotelStay>\n
+        \ <CheckinDate>2012-11-19</CheckinDate>\n  <CheckoutDate>2012-11-24</CheckoutDate>\n</HotelStay></HotelSearchAvailabilityReq></env:Body></env:Envelope>"
+    headers:
+      soapaction:
+      - ''
+      content-type:
+      - text/xml;charset=UTF-8
+      content-length:
+      - '735'
+      accept:
+      - ! '*/*'
+      user-agent:
+      - Ruby
+      authorization:
+      - Basic VW5pdmVyc2FsIEFQSS91QVBJODcyMDU2MzM1My04ZDk1MWQ2MzpXcUdiUG5yRWp6eGdYQUdzZ000YzJBeXRa
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - Apache-Coyote/1.1
+      content-type:
+      - text/xml;charset=UTF-8
+      transfer-encoding:
+      - chunked
+      date:
+      - Tue, 13 Nov 2012 17:03:36 GMT
+      vary:
+      - Accept-Encoding, User-Agent
+    body:
+      encoding: US-ASCII
+      string: <SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><hotel:HotelSearchAvailabilityRsp
+        xmlns:hotel="http://www.travelport.com/schema/hotel_v19_0" xmlns:common_v17_0="http://www.travelport.com/schema/common_v17_0"
+        TransactionId="FAB9CB3B0A07611401A17DB83E612518" ResponseTime="3346"><common_v17_0:NextResultReference
+        ProviderCode="1G">k2UqRqGv/uGTZSpGoa/+4XFUHxaT56VvU9weJ8bXxXJ1gyaNEFXTjnkgHza5hzRvuBmCDFL76LL6XVQSMUcCjHLyldFa8wHB</common_v17_0:NextResultReference><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="NY" VendorLocationID="15482" Key="1"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="UZ" VendorLocationID="43739" Key="2"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="CP" VendorLocationID="02743" Key="3"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="HH" VendorLocationID="23175" Key="4"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="WY" VendorLocationID="82150" Key="5"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="WW" VendorLocationID="91774" Key="6"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="DT" VendorLocationID="56943" Key="7"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="GI" VendorLocationID="19995" Key="8"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="EL" VendorLocationID="21787" Key="9"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="HY" VendorLocationID="00962" Key="10"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="HX" VendorLocationID="47461" Key="11"/><common_v17_0:VendorLocation
+        ProviderCode="1G" VendorCode="WW" VendorLocationID="22151" Key="12"/><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="NY" HotelCode="15482" HotelLocation="NYC" Name="AFFINIA DUMONT"
+        VendorLocationKey="1" HotelTransportation="Other" ReserveRequirement="Guarantee"
+        ParticipationLevel="Inside Shopper participant" Availability="NotAvailable"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>150 EAST 34TH
+        STREET</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="1"
+        Direction="S"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="CORO"/><hotel:Amenity Code="COBR"/><hotel:Amenity
+        Code="DINR"/><hotel:Amenity Code="ELEV"/><hotel:Amenity Code="ENTR"/><hotel:Amenity
+        Code="FAPL"/><hotel:Amenity Code="HAFA"/><hotel:Amenity Code="HECL"/><hotel:Amenity
+        Code="MIOV"/><hotel:Amenity Code="KTCN"/><hotel:Amenity Code="LAVA"/><hotel:Amenity
+        Code="LUGE"/><hotel:Amenity Code="LNCH"/><hotel:Amenity Code="MEFA"/><hotel:Amenity
+        Code="MIBA"/><hotel:Amenity Code="MOIR"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PARK"/><hotel:Amenity Code="SPAL"/><hotel:Amenity Code="PHSV"/><hotel:Amenity
+        Code="PTRS"/><hotel:Amenity Code="RFGR"/><hotel:Amenity Code="RTNT"/><hotel:Amenity
+        Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity Code="SHWR"/><hotel:Amenity
+        Code="SPAA"/><hotel:Amenity Code="TRDK"/><hotel:Amenity Code="TELV"/><hotel:Amenity
+        Code="CBTV"/><hotel:Amenity Code="VDCR"/><hotel:Amenity Code="PRBT"/><hotel:Amenity
+        Code="WTBR"/><hotel:Amenity Code="FXSV"/><hotel:Amenity Code="SFBD"/><hotel:Amenity
+        Code="PHCO"/><hotel:Amenity Code="BATB"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:HotelSearchError
+        Code="5000" Type="Warning">0601 NOT AVAILABLE FOR DATES REQUESTED</hotel:HotelSearchError></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="UZ" HotelCode="43739" HotelLocation="NYC" Name="PARK CENTRAL HOTEL"
+        VendorLocationKey="2" HotelTransportation="Other" ReserveRequirement="Guarantee"
+        ParticipationLevel="Inside Shopper participant" Availability="NotAvailable"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW YORK</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="N"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="CHCA"/><hotel:Amenity Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity
+        Code="CARE"/><hotel:Amenity Code="COBU"/><hotel:Amenity Code="CODE"/><hotel:Amenity
+        Code="COLE"/><hotel:Amenity Code="COBR"/><hotel:Amenity Code="ELEV"/><hotel:Amenity
+        Code="GISH"/><hotel:Amenity Code="HAFA"/><hotel:Amenity Code="HECL"/><hotel:Amenity
+        Code="LAVA"/><hotel:Amenity Code="LUGE"/><hotel:Amenity Code="MEFA"/><hotel:Amenity
+        Code="MTGL"/><hotel:Amenity Code="NSMR"/><hotel:Amenity Code="SPAL"/><hotel:Amenity
+        Code="PHSV"/><hotel:Amenity Code="RTNT"/><hotel:Amenity Code="ROSE"/><hotel:Amenity
+        Code="SADE"/><hotel:Amenity Code="TRDK"/><hotel:Amenity Code="FXSV"/><hotel:Amenity
+        Code="PHCO"/></hotel:Amenities></hotel:HotelProperty><hotel:HotelSearchError
+        Code="5000" Type="Warning">0601 NOT AVAILABLE FOR DATES REQUESTED</hotel:HotelSearchError></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="CP" HotelCode="02743" HotelLocation="NYC" Name="CROWNE PLAZA TIME
+        SQ MANHATTAN" VendorLocationKey="3" HotelTransportation="Walk" ReserveRequirement="Guarantee"
+        ParticipationLevel="Enhanced Best Available Rate participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW YORK NY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="NW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="AIDE"/><hotel:Amenity Code="CHCA"/><hotel:Amenity Code="HASA"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="CARE"/><hotel:Amenity Code="COSH"/><hotel:Amenity
+        Code="CSFR"/><hotel:Amenity Code="COBU"/><hotel:Amenity Code="CODE"/><hotel:Amenity
+        Code="COLE"/><hotel:Amenity Code="COBR"/><hotel:Amenity Code="ELEV"/><hotel:Amenity
+        Code="FAPL"/><hotel:Amenity Code="GISH"/><hotel:Amenity Code="HAFA"/><hotel:Amenity
+        Code="HECL"/><hotel:Amenity Code="LAVA"/><hotel:Amenity Code="LUGE"/><hotel:Amenity
+        Code="MEPL"/><hotel:Amenity Code="MEFA"/><hotel:Amenity Code="MOIR"/><hotel:Amenity
+        Code="MTGL"/><hotel:Amenity Code="NSMR"/><hotel:Amenity Code="SPAL"/><hotel:Amenity
+        Code="PHSV"/><hotel:Amenity Code="PTRS"/><hotel:Amenity Code="RTNT"/><hotel:Amenity
+        Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity Code="SCCV"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="TNCT"/><hotel:Amenity Code="TRDK"/><hotel:Amenity
+        Code="TELV"/><hotel:Amenity Code="CBTV"/><hotel:Amenity Code="VDCR"/><hotel:Amenity
+        Code="PRBT"/><hotel:Amenity Code="WTBR"/><hotel:Amenity Code="A120"/><hotel:Amenity
+        Code="D120"/><hotel:Amenity Code="A220"/><hotel:Amenity Code="D220"/><hotel:Amenity
+        Code="FXSV"/><hotel:Amenity Code="PHCO"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD159.00" MinAmountRateChanged="false" MaximumAmount="USD327.00"
+        MaxAmountRateChanged="false"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="HH" HotelCode="23175" HotelLocation="NYC" Name="HILTON TIMES SQUARE"
+        VendorLocationKey="4" HotelTransportation="Other" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>234 WEST 42ND
+        STREET</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="1"
+        Direction="W"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="FAPL"/><hotel:Amenity Code="FRTR"/><hotel:Amenity
+        Code="HAFA"/><hotel:Amenity Code="LAVA"/><hotel:Amenity Code="MEFA"/><hotel:Amenity
+        Code="MIBA"/><hotel:Amenity Code="NSMR"/><hotel:Amenity Code="PARK"/><hotel:Amenity
+        Code="SPAL"/><hotel:Amenity Code="PHSV"/><hotel:Amenity Code="RTNT"/><hotel:Amenity
+        Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity Code="SCCV"/><hotel:Amenity
+        Code="CBTV"/><hotel:Amenity Code="FXSV"/><hotel:Amenity Code="PHCO"/><hotel:Amenity
+        Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo MinimumAmount="USD359.10"
+        MaximumAmount="USD555.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="WY" HotelCode="82150" HotelLocation="NYC" Name="WY GARDEN MANHATTAN
+        CHELSEA W" VendorLocationKey="5" HotelTransportation="Walk" ReserveRequirement="Other"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW
+        YORK NY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="1"
+        Direction="SW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="CSFR"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="COLE"/><hotel:Amenity Code="ELEV"/><hotel:Amenity
+        Code="FRTR"/><hotel:Amenity Code="HAFA"/><hotel:Amenity Code="HECL"/><hotel:Amenity
+        Code="MEPL"/><hotel:Amenity Code="MOIR"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PHSV"/><hotel:Amenity Code="RTNT"/><hotel:Amenity Code="SAIR"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="TELV"/><hotel:Amenity Code="CBTV"/><hotel:Amenity
+        Code="PRBT"/><hotel:Amenity Code="A120"/><hotel:Amenity Code="D120"/><hotel:Amenity
+        Code="FXSV"/><hotel:Amenity Code="BATB"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:HotelSearchError
+        Code="5000" Type="Warning">0606 REQUEST HOC FOR RATES</hotel:HotelSearchError></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="WW" HotelCode="91774" HotelLocation="NYC" Name="BENTLEY HOTEL"
+        VendorLocationKey="6" HotelTransportation="Limo" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW YORK CITY
+        NY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="1"
+        Direction="NE"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="AIDE"/><hotel:Amenity Code="CARE"/><hotel:Amenity Code="CSFR"/><hotel:Amenity
+        Code="COBU"/><hotel:Amenity Code="CODE"/><hotel:Amenity Code="COLE"/><hotel:Amenity
+        Code="CORO"/><hotel:Amenity Code="ELEV"/><hotel:Amenity Code="HAFA"/><hotel:Amenity
+        Code="HECL"/><hotel:Amenity Code="LAVA"/><hotel:Amenity Code="LUGE"/><hotel:Amenity
+        Code="MIBA"/><hotel:Amenity Code="MTGL"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PARK"/><hotel:Amenity Code="PTRS"/><hotel:Amenity Code="RTNT"/><hotel:Amenity
+        Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity Code="SHWR"/><hotel:Amenity
+        Code="TELV"/><hotel:Amenity Code="CBTV"/><hotel:Amenity Code="WTBR"/><hotel:Amenity
+        Code="A120"/><hotel:Amenity Code="A220"/><hotel:Amenity Code="FXSV"/><hotel:Amenity
+        Code="BATB"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD299.00" MaximumAmount="USD399.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="DT" HotelCode="56943" HotelLocation="NYC" Name="DOUBLETREE STES
+        BY HILTON TIMES SQ" VendorLocationKey="7" HotelTransportation="Walk" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>1568 BROADWAY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="NW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity Code="COSH"/><hotel:Amenity
+        Code="COBU"/><hotel:Amenity Code="CODE"/><hotel:Amenity Code="GOLF"/><hotel:Amenity
+        Code="HAFA"/><hotel:Amenity Code="MIOV"/><hotel:Amenity Code="LAVA"/><hotel:Amenity
+        Code="MEFA"/><hotel:Amenity Code="MIBA"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PARK"/><hotel:Amenity Code="SPAL"/><hotel:Amenity Code="PHSV"/><hotel:Amenity
+        Code="RTNT"/><hotel:Amenity Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="TRDK"/><hotel:Amenity Code="CBTV"/><hotel:Amenity
+        Code="WTBR"/><hotel:Amenity Code="FXSV"/><hotel:Amenity Code="SFBD"/><hotel:Amenity
+        Code="PHCO"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD899.00" MaximumAmount="USD2039.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="GI" HotelCode="19995" HotelLocation="NYC" Name="HILTON GARDEN
+        INN TIMES SQUARE" VendorLocationKey="8" HotelTransportation="Other" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>780 EIGHTH AVENUE</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="NW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="GISH"/><hotel:Amenity Code="HAFA"/><hotel:Amenity
+        Code="MIOV"/><hotel:Amenity Code="LAVA"/><hotel:Amenity Code="MOIR"/><hotel:Amenity
+        Code="NSMR"/><hotel:Amenity Code="PARK"/><hotel:Amenity Code="PHSV"/><hotel:Amenity
+        Code="RTNT"/><hotel:Amenity Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="CBTV"/><hotel:Amenity Code="FXSV"/><hotel:Amenity
+        Code="PHCO"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD329.00" MaximumAmount="USD479.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="EL" HotelCode="21787" HotelLocation="NYC" Name="ELEMENT NEW YORK
+        TIMES SQUARE" VendorLocationKey="9" HotelTransportation="Public" ReserveRequirement="Other"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW
+        YORK NY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="1"
+        Direction="W"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="COBU"/><hotel:Amenity Code="CODE"/><hotel:Amenity
+        Code="COLE"/><hotel:Amenity Code="ELEV"/><hotel:Amenity Code="FAPL"/><hotel:Amenity
+        Code="GISH"/><hotel:Amenity Code="HAFA"/><hotel:Amenity Code="HECL"/><hotel:Amenity
+        Code="MIOV"/><hotel:Amenity Code="KTCN"/><hotel:Amenity Code="LAVA"/><hotel:Amenity
+        Code="MEPL"/><hotel:Amenity Code="MEFA"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PARK"/><hotel:Amenity Code="SPAL"/><hotel:Amenity Code="PTRS"/><hotel:Amenity
+        Code="RFGR"/><hotel:Amenity Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="TELV"/><hotel:Amenity Code="CBTV"/><hotel:Amenity
+        Code="BATB"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:HotelSearchError
+        Code="5000" Type="Warning">0606 REQUEST HOC FOR RATES</hotel:HotelSearchError></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="HY" HotelCode="00962" HotelLocation="NYC" Name="GRAND HYATT NEW
+        YORK" VendorLocationKey="10" HotelTransportation="Walk" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>PARK AVE/GRAND
+        CNTRL</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance Value="0"
+        Direction="SW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="CHCA"/><hotel:Amenity Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity
+        Code="COSH"/><hotel:Amenity Code="CSFR"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="COLE"/><hotel:Amenity Code="CORO"/><hotel:Amenity
+        Code="COBR"/><hotel:Amenity Code="DINR"/><hotel:Amenity Code="ELEV"/><hotel:Amenity
+        Code="ENTR"/><hotel:Amenity Code="GISH"/><hotel:Amenity Code="GOLF"/><hotel:Amenity
+        Code="HAFA"/><hotel:Amenity Code="HECL"/><hotel:Amenity Code="LAVA"/><hotel:Amenity
+        Code="LUGE"/><hotel:Amenity Code="LNCH"/><hotel:Amenity Code="MEFA"/><hotel:Amenity
+        Code="MOIR"/><hotel:Amenity Code="MTGL"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PARK"/><hotel:Amenity Code="PHSV"/><hotel:Amenity Code="PTRS"/><hotel:Amenity
+        Code="RTNT"/><hotel:Amenity Code="ROSE"/><hotel:Amenity Code="SAIR"/><hotel:Amenity
+        Code="SADE"/><hotel:Amenity Code="SCCV"/><hotel:Amenity Code="SHWR"/><hotel:Amenity
+        Code="SPAA"/><hotel:Amenity Code="TRDK"/><hotel:Amenity Code="TELV"/><hotel:Amenity
+        Code="CBTV"/><hotel:Amenity Code="PRBT"/><hotel:Amenity Code="FXSV"/><hotel:Amenity
+        Code="PHCO"/><hotel:Amenity Code="BATB"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD300.50" MaximumAmount="USD1019.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="HX" HotelCode="47461" HotelLocation="NYC" Name="HAMPTON INN MANHATTAN
+        TIMES SQ" VendorLocationKey="11" HotelTransportation="Walk" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>851 EIGHTH AVE</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="NW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="BRFT"/><hotel:Amenity Code="COBU"/><hotel:Amenity
+        Code="CODE"/><hotel:Amenity Code="GISH"/><hotel:Amenity Code="GOLF"/><hotel:Amenity
+        Code="HAFA"/><hotel:Amenity Code="LAVA"/><hotel:Amenity Code="MEPL"/><hotel:Amenity
+        Code="NSMR"/><hotel:Amenity Code="PARK"/><hotel:Amenity Code="PHSV"/><hotel:Amenity
+        Code="RTNT"/><hotel:Amenity Code="SAIR"/><hotel:Amenity Code="SADE"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="CBTV"/><hotel:Amenity Code="FXSV"/><hotel:Amenity
+        Code="SFBD"/><hotel:Amenity Code="PHCO"/><hotel:Amenity Code="FSTY"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD399.00" MaximumAmount="USD519.00"/></hotel:HotelSearchResult><hotel:HotelSearchResult><hotel:HotelProperty
+        HotelChain="WW" HotelCode="22151" HotelLocation="NYC" Name="AMERITANIA HOTEL"
+        VendorLocationKey="12" HotelTransportation="Limo" ReserveRequirement="Guarantee"
+        ParticipationLevel="Best Available Rate and Inside Shopper participant" Availability="Available"
+        FeaturedProperty="true"><hotel:PropertyAddress><hotel:Address>NEW YORK NY</hotel:Address></hotel:PropertyAddress><common_v17_0:Distance
+        Value="1" Direction="NW"/><hotel:Amenities><hotel:Amenity Code="AICO"/><hotel:Amenity
+        Code="HSPI"/><hotel:Amenity Code="CSFR"/><hotel:Amenity Code="CODE"/><hotel:Amenity
+        Code="COLE"/><hotel:Amenity Code="CORO"/><hotel:Amenity Code="ELEV"/><hotel:Amenity
+        Code="HAFA"/><hotel:Amenity Code="LUGE"/><hotel:Amenity Code="MEPL"/><hotel:Amenity
+        Code="MEFA"/><hotel:Amenity Code="MIBA"/><hotel:Amenity Code="NSMR"/><hotel:Amenity
+        Code="PHSV"/><hotel:Amenity Code="PTRS"/><hotel:Amenity Code="SAIR"/><hotel:Amenity
+        Code="SHWR"/><hotel:Amenity Code="CBTV"/><hotel:Amenity Code="WTBR"/><hotel:Amenity
+        Code="FXSV"/><hotel:Amenity Code="PHCO"/><hotel:Amenity Code="BATB"/></hotel:Amenities></hotel:HotelProperty><hotel:RateInfo
+        MinimumAmount="USD299.00" MaximumAmount="USD359.00"/></hotel:HotelSearchResult></hotel:HotelSearchAvailabilityRsp></SOAP:Body></SOAP:Envelope>
+    http_version: '1.1'
+  recorded_at: Tue, 13 Nov 2012 17:03:37 GMT
+recorded_with: VCR 2.3.0

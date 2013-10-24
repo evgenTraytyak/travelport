@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<USERNAME>:<PASSWORD>@emea.copy-webservices.travelport.com/B2BGateway/connect/uAPI/HotelService
+    body:
+      encoding: US-ASCII
+      string: ! "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"
+        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:wsdl=\"http://www.travelport.com/service/hotel_v19_0\"
+        xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Body><HotelDetailsReq
+        TargetBranch=\"P7004157\" xmlns=\"http://www.travelport.com/schema/hotel_v19_0\"><BillingPointOfSaleInfo
+        xmlns=\"http://www.travelport.com/schema/common_v17_0\" OriginApplication=\"uAPI\"/><HotelProperty
+        HotelChain=\"HY\" HotelCode=\"86178\" Availability=\"Available\"/><HotelDetailsModifiers
+        NumberOfAdults=\"1\" RateRuleDetail=\"Complete\">\n  <HotelStay>\n    <CheckinDate>2012-11-19</CheckinDate>\n
+        \   <CheckoutDate>2012-11-24</CheckoutDate>\n  </HotelStay>\n  <RateCategory>All</RateCategory>\n</HotelDetailsModifiers></HotelDetailsReq></env:Body></env:Envelope>"
+    headers:
+      soapaction:
+      - ''
+      content-type:
+      - text/xml;charset=UTF-8
+      content-length:
+      - '834'
+      accept:
+      - ! '*/*'
+      user-agent:
+      - Ruby
+      authorization:
+      - Basic VW5pdmVyc2FsIEFQSS91QVBJODcyMDU2MzM1My04ZDk1MWQ2MzpXcUdiUG5yRWp6eGdYQUdzZ000YzJBeXRa
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - Apache-Coyote/1.1
+      content-type:
+      - text/xml;charset=UTF-8
+      content-length:
+      - '1090'
+      date:
+      - Wed, 14 Nov 2012 02:01:26 GMT
+      vary:
+      - Accept-Encoding, User-Agent
+    body:
+      encoding: US-ASCII
+      string: <SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><hotel:HotelDetailsRsp
+        xmlns:hotel="http://www.travelport.com/schema/hotel_v19_0" xmlns:common_v17_0="http://www.travelport.com/schema/common_v17_0"
+        TransactionId="FCA636E40A07611401A17DB8BA08F1BA" ResponseTime="764"><common_v17_0:ResponseMessage
+        Code="601" Type="Warning"><![CDATA[HOTEL REQUESTED NOT AVAILABLE *]]></common_v17_0:ResponseMessage><hotel:RequestedHotelDetails><hotel:HotelProperty
+        HotelChain="HY" HotelCode="86178" HotelLocation="BFK" Name="HYATT PLACE DENVER
+        AIRPORT"><hotel:PropertyAddress><hotel:Address>16250 East 40th Avenue </hotel:Address><hotel:Address>Aurora
+        CO US 80011 </hotel:Address></hotel:PropertyAddress><common_v17_0:PhoneNumber
+        Type="Business" Number="1-303-371-0700"/><common_v17_0:PhoneNumber Type="Fax"
+        Number="1-303- 371-2223"/><common_v17_0:Distance Value="7" Direction="NW"/><hotel:HotelRating
+        RatingProvider="AAA"><hotel:Rating>3</hotel:Rating></hotel:HotelRating></hotel:HotelProperty></hotel:RequestedHotelDetails></hotel:HotelDetailsRsp></SOAP:Body></SOAP:Envelope>
+    http_version: '1.1'
+  recorded_at: Wed, 14 Nov 2012 02:01:26 GMT
+recorded_with: VCR 2.3.0
