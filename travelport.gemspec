@@ -30,18 +30,5 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency("httpclient", "~> 2.3.1")
 
-  # from savon
-  gem.add_dependency "nori",     "~> 1.1.0"
-  gem.add_dependency "httpi",    ">= 2.0.0"
-  gem.add_dependency "wasabi",   ">= 2.5.0"
-  gem.add_dependency "akami",    "~> 1.2.0"
-  gem.add_dependency "gyoku",    "~> 0.4.5"
-
-  gem.add_dependency "builder",  ">= 2.1.2"
-#  gem.add_dependency "nokogiri", ">= 1.4.0"
-
-  # gem.add_development_dependency "rake",    "~> 0.9"
-  # gem.add_development_dependency "rspec",   "~> 2.10"
-  gem.add_development_dependency "mocha",   "~> 0.11"
-  gem.add_development_dependency "timecop", "~> 0.3"  
+  gem.add_dependency("savon", "2.3.0")
 end

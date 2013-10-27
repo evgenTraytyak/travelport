@@ -32,7 +32,7 @@ module Travelport::Request
     end
 
     def request_name
-      self.class.name.split("::").last
+      self.class.name.split("::").last.to_sym
     end
   
   end
