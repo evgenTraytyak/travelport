@@ -30,7 +30,7 @@ module Travelport::Bridge
         read_timeout 300
         ssl_version :SSLv3
         basic_auth [Travelport.config.username, Travelport.config.password]
-        http_headers {'SOAPAction' => ""}
+        http_headers['SOAPAction'] = ""
         convert_request_keys_to :camelcase
       end
     end

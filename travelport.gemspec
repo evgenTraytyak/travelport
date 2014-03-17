@@ -6,13 +6,13 @@ Gem::Specification.new do |gem|
   gem.email         = ["m.bondar@yahoo.com", "gallagher.paul@gmail.com", "nzaillian@gmail.com"]
   gem.description   = %q{travelport.com API wrapper for Ruby}
   gem.summary       = %q{Provides a simple interface to the travelport.com API for travel listings and booking}
-  gem.homepage      = "https://github.com/evendis/travelport"
+  gem.homepage      = "https://github.com/MaximeRDY/travelport"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "travelport"
-  gem.require_paths = ["lib", "vendor/gems/savon/lib"]
+  gem.require_paths = ["lib"]
   gem.version       = Travelport::VERSION
 
   gem.add_development_dependency(%q<bundler>, ["> 1.1.0"])
@@ -30,5 +30,5 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency("httpclient", "~> 2.3.1")
 
-  gem.add_dependency("savon", "2.3.0")
+  gem.add_dependency("savon", "~> 2.0")
 end
