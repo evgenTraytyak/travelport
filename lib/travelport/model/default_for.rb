@@ -11,7 +11,7 @@ module Travelport::Model::DefaultFor
 	module ClassMethods
 
 		attr_reader :defaults
-		
+
 		def default_for(attr_name, attr_value)
 			@defaults ||= {}
 			@defaults[attr_name] = attr_value
