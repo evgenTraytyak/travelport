@@ -14,3 +14,5 @@ segment = response.air_segment_list.select.each do |air_segment|
     air_segment.codeshare_info[:@operating_carrier] == "VY" && air_segment.codeshare_info[:@operating_flight_number] == "6250"
   end
 end
+
+response_pricing = bridge.air_price_req(segment.first, adults:1, cabin:'Economy')

@@ -2,6 +2,7 @@ module Travelport::Response
   class AvailabilitySearchRsp < Base
     attr_accessor :flight_details_list
     attr_accessor :air_segment_list
+
     def process
       process_raw_flight_details_list(raw_content[:flight_details_list])
       process_raw_air_segment_list(raw_content[:air_segment_list])
