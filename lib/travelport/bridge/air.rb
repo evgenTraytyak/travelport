@@ -32,15 +32,14 @@ module Travelport::Bridge
 
     def availability_search_req(sector, options)
       options.assert_valid_keys(:adults, :children, :infants, :cabin)
-      req = Travelport::Request::AvailabilitySearchReq .new do |obj|
+      req = Travelport::Request::AvailabilitySearchReq.new do |obj|
         obj.sector = sector
         obj.children = options[:children]
         obj.infants = options[:infants]
         obj.cabin = options[:cabin]
         obj.adults = options[:adults]
       end
-      send_request req
-      #TODO: Add Parsed Response
+      Travelport::Response::AvailabilitySearchRsp.new(send_request(req))
     end
   end
 end
