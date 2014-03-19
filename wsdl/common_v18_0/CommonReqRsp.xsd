@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
-		   xmlns="http://www.travelport.com/schema/common_v12_0" 
+		   xmlns="http://www.travelport.com/schema/common_v18_0" 
            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-           targetNamespace="http://www.travelport.com/schema/common_v12_0" 
+           targetNamespace="http://www.travelport.com/schema/common_v18_0" 
            elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
@@ -13,7 +13,9 @@
     <!--*** Request Types ***-->
     <xs:complexType name="BaseReq">    	           
         <xs:sequence>
-        	<xs:element ref="BillingPointOfSaleInfo" minOccurs="0"  maxOccurs="1"/>
+        	<xs:element ref="BillingPointOfSaleInfo"/>
+        	<xs:element ref="AgentIDOverride" minOccurs="0"  maxOccurs="unbounded"/>
+        	<xs:element ref="TerminalSessionInfo" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute name="TraceId" type="xs:string" use="optional">
             <xs:annotation>
@@ -34,6 +36,11 @@
         <xs:attribute name="TargetBranch" type="typeBranchCode" use="optional">
             <xs:annotation>
                 <xs:documentation>Used for Emulation - If authorised will execute the request as if the agent's parent branch is the TargetBranch specified.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OverrideLogging" type="typeLoggingLevel" use="optional">
+            <xs:annotation>
+                <xs:documentation>Use to override the default logging level</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -141,20 +148,17 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="typeErrorInfo">
+    <xs:simpleType name="typeLoggingLevel">
         <xs:annotation>
-            <xs:documentation>Container for error data when there is an application error.</xs:documentation>
+            <xs:documentation>The type of various Logging levels</xs:documentation>
         </xs:annotation>
-        <xs:sequence>
-            <xs:element name="Code" type="xs:string"/>
-            <xs:element name="Service" type="xs:string"/>
-            <xs:element name="Type" type="xs:string"/>
-            <xs:element name="Description" type="xs:string"/>
-            <xs:element name="TransactionId" type="xs:string"/>
-            <xs:element name="TraceId" type="xs:string" minOccurs="0"/>
-            <xs:element name="CommandHistory" type="xs:string" minOccurs="0"/>
-            <xs:element ref="Auxdata" minOccurs="0"/>
-            <xs:element name="StackTrace" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TRACE"/>
+            <xs:enumeration value="DEBUG"/>
+            <xs:enumeration value="INFO"/>
+            <xs:enumeration value="WARN"/>
+            <xs:enumeration value="ERROR"/>
+            <xs:enumeration value="FATAL"/>
+       </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

@@ -12,7 +12,7 @@ module Travelport::Request
     default_for :children, 1
     default_for :provider_code, '1G'
     default_for :cabin, 'Economy'
-    default_for :xmlns, 'http://www.travelport.com/schema/air_v20_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/air_v25_0'
 
     validates :segment, presence: true
     validates :adults, presence: true
@@ -21,13 +21,13 @@ module Travelport::Request
     def request_body
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root {
-          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
           xml.AirItinerary{
             xml.AirSegment(segment.to_xml_attributes.update('ProviderCode' => provider_code))
           }
-          adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')}
-          children.times { xml.SearchPassenger('Code' => 'CNN', 'Age' => 10, 'xmlns' => "http://www.travelport.com/schema/common_v17_0")} unless children.nil?
-          infants.times { xml.SearchPassenger('Code' => 'INF', 'Age' => 1, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')} unless infants.nil?
+          adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => 'http://www.travelport.com/schema/common_v25_0', 'BookingTravelerRef' => SecureRandom.urlsafe_base64)}
+          children.times { xml.SearchPassenger('Code' => 'CNN', 'Age' => 10, 'xmlns' => "http://www.travelport.com/schema/common_v25_0")} unless children.nil?
+          infants.times { xml.SearchPassenger('Code' => 'INF', 'Age' => 1, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')} unless infants.nil?
           xml.AirPricingCommand('CabinClass' => self.cabin)
         }
       end

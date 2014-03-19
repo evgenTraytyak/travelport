@@ -14,7 +14,7 @@ module Travelport::Request
     default_for :airline_code, 'VL'
     default_for :provider_code, '1G'
     default_for :cabin, 'Economy'
-    default_for :xmlns, 'http://www.travelport.com/schema/air_v20_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/air_v25_0'
 
     validates :sector, presence: true
     validates :adults, presence: true
@@ -24,36 +24,29 @@ module Travelport::Request
     def request_body
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root{
-          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
           xml.SearchAirLeg {
               xml.SearchOrigin {
-                xml.CityOrAirport('Code' => sector[:origin], 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+                xml.CityOrAirport('Code' => sector[:origin], 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
               }
               xml.SearchDestination {
-                xml.CityOrAirport('Code' => sector[:destination], 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+                xml.CityOrAirport('Code' => sector[:destination], 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
               }
               xml.SearchDepTime('PreferredTime' => sector[:time].to_s)
-              unless cabin.nil?
-                xml.AirLegModifiers {
-                  xml.PreferredCabins {
-                    xml.CabinClass('Type' => cabin)
-                  }
-                }
-              end
           }
           xml.AirSearchModifiers {
             xml.PreferredProviders {
-              xml.Provider('Code' => provider_code, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+              xml.Provider('Code' => provider_code, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
             }
             unless airline_code.nil?
               xml.ProhibitedCarriers {
-                xml.Carrier('Code' => sector[:airline_code], 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+                xml.Carrier('Code' => sector[:airline_code], 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
               }
             end
           }
-          adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')}
-          children.times { xml.SearchPassenger('Code' => 'CNN', 'Age' => 10, 'xmlns' => "http://www.travelport.com/schema/common_v17_0")} unless children.nil?
-          infants.times { xml.SearchPassenger('Code' => 'INF', 'Age' => 1, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')} unless infants.nil?
+          adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')}
+          children.times { xml.SearchPassenger('Code' => 'CNN', 'Age' => 10, 'xmlns' => "http://www.travelport.com/schema/common_v25_0")} unless children.nil?
+          infants.times { xml.SearchPassenger('Code' => 'INF', 'Age' => 1, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')} unless infants.nil?
       }
       end
       builder.doc.root.children.to_xml
