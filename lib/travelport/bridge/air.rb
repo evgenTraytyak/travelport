@@ -16,8 +16,9 @@ module Travelport::Bridge
     end
 
     def air_price_req(sectors, options)
-      options.assert_valid_keys(:adults, :children, :infants, :cabin)
+      options.assert_valid_keys(:adults, :children, :infants, :cabin, :airline_code)
       #this method doesnt work from now, because we need to perfom an low_fare_search or an air_price_req
+      throw 'Not Finish'
       req = Travelport::Request::AirPriceReq.new do |obj|
         obj.sectors = sectors
         obj.children = options[:children]
@@ -27,6 +28,18 @@ module Travelport::Bridge
       end
       binding.pry
       Travelport::Response::AirPriceReq.new(send_request(req))
+    end
+
+    def availability_search_req(sector, options)
+      options.assert_valid_keys(:adults, :children, :infants, :cabin)
+      req = Travelport::Request::AvailabilitySearchReq.new do |obj|
+        obj.sector = sector
+        obj.children = options[:children]
+        obj.infants = options[:infants]
+        obj.cabin = options[:cabin]
+        obj.adults = options[:adults]
+      end
+      Travelport::Response::AvailabilitySearchRsp.new(send_request(req))
     end
   end
 end
