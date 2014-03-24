@@ -33,6 +33,16 @@ module Travelport::Model
     #   @arrival_time = time.to_time
     # end
 
+    def select_booking_info(cabin = "Economry")
+      booking_code_info = nil
+      if !air_avail_info[:booking_code_info].empty? && air_avail_info[:booking_code_info].size > 1
+        booking_code_info = air_avail_info[:booking_code_info].select.each do |bci|
+          bci[:@cabin_class] == cabin
+        end.first
+      end
+      booking_code_info ||= air_avail_info[:booking_code_info]
+    end
+
     def flight_details_ref=(ref)
       @flight_details_ref = ref[:@key]
     end

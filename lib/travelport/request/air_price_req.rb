@@ -23,12 +23,17 @@ module Travelport::Request
         xml.root {
           xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')
           xml.AirItinerary{
-            xml.AirSegment(segment.to_xml_attributes.update('ProviderCode' => provider_code))
+            xml.AirSegment(segment.to_xml_attributes.update('ProviderCode' => provider_code)) {
+              xml.AirAvailInfo('ProviderCode' => segment.air_avail_info[:@provider_code] ) {
+                booking_info = segment.select_booking_info(cabin)
+                xml.BookingCodeInfo('CabinClass' => booking_info[:@cabin_class], 'BookingCounts' => booking_info[:@booking_counts] )
+              }
+            }
           }
           adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => 'http://www.travelport.com/schema/common_v25_0', 'BookingTravelerRef' => SecureRandom.urlsafe_base64)}
           children.times { xml.SearchPassenger('Code' => 'CNN', 'Age' => 10, 'xmlns' => "http://www.travelport.com/schema/common_v25_0")} unless children.nil?
           infants.times { xml.SearchPassenger('Code' => 'INF', 'Age' => 1, 'xmlns' => 'http://www.travelport.com/schema/common_v25_0')} unless infants.nil?
-          xml.AirPricingCommand('CabinClass' => self.cabin)
+          xml.AirPricingCommand()
         }
       end
       builder.doc.root.children.to_xml

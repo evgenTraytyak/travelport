@@ -7,12 +7,14 @@ Travelport.setup do |config|
   #config.point_of_sale = 'my_pos_id'         # by defualt this will be 'uAPI'
 end
 bridge = Travelport::Bridge::Air.new
-response = bridge.availability_search_req({origin:'ORY', destination:'FCO', airline_code: "VY", time: DateTime.new(2014,6,9,6,45)}, {adults:1, cabin:'Economy'})
+response = bridge.availability_search_req({origin:'ORY', destination:'FCO', time: DateTime.new(2014,10,9,6,45)}, {adults:1, cabin:'Economy'})
+q
+segment = response.air_segment_list.first
+q
+response_pricing = bridge.air_price_req(segment, adults:1, cabin:'Economy')
 
-segment = response.air_segment_list.select.each do |air_segment|
-  unless air_segment.codeshare_info.nil?
-    air_segment.codeshare_info[:@operating_carrier] == "VY" && air_segment.codeshare_info[:@operating_flight_number] == "6250"
-  end
-end
 
-response_pricing = bridge.air_price_req(segment.first, adults:1, cabin:'Economy')
+  #response.air_segment_list.select.each do |air_segment|
+  # unless air_segment.codeshare_info.nil?
+  #   air_segment.codeshare_info[:@operating_carrier] == "VY" && air_segment.codeshare_info[:@operating_flight_number] == "6250"
+  # end
