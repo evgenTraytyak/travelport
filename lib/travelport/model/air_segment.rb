@@ -35,7 +35,7 @@ module Travelport::Model
 
     def select_booking_info(cabin = "Economry")
       booking_code_info = nil
-      if !air_avail_info[:booking_code_info].empty? && air_avail_info[:booking_code_info].size > 1
+      if !air_avail_info[:booking_code_info].empty? && air_avail_info[:booking_code_info].kind_of?(Array)
         booking_code_info = air_avail_info[:booking_code_info].select.each do |bci|
           bci[:@cabin_class] == cabin
         end.first
