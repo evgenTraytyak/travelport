@@ -24,8 +24,7 @@ module Travelport::Bridge
         obj.cabin = options[:cabin]
         obj.adults = options[:adults]
       end
-      send_request req
-      #Travelport::Response::AirPriceRsp.new(send_request(req))
+      Travelport::Response::AirPriceRsp.new(send_request(req))
     end
 
     def availability_search_req(sector, options)

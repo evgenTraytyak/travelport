@@ -53,6 +53,12 @@ module Travelport::Model
       end]
     end
   end
+
+  def codeshare_info_to_xml_attributes
+    Hash[codeshare_info.map do |key, value|
+        [key.to_s.camelize, value]
+      end]
+  end
 end
 
 

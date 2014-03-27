@@ -7,11 +7,12 @@ Travelport.setup do |config|
   #config.point_of_sale = 'my_pos_id'         # by defualt this will be 'uAPI'
 end
 bridge = Travelport::Bridge::Air.new
-response = bridge.availability_search_req({origin:'ORY', destination:'FCO', time: DateTime.new(2014,10,9,6,45)}, {adults:1, cabin:'Economy'})
+response = bridge.availability_search_req({origin:'ORY', destination:'FCO', time: Date.new(2014,10,9)}, {adults:1, cabin:'Economy'})
 q
 segment = response.air_segment_list.first
 q
 response_pricing = bridge.air_price_req(segment, adults:1, cabin:'Economy')
+
 
 
   #response.air_segment_list.select.each do |air_segment|
