@@ -9,7 +9,8 @@ module Travelport::Request
 
     default_for :adults, 1
     default_for :rooms, 1
-    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v19_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v28_0'
+    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v28_0'
 
     validates_presence_of :location
     validates_presence_of :adults
@@ -17,7 +18,7 @@ module Travelport::Request
     def request_body
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root {
-          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
           xml.HotelLocation('Location' => location)
           xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms)
           xml.HotelStay {
@@ -30,7 +31,8 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'Location', 'Adults', 'Rooms', 'Checkin', 'Checkout').update(:xmlns => xmlns)
+      super.except('Xmlns', 'Location', 'Adults', 'Rooms', 'Checkin', 'Checkout').update(:xmlns => xmlns,
+                                                                                         :xmlns_common => xmlns_common)
     end
 
 

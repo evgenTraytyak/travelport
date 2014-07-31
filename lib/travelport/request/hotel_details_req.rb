@@ -14,7 +14,8 @@ module Travelport::Request
     default_for :availability, 'Available'
     default_for :rate_rule, 'Complete'
     default_for :rate_category, 'All'
-    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v19_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v28_0'
+    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v28_0'
 
     validates_presence_of :chain_code
     validates_presence_of :property_id
@@ -22,7 +23,7 @@ module Travelport::Request
     def request_body
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root {
-          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => 'http://www.travelport.com/schema/common_v17_0')
+          xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
           xml.HotelProperty('HotelChain' => chain_code, 'HotelCode' => property_id, 'Availability' => availability)
           xml.HotelDetailsModifiers('NumberOfAdults' => adults, 'RateRuleDetail' => rate_rule) {
             xml.HotelStay {
@@ -37,7 +38,8 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'ChainCode', 'PropertyId', 'Availability', 'Adults', 'RateRule', 'RateCategory', 'Checkin', 'Checkout').update(:xmlns => xmlns)
+      super.except('Xmlns', 'ChainCode', 'PropertyId', 'Availability', 'Adults', 'RateRule', 'RateCategory', 'Checkin', 'Checkout').update(:xmlns => xmlns,
+                                                                                                                                           :xmlns_common => xmlns_common)
     end
 
 

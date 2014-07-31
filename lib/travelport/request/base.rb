@@ -17,6 +17,7 @@ module Travelport::Request
     attr_accessor :billing_point_of_sale
     attr_accessor :agent_id_override
     attr_accessor :xmlns
+    attr_accessor :xmlns_common
 
     validates_presence_of :target_branch
     validates_presence_of :billing_point_of_sale
