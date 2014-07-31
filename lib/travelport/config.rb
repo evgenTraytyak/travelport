@@ -11,15 +11,15 @@ class Travelport
 
     DEFAULTS = {
       :test_americas => {
-        :endpoint => 'https://americas.copy-webservices.travelport.com/B2BGateway/connect/uAPI/Service',
+        :endpoint => 'https://americas.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/Service',
         :point_of_sale => 'uAPI'
       },
       :test_emea => {
-        :endpoint => 'https://emea.copy-webservices.travelport.com/B2BGateway/connect/uAPI/Service',
+        :endpoint => 'https://emea.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/Service',
         :point_of_sale => 'uAPI'
       },
       :test_apac => {
-        :endpoint => 'https://apac.copy-webservices.travelport.com/B2BGateway/connect/uAPI/Service',
+        :endpoint => 'https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/Service',
         :point_of_sale => 'uAPI'
       },
       :production_americas => {
