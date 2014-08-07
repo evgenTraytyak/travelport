@@ -2,7 +2,7 @@ module Travelport::Bridge
   class Hotel < Base
 
     default_for :service, 'HotelService'
-    default_for :document, 'hotel_v28_0/Hotel.wsdl'
+    default_for :document, 'hotel_v19_0/Hotel.wsdl'
 
     def search_availability(location, options)
       options.assert_valid_keys(:adults, :rooms, :checkin, :checkout)
