@@ -59,8 +59,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Sectors', 'Cabin', 'Xmlns', 'Adults', 'Children', 'Infants', 'ProviderCode').update(:xmlns => xmlns,
-                                                                                                        :xmlns_common => xmlns_common)
+      super.except('Sectors', 'Cabin', 'Xmlns', 'Adults', 'Children', 'Infants', 'ProviderCode').update(:xmlns => xmlns)
     end
 
     protected

@@ -38,8 +38,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'ChainCode', 'PropertyId', 'Availability', 'Adults', 'RateRule', 'RateCategory', 'Checkin', 'Checkout').update(:xmlns => xmlns,
-                                                                                                                                           :xmlns_common => xmlns_common)
+      super.except('Xmlns', 'ChainCode', 'PropertyId', 'Availability', 'Adults', 'RateRule', 'RateCategory', 'Checkin', 'Checkout').update(:xmlns => xmlns)
     end
 
 
