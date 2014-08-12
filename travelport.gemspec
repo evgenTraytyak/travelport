@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "travelport"
-  gem.require_paths = ["lib", "vendor/gems/savon/lib"]
+  #gem.require_paths = ["lib", "vendor/gems/savon/lib"]
   gem.version       = Travelport::VERSION
 
   gem.add_development_dependency(%q<bundler>, ["> 1.1.0"])
@@ -29,13 +29,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency(%q<nokogiri>)
 
   gem.add_dependency("httpclient", "~> 2.3.1")
-
-  # from savon
-  gem.add_dependency "nori",     ">= 2.0.0"
-  gem.add_dependency "httpi",    ">= 2.0.0"
-  gem.add_dependency "wasabi",   ">= 2.5.0"
-  gem.add_dependency "akami",    "~> 1.2.0"
-  gem.add_dependency "gyoku",    "~> 0.4.5"
+  gem.add_dependency("savon", "~> 2.3.0")
 
   gem.add_dependency "builder",  ">= 2.1.2"
 #  gem.add_dependency "nokogiri", ">= 1.4.0"
