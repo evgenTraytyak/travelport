@@ -31,7 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency("httpclient", "~> 2.3.1")
 
   # from savon
-  gem.add_dependency "nori",     "~> 1.1.0"
+  gem.add_dependency "nori",     ">= 2.0.0"
   gem.add_dependency "httpi",    ">= 2.0.0"
   gem.add_dependency "wasabi",   ">= 2.5.0"
   gem.add_dependency "akami",    "~> 1.2.0"
