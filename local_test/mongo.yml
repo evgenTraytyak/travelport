@@ -1,0 +1,10 @@
+mongolab:
+  database: booking_engine_dev
+  username: booking_engine_dev
+  password: 10f5ebe6
+  host: ds063929.mongolab.com:63929
+development:
+  database: booking_engine_dev
+  username:
+  password:
+  host: localhost:27017

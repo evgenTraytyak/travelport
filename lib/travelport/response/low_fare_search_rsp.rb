@@ -15,19 +15,22 @@ module Travelport::Response
     end
 
     def process_raw_flight_details_list(list)
-      self.flight_details_list = Hash[list[:flight_details].map do |flight_details|
+      array = list[:flight_details].is_a?(Array) ? list[:flight_details] : [list[:flight_details]]
+      self.flight_details_list = Hash[array.map do |flight_details|
         [flight_details[:@key], Travelport::Model::FlightDetails.new(flight_details)]
       end]
     end
 
     def process_raw_air_segment_list(list)
-      self.air_segment_list = Hash[list[:air_segment].map do |air_segment|
+      array = list[:air_segment].is_a?(Array) ? list[:air_segment] : [list[:air_segment]]
+      self.air_segment_list = Hash[array.map do |air_segment|
         [air_segment[:@key], Travelport::Model::AirSegment.new(air_segment)]
       end]
     end
 
     def process_raw_fare_info_list(list)
-      self.fare_info_list = Hash[list[:fare_info].map do |fare_info|
+      array = list[:fare_info].is_a?(Array) ? list[:fare_info] : [list[:fare_info]]
+      self.fare_info_list = Hash[array.map do |fare_info|
         [fare_info[:@key], Travelport::Model::FareInfo.new(fare_info)]
       end]
     end
@@ -36,7 +39,8 @@ module Travelport::Response
     end
 
     def process_raw_air_pricing_solution(pricing_solutions)
-      self.pricing_solutions = Hash[pricing_solutions.map do |pricing_solution|
+      array = pricing_solutions.is_a?(Array) ? pricing_solutions : [pricing_solutions]
+      self.pricing_solutions = Hash[array.map do |pricing_solution|
         [pricing_solution[:@key], Travelport::Model::PricingSolution.new(pricing_solution)]
       end]
     end
