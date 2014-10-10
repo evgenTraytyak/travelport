@@ -47,7 +47,12 @@ module Travelport::Request
           end
           xml.AirSearchModifiers {
             xml.PreferredProviders {
-              xml.Provider('Code' => provider_code, 'xmlns' => xmlns_common)
+              if provider_code.is_a?(Array)
+                provider_code.each {|code| xml.Provider('Code' => code, 'xmlns' => xmlns_common)}
+              else
+                xml.Provider('Code' => provider_code, 'xmlns' => xmlns_common)
+              end
+
             }
           }
           adults.times { xml.SearchPassenger('Code' => 'ADT', 'xmlns' => xmlns_common)}

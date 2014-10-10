@@ -23,7 +23,8 @@ module Travelport::Model
                   :polled_availability_option,
                   :optional_services_indicator,
                   :availability_source,
-                  :codeshare_info
+                  :codeshare_info,
+                  :plating_carrier
 
     def departure_time=(time)
       @departure_time = time.to_time

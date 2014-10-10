@@ -16,11 +16,11 @@ class TravelportResult
   end
 
   def merged
-    extract = %w(booking_info tax_info passenger_type)
+    extract = %w(booking_info tax_info passenger_type @plating_carrier @e_ticketability @pricing_method)
     remove = %w(total_price approximate_total_price approximate_base_price air_pricing_info)
     @pricing_solutions.collect do |segment|
       #flatten the structure
-      extract.each {|node| segment[node] = segment['air_pricing_info'][node]}
+      extract.each {|node| segment[node.gsub('@','')] = segment['air_pricing_info'][node]}
       remove.each {|node| segment.delete(node)}
       segment['booking_info'] = [segment['booking_info']].flatten.collect do |info|
         details = find_air_segment(info['@segment_ref'])
@@ -29,6 +29,10 @@ class TravelportResult
         info.merge!(fare) if fare
         info
       end
+      if segment['equivalent_base_price'] && segment['equivalent_base_price'].is_a?(Travelport::Model::Price)
+        segment['equivalent_base_price'] = "#{segment['equivalent_base_price'].currency}#{segment['equivalent_base_price'].amount}"
+      end
+      pp segment
       segment
     end
   end

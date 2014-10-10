@@ -18,7 +18,7 @@ module Travelport::Bridge
 
     def price_details(booking, options)
       options.assert_valid_keys(:adults, :children, :infants, :cabin, :provider_code)
-      req = Travelport::Request::LowFarePriceReq.new do |obj|
+      req = Travelport::Request::AirPriceReq.new do |obj|
         obj.booking = booking
         obj.adults = options[:adults]
         obj.children = options[:children]
@@ -26,6 +26,16 @@ module Travelport::Bridge
         obj.provider_code = options[:provider_code]
       end
       #Travelport::Response::LowFareSearchRsp.new(send_request(req))
+      send_request(req)
+    end
+
+    def book(price, travelers)
+      req = Travelport::Request::AirCreateReservationReq.new do |obj|
+        obj.price = price
+        obj.travelers = travelers
+      end
+      #Travelport::Response::LowFareSearchRsp.new(send_request(req))
+      #req
       send_request(req)
     end
   end

@@ -2,7 +2,7 @@ require 'travelport'
 require 'mongo'
 require './local_test/mongo_client'
 
-uid = '5437f643422c5f14e4000001'#ARGV[0]
+uid = '5437f033422c5f37d4000001'#ARGV[0]
 
 start = Time.now
 
@@ -17,20 +17,22 @@ begin
   end
 
   travelport = Travelport::Bridge::Air.new
-  mongo = MongoClient.new('travelport_results_1')
-  results = mongo.find_one({_id:BSON::ObjectId(uid)},:fields=>{:results=>{'$slice'=>[0,1]}})["results"]
-  booking = results.first
-  options = {adults:   1,
-             children: 0,
-             infants:  0,
-             provider_code: '1G'}
-
-  price_response = travelport.price_details(booking,options)
   mongo = MongoClient.new('travelport_prices_1')
-  mongo_id = mongo.insert({price:price_response,stored_at:Time.now()})
-  pp mongo_id
+  price = mongo.find_one({_id:BSON::ObjectId(uid)})["price"]
+  travelers = [
+      {
+          'first_name'=>'Michal',
+          'last_name'=>'Kramer',
+          'prefix'=>'Mr',
+          'type'=>'ADT',
+          'phone'=>'123456778',
+          'email'=>'test@example.com',
+          'gender'=> 'M'
+      }
+  ]
+  book_response = travelport.book(price,travelers)
 
-
+  puts book_response
 
 rescue StandardError => e
   raise e
