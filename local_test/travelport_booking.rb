@@ -2,7 +2,7 @@ require 'travelport'
 require 'mongo'
 require './local_test/mongo_client'
 
-uid = '5437f033422c5f37d4000001'#ARGV[0]
+uid = '54380ea1422c5f40b4000001'#ARGV[0]
 
 start = Time.now
 

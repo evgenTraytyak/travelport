@@ -2,7 +2,7 @@ require 'travelport'
 require 'mongo'
 require './local_test/mongo_client'
 
-uid = '5437f643422c5f14e4000001'#ARGV[0]
+uid = '54380e49422c5f0b04000001'#ARGV[0]
 
 start = Time.now
 
@@ -19,6 +19,7 @@ begin
   travelport = Travelport::Bridge::Air.new
   mongo = MongoClient.new('travelport_results_1')
   results = mongo.find_one({_id:BSON::ObjectId(uid)},:fields=>{:results=>{'$slice'=>[0,1]}})["results"]
+  pp results
   booking = results.first
   options = {adults:   1,
              children: 0,

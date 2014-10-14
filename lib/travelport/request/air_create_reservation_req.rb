@@ -42,8 +42,8 @@ module Travelport::Request
                              'AvailabilitySource' => segment['@availability_source'],
                              'Carrier' => segment['@carrier'],
                              'Origin' => segment['@origin'],
-                             'DepartureTime' => segment['@departure_time'],
-                             'ArrivalTime' => segment['@arrival_time'],
+                             'DepartureTime' => DateTime.parse(segment['@departure_time'].to_s[0,19]).strftime("%Y-%m-%dT%H:%M:00.000"),
+                             'ArrivalTime' => DateTime.parse(segment['@arrival_time'].to_s[0,19]).strftime("%Y-%m-%dT%H:%M:00.000"),
                              'Destination' => segment['@destination']) {
                 xml.FlightDetails('Key' => flight['@key'],
                                   'Origin' => flight['@origin'],

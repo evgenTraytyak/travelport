@@ -32,7 +32,6 @@ class TravelportResult
       if segment['equivalent_base_price'] && segment['equivalent_base_price'].is_a?(Travelport::Model::Price)
         segment['equivalent_base_price'] = "#{segment['equivalent_base_price'].currency}#{segment['equivalent_base_price'].amount}"
       end
-      pp segment
       segment
     end
   end

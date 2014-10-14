@@ -24,8 +24,8 @@ begin
   travelport = Travelport::Bridge::Air.new
   return_flight = false
   date_format = '%m/%d/%Y'
-  date_from = Time.now + (3*24*60*60)
-  date_to =  Time.now + (14*24*60*60)
+  date_from = Time.now + (10*24*60*60)
+  date_to =  Time.now + (20*24*60*60)
   query = []
   query << {from: 'LON', to: 'BCN', at: date_from}
   query << {from: 'LON', to: 'BCN', at: date_to} if return_flight
@@ -33,7 +33,9 @@ begin
              children: 0,
              infants:  0,
              cabin:    "Economy",
-             provider_code: ['1G']}
+             provider_code: '1G'}
+
+  puts "=== Sending Search request ==="
 
   response = travelport.low_fare_search(query,options)
 
@@ -42,12 +44,39 @@ begin
     merged = result.merged
     mongo = MongoClient.new("travelport_results_1")
     mongo_id = mongo.insert({results:merged,stored_at:Time.now()})
-    p mongo_id
+    results = mongo.find_one({_id: mongo_id},:fields=>{:results=>{'$slice'=>[0,1]}})["results"]
+    booking = results.first
+    puts "=== Sending Prices request ==="
+    price_response = travelport.price_details(booking,options)
+    mongo = MongoClient.new('travelport_prices_1')
+    puts " PRICE RECORD STORED "
+    pp price_response
+    mongo_id = mongo.insert({price:price_response,stored_at:Time.now()})
+    price = mongo.find_one({_id: mongo_id})["price"]
+    travelers = [
+        {
+            'first_name'=>'Michal',
+            'last_name'=>'Kramer',
+            'prefix'=>'Mr',
+            'type'=>'ADT',
+            'phone'=>'123456778',
+            'email'=>'test@example.com',
+            'gender'=> 'M'
+        }
+    ]
+    puts "=== Sending Booking request ==="
+    puts " PRICE RECORD RETREIVED "
+    pp price
+    book_response = travelport.book(price,travelers)
+    mongo = MongoClient.new('travelport_bookings_1')
+    mongo_id = mongo.insert({booking:book_response,stored_at:Time.now()})
+    puts "Booking stored under #{mongo_id} uid."
   else
     raise 'Invalid response from Tavelport.'
   end
 
 rescue StandardError => e
+  raise e
   puts "Error: #{e}"
 end
 

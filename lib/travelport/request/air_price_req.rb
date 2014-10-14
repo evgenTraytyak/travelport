@@ -43,7 +43,7 @@ module Travelport::Request
               }
             end
           }
-          xml.AirPricingModifiers('PlatingCarrier' => booking['plating_carrier'],)
+          xml.AirPricingModifiers('PlatingCarrier' => booking['plating_carrier']) if booking['plating_carrier']
           adults.times {xml.SearchPassenger('Code'=>'ADT', 'xmlns' => xmlns_common)}
           children.times {xml.SearchPassenger('Code'=>'CNN', 'Age' => 10, 'xmlns'=>xmlns_common)}
           infants.times {xml.SearchPassenger('Code'=>'INF', 'Age' => 1, 'xmlns'=>xmlns_common)}
