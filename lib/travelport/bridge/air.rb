@@ -13,7 +13,8 @@ module Travelport::Bridge
         obj.cabin = options[:cabin]
         obj.provider_code = options[:provider_code]
       end
-      Travelport::Response::LowFareSearchRsp.new(send_request(req))
+      # Travelport::Response::LowFareSearchRsp.new(send_request(req))
+      send_request(req)
     end
 
     def price_details(booking, options)
