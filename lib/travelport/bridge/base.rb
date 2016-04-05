@@ -25,7 +25,7 @@ module Travelport::Bridge
         wsdl.document = File.join(Travelport.config.document_dir, document)
         http.read_timeout = 300
         http.auth.ssl.verify_mode = :none
-        http.auth.ssl.ssl_version = :SSLv3
+        http.auth.ssl.ssl_version = :SSLv23
         http.auth.basic(Travelport.config.username, Travelport.config.password)
       end
     end
