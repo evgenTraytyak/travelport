@@ -1,16 +1,21 @@
+=== MOST Important Note!
+Gem Unusable  - Still In Development Phase!!!
+
+
+
 = Travelport {<img src="https://secure.travis-ci.org/evendis/travelport.png" />}[http://travis-ci.org/evendis/travelport]
 
-=== Important Note! 
-I've only forked this gem (from upstream https://github.com/evendis/travelport) 
+=== Important Note!
+I've only forked this gem (from upstream https://github.com/evendis/travelport)
 to add some rough patches to accommodate dependencies that have aged.
 
-Notably, this fork includes Savon v1 wholly vendored in and patched in a few places 
-to accommodate requirements of the Travelport Universal API (for example, the 
+Notably, this fork includes Savon v1 wholly vendored in and patched in a few places
+to accommodate requirements of the Travelport Universal API (for example, the
 version of the HTTPI dependency was bumped so that we could explicitly
 fix the SSL version of the Savon client at SSLv3 in lib/travelport/bridge/base.rb)
 
-I don't plan on actively maintinining it beyond that, but I found that several 
-specs were failing (and the gem itself was broken) on the upstream versions 
+I don't plan on actively maintinining it beyond that, but I found that several
+specs were failing (and the gem itself was broken) on the upstream versions
 because of aged or un-versioned dependencies and some other subtle things (like
 the above-noted SSL version issue).
 

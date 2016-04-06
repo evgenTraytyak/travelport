@@ -2,7 +2,7 @@ module Travelport::Bridge
   class Air < Base
 
     default_for :service, 'AirService'
-    default_for :document, 'air_v20_0/Air.wsdl'
+    default_for :document, 'air_v36_0/Air.wsdl'
 
     def low_fare_search(sectors, options)
       options.assert_valid_keys(:adults, :children, :infants, :cabin, :provider_code)

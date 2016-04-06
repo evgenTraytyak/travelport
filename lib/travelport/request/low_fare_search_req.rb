@@ -13,8 +13,8 @@ module Travelport::Request
     default_for :children, 1
     default_for :provider_code, '1G'
     default_for :cabin, 'Economy'
-    default_for :xmlns, 'http://www.travelport.com/schema/air_v20_0'
-    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v17_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/air_v36_0'
+    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v36_0'
 
     validates_presence_of :sectors
     validates_presence_of :adults
@@ -39,7 +39,7 @@ module Travelport::Request
               unless cabin.nil?
                 xml.AirLegModifiers {
                   xml.PreferredCabins {
-                    xml.CabinClass('Type' => cabin)
+                    xml.CabinClass('Type' => cabin, 'xmlns' => xmlns_common)
                   }
                 }
               end
