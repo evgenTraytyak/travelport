@@ -4,16 +4,16 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://www.travelport.com/service/uprofile_v18_0"
-             xmlns:ns1="http://www.travelport.com/schema/uprofile_v18_0"
-             xmlns:common="http://www.travelport.com/schema/common_v28_0"
-             targetNamespace="http://www.travelport.com/service/uprofile_v18_0">
+             xmlns:tns="http://www.travelport.com/service/uprofile_v37_0"
+             xmlns:ns1="http://www.travelport.com/schema/uprofile_v37_0"
+             xmlns:common="http://www.travelport.com/schema/common_v37_0"
+             targetNamespace="http://www.travelport.com/service/uprofile_v37_0">
 
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                targetNamespace="http://www.travelport.com/schema/uprofile_v18_0">
+                targetNamespace="http://www.travelport.com/schema/uprofile_v37_0">
             <include schemaLocation="UProfile.xsd"/>
             <include schemaLocation="UProfileReqRsp.xsd" />
         </schema>
@@ -210,26 +210,13 @@
         <part name="result" element="ns1:ProfileRetrieveHistoryRsp" />
     </message>
     
-    <message name="ProfileCreateOverrideTemplateRequest">
-        <part name="parameters" element="ns1:ProfileCreateOverrideTemplateReq" />
+    <message name="SingleProfileMigrationRequest">
+        <part name="parameters" element="ns1:SingleProfileMigrationReq" />
     </message>
-    <message name="ProfileCreateOverrideTemplateResponse">
-        <part name="result" element="ns1:ProfileCreateOverrideTemplateRsp" />
-    </message>
-    
-    <message name="ProfileModifyOverrideTemplateRequest">
-        <part name="parameters" element="ns1:ProfileModifyOverrideTemplateReq" />
-    </message>
-    <message name="ProfileModifyOverrideTemplateResponse">
-        <part name="result" element="ns1:ProfileModifyOverrideTemplateRsp" />
-    </message>
-    
-    <message name="ProfileDeleteOverrideTemplateRequest">
-        <part name="parameters" element="ns1:ProfileDeleteOverrideTemplateReq" />
-    </message>
-    <message name="ProfileDeleteOverrideTemplateResponse">
-        <part name="result" element="ns1:ProfileDeleteOverrideTemplateRsp" />
-    </message>
+
+    <message name="SingleProfileMigrationResponse">
+        <part name="result" element="ns1:SingleProfileMigrationRsp" />
+    </message>  
     
     <message name="ProfileSummaryFaultMessage">
         <part name="fault" element="ns1:ProfileSummaryErrorInfo" />
@@ -437,28 +424,12 @@
             <output message="tns:ProfileRetrieveHistoryResponse" />
             <fault name="ErrorInfoMsg" message="tns:SystemFaultMessage" />
         </operation>
-    </portType>  
-    
-    <portType name="ProfileCreateOverrideTemplatePortType">
-        <operation name="service">
-            <input message="tns:ProfileCreateOverrideTemplateRequest" />
-            <output message="tns:ProfileCreateOverrideTemplateResponse" />
-            <fault name="ErrorInfoMsg" message="tns:SystemFaultMessage" />
-        </operation>
     </portType>
     
-    <portType name="ProfileModifyOverrideTemplatePortType">
+    <portType name="SingleProfileMigrationPortType">
         <operation name="service">
-            <input message="tns:ProfileModifyOverrideTemplateRequest" />
-            <output message="tns:ProfileModifyOverrideTemplateResponse" />
-            <fault name="ErrorInfoMsg" message="tns:SystemFaultMessage" />
-        </operation>
-    </portType>
-    
-    <portType name="ProfileDeleteOverrideTemplatePortType">
-        <operation name="service">
-            <input message="tns:ProfileDeleteOverrideTemplateRequest" />
-            <output message="tns:ProfileDeleteOverrideTemplateResponse" />
+            <input message="tns:SingleProfileMigrationRequest" />
+            <output message="tns:SingleProfileMigrationResponse" />
             <fault name="ErrorInfoMsg" message="tns:SystemFaultMessage" />
         </operation>
     </portType>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://www.travelport.com/schema/uprofile_v11_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.travelport.com/schema/uprofile_v11_0"
-           xmlns:common="http://www.travelport.com/schema/common_v17_0" 
+<xs:schema xmlns="http://www.travelport.com/schema/uprofile_v37_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.travelport.com/schema/uprofile_v37_0"
+           xmlns:common="http://www.travelport.com/schema/common_v37_0" 
            elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
     </xs:annotation>
 
-    <xs:import schemaLocation="../common_v17_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v17_0"/>
+    <xs:import schemaLocation="../common_v37_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v37_0"/>
 
     
    
@@ -58,7 +58,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileInfo">
+                <xs:extension base="typeAccountTypeProfileInfo">
                     <xs:sequence>
                         <xs:element ref="Address" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
@@ -75,10 +75,20 @@
                                 <xs:documentation>Account Electronic Address</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>Account External Identifier</xs:documentation>
+                           </xs:annotation>
+                       </xs:element>
                     </xs:sequence>
                     <xs:attribute name="Name" type="common:StringLength1to128" use="required">
                         <xs:annotation>
                             <xs:documentation>The name of the account.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="LocalLanguageName" type="common:StringLength1to128">
+                        <xs:annotation>
+                            <xs:documentation>The name of the account in the user's local language.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
@@ -93,9 +103,16 @@
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="typeKeyElement">
-                    <xs:attribute name="Type" type="typeAccountingReferenceType" use="required">
+                	<xs:sequence>
+                        <xs:element name="PaymentDetailsRef" minOccurs="0" maxOccurs="unbounded" type="common:typeRef">
+                           <xs:annotation>
+                               <xs:documentation>A code for categorizing a reference for a Traveler’s bookings.  This is often used by the Traveler’s employer for budgeting, internal billing, or other cost accounting purposes. Util:ReferenceDataRetrieveReq, TypeCode AccountingReferenceType</xs:documentation>
+                           </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="Type" type="common:StringLength1to128" use="required">
                         <xs:annotation>
-                            <xs:documentation>A code for categorizing a reference for a Traveler's bookings.  This is often used by the Traveler's employer for budgeting, internal billing or other cost accounting purposes.  Examples include Budget Codes, Department Codes, Project Codes, etc.</xs:documentation>
+                           <xs:documentation>A code for categorizing a reference for a Traveler’s bookings. This is often used by the Traveler’s employer for budgeting, internal billing, or other cost accounting purposes. Util:ReferenceDataRetrieveReq, TypeCode AccountingReferenceType</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="Value" type="common:StringLength1to255" use="required">
@@ -117,6 +134,11 @@
                         <xs:annotation>
                            <xs:documentation>Id of the profile who owns the Traveler's proprietary data.Should be the immediate parent id of the traveler.</xs:documentation>
                         </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="Active" type="xs:boolean" default="true"> 
+                        <xs:annotation> 
+                            <xs:documentation>Denotes whether the Accounting Reference is Active or Not. Default is true</xs:documentation> 
+                        </xs:annotation> 
                     </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
@@ -234,8 +256,16 @@
             <xs:complexContent>
                 <xs:extension base="typeBasePreference">
                     <xs:attributeGroup ref="attrsBedTypeMisc"/>
-                    <xs:attribute name="CheckInStartDate" type="xs:date"/>
-                    <xs:attribute name="CheckInEndDate" type="xs:date"/>
+                    <xs:attribute name="CheckInStartDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="CheckInEndDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="CorporateDiscountNumber">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -243,7 +273,11 @@
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>
-                    <xs:attribute name="MaxRoomRateAmount" type="common:typeMoney"/>
+                    <xs:attribute name="MaxRoomRateAmount" type="common:typeMoney">
+                        <xs:annotation>
+                            <xs:documentation>See uAPI Profile Help.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="MultiLevelRateCode">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -300,11 +334,19 @@
                             <xs:documentation>The type of the Other Preference.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="BookingStartDate" type="xs:date"/>
-                    <xs:attribute name="BookingEndDate" type="xs:date"/>
+                    <xs:attribute name="SupplierName" type="common:StringLength1to128"/>
+                    <xs:attribute name="BookingStartDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="BookingEndDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="UsageStartDate" type="xs:date"/>
                     <xs:attribute name="UsageEndDate" type="xs:date"/>
-                    <xs:attribute name="SupplierName" type="common:StringLength1to128"/>
                     <xs:attribute name="GeoPoliticalAreaType" type="typeGeoPoliticalAreaType">
                         <xs:annotation>
                             <xs:documentation>The type of the geographical location.</xs:documentation>
@@ -315,14 +357,26 @@
                             <xs:documentation>The location code of the geographical location.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="PreferencePaymentMethod" type="typePreferencePaymentMethod"/>
-                    <xs:attribute name="PaymentDetailsRef" type="common:typeRef">
+                    <xs:attribute name="PreferencePaymentMethod" type="typePreferencePaymentMethod">
                         <xs:annotation>
-                            <xs:documentation>A reference to a payment details element list elsewhere.</xs:documentation>
+                            <xs:documentation>See uAPI Profile Help and ReferenceDataRetrieveReq, TypeCode PaymentFormatType</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="MaxCostAmount" type="common:typeMoney"/>
-                    <xs:attribute name="Currency" type="common:typeCurrency"/>
+                    <xs:attribute name="PaymentDetailsRef" type="common:typeRef">
+                        <xs:annotation>
+                            <xs:documentation>Used to sync up Keys in FormOfPayment element with Preference attribute PaymentDetailsRef by entering same key number.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="MaxCostAmount" type="common:typeMoney">
+                        <xs:annotation>
+                            <xs:documentation>See uAPI Profile Help.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="Currency" type="common:typeCurrency">
+                        <xs:annotation>
+                            <xs:documentation>ReferencedataRetrieveReq, Type Code Currency</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="GeneralPreference" type="common:StringLength1to255"/>
                 </xs:extension>
             </xs:complexContent>
@@ -380,8 +434,16 @@
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>
-                    <xs:attribute name="PickUpStartDate" type="xs:date"/>
-                    <xs:attribute name="PickUpEndDate" type="xs:date"/>
+                    <xs:attribute name="PickUpStartDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="PickUpEndDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="RateCode">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -425,6 +487,11 @@
                             <xs:documentation>Agency Electronic Address</xs:documentation>
                         </xs:annotation>
                     </xs:element>
+                    <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>Agency External Identifier</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
                </xs:sequence>
                <xs:attribute name="Name" type="common:StringLength1to128" use="required">
                   <xs:annotation>
@@ -441,7 +508,28 @@
                         <xs:documentation>Zircon site ID. Modifying this value requires special authorization.</xs:documentation>
                   </xs:annotation>
               </xs:attribute>
-              <xs:attributeGroup ref="attrsProfileSync"/>             
+              <xs:attribute name="UsesTemplate" type="xs:boolean" use="optional" default="false">
+                 <xs:annotation>
+                        <xs:documentation>If set to true, it denotes that the customer uses templates and during parent data inheritance, templates will be used. Value can be altered through modify service.Default is false.</xs:documentation>
+                 </xs:annotation>
+              </xs:attribute>
+              <xs:attributeGroup ref="attrsProfileSync"/>
+              <xs:attribute name="URSyncData" use="optional" default="Masked">
+                  <xs:annotation>
+                     <xs:documentation>If set to 'Masked' then Form Of Payment card number will be masked when Universal Record is sent to EventHandler.</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:enumeration value="Masked"/>
+                        <xs:enumeration value="Unmasked"/>
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:attribute>
+               <xs:attribute name="URSyncTo" type="xs:boolean" use="optional" default="false">
+                  <xs:annotation>
+                     <xs:documentation>Identify if Universal Record synch is activated at Agency Level. </xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
             </xs:extension>
          </xs:complexContent>
       </xs:complexType>
@@ -475,6 +563,11 @@
                                 <xs:documentation>PCCs and IATAs associated to the branch. Note that this profile information is not used to transact with host systems. The data is specified in the profile only to support searching for the branch profile by PCC/IATA. Modifying this data requires special authorization.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>Branch External Identifier</xs:documentation>
+                           </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
                     <xs:attribute name="Name" type="common:StringLength1to128" use="required">
                         <xs:annotation>
@@ -501,7 +594,12 @@
                             <xs:documentation>Default currency specified for the branch.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attributeGroup ref="attrsProfileSync"/> 
+                    <xs:attributeGroup ref="attrsProfileSync"/>
+                    <xs:attribute name="URSyncTo" type="xs:boolean" use="optional" default="false">
+                        <xs:annotation>
+                            <xs:documentation>Identify if Universal Record synch is activated at Branch Level.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -528,6 +626,11 @@
                         <xs:element ref="ElectronicAddress" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation>Agency Group Electronic Address</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>Agency Group External Identifier</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                     </xs:sequence>
@@ -564,6 +667,11 @@
                             <xs:documentation>Agent Electronic Address.</xs:documentation>
                         </xs:annotation>
                     </xs:element>
+                    <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>Agent External Identifier</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
                 </xs:sequence>
                <xs:attribute name="UserName" type="common:StringLength1to128" use="required">
                   <xs:annotation>
@@ -595,6 +703,7 @@
                         <xs:documentation>The branch code of the branch assigned as the default branch for this agent. If both the profile ID and branch code of the default branch are specified, the ID will be used.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
+                <xs:attribute name="AlternateAgentID" type="typeAlternateAgentID" use="optional"/>
             </xs:extension>
          </xs:complexContent>
       </xs:complexType>
@@ -640,6 +749,11 @@
                                 <xs:documentation>Branch Group Electronic Address</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>Branch Group External Identifier</xs:documentation>
+                           </xs:annotation>
+                       </xs:element>
                     </xs:sequence>
                     <xs:attribute name="Name" type="common:StringLength1to128" use="required">
                         <xs:annotation>
@@ -651,7 +765,12 @@
                             <xs:documentation>Zircon site ID. Modifying this value requires special authorization.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attributeGroup ref="attrsProfileSync"/>                 
+                    <xs:attributeGroup ref="attrsProfileSync"/>
+                    <xs:attribute name="URSyncTo" type="xs:boolean" use="optional" default="false">
+                        <xs:annotation>
+                            <xs:documentation>Identify if Universal Record synch is activated at Branch Group Level.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -940,9 +1059,9 @@
     </xs:element>
     
      <xs:element name="CustomFieldDelete" type="typeCustomFieldAndGroupDeleteRef">
-		<xs:annotation>
-		    <xs:documentation>Removes a Custom Field  from a Template</xs:documentation>
-		</xs:annotation>
+        <xs:annotation>
+            <xs:documentation>Removes a Custom Field  from a Template</xs:documentation>
+        </xs:annotation>
      </xs:element>    
 
     <xs:element name="CustomFieldGroupAdd" type="typeCommonEditableGroup">
@@ -1081,21 +1200,26 @@
         </xs:annotation>
     </xs:element>   
    
-   <xs:element name="Field">
-        <xs:annotation>
-            <xs:documentation>Specify any existing fields that belong to this group.</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:complexContent>
-                <xs:extension base="typeCustomField">
-                    <xs:attribute name="AgencyID" type="common:typeProfileID" use="required">
-                        <xs:annotation>
-                            <xs:documentation>The profile ID of the agency that this field belongs to.</xs:documentation>
-                        </xs:annotation>
+    <xs:element name="Field"> 
+        <xs:annotation> 
+            <xs:documentation>Specify any existing fields that belong to this group.</xs:documentation> 
+        </xs:annotation> 
+        <xs:complexType> 
+            <xs:complexContent> 
+                <xs:extension base="typeCustomField"> 
+                    <xs:attribute name="ProfileID" type="common:typeProfileID" use="required"> 
+                        <xs:annotation> 
+                            <xs:documentation>The profile ID of the agency or account that the field belongs to.</xs:documentation> 
+                        </xs:annotation> 
+                    </xs:attribute>
+                    <xs:attribute name="ProfileType" type="typeProfileType" use="required"> 
+                        <xs:annotation> 
+                            <xs:documentation>The type of the Profile to be created.</xs:documentation> 
+                        </xs:annotation> 
                     </xs:attribute>
                     <xs:attribute name="IsUsed" type="xs:boolean" use="required">
                         <xs:annotation>
-                            <xs:documentation>True if the custom field has been added to a template.</xs:documentation>
+                            <xs:documentation>True if the custom field is in use by one or more profiles.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
@@ -1112,9 +1236,14 @@
                      <xs:documentation>The value of this instance of the field.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
-               <xs:attribute name="FieldID" type="typeFieldId" use="required">
+               <xs:attribute name="FieldID" type="typeFieldID" use="optional">
                   <xs:annotation>
-                     <xs:documentation>The unique ID of the template field (instance of a field on a template) that this value is applied to.</xs:documentation>
+                     <xs:documentation>The unique ID of the template field (instance of a field on a template) that this value is applied to.Provide either FieldID or Name, not both.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
+               <xs:attribute name="Name" type="common:StringLength1to255" use="optional">
+                  <xs:annotation>
+                     <xs:documentation>Name of the custom field that this value is applied to.Provide either Name or FieldID, not both.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
                <xs:attribute name="OwnerID" type="common:typeProfileID" use="optional">
@@ -1132,9 +1261,14 @@
             <xs:documentation>Specifies a search term and value (wildcards permitted), to search profiles by data in custom profile fields.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:attribute name="FieldID" type="typeFieldID" use="required">
+            <xs:attribute name="FieldID" type="typeFieldID" use="optional">
                 <xs:annotation>
-                    <xs:documentation>The reference to the custom field that this FieldData refers.</xs:documentation>
+                    <xs:documentation>The reference to the custom field that this FieldData refers.Provide either FieldID or Name, not both.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+             <xs:attribute name="Name" type="common:StringLength1to255" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Name of the custom field that this FieldData refers.Provide either Name or FieldID, not both.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute name="Value" use="required">
@@ -1155,7 +1289,7 @@
         </xs:complexType>
     </xs:element>
     
-   <xs:element name="FieldGroup">
+    <xs:element name="FieldGroup">
         <xs:annotation>
             <xs:documentation>Defines the structure of a new field group, which can be based on existing fields and groups (referred to by Id) and/or new fields and groups (referred to by FieldGroupRef or FieldRef and defined in FieldList or FieldGroupList).</xs:documentation>
         </xs:annotation>
@@ -1173,10 +1307,15 @@
                 </xs:annotation>
             </xs:attribute>
             <xs:attributeGroup ref="attrsFieldGroup"/>
-            <xs:attribute name="AgencyID" type="common:typeProfileID" use="required">
-                <xs:annotation>
-                    <xs:documentation>The profile ID of the agency that this field group belongs to.</xs:documentation>
-                </xs:annotation>
+            <xs:attribute name="ProfileID" type="common:typeProfileID" use="required"> 
+                <xs:annotation> 
+                    <xs:documentation>The profile ID of the agency or account that the field belongs to.</xs:documentation> 
+                </xs:annotation> 
+            </xs:attribute>
+            <xs:attribute name="ProfileType" type="typeProfileType" use="required"> 
+                <xs:annotation> 
+                    <xs:documentation>The type of the Profile to be created.</xs:documentation> 
+                </xs:annotation> 
             </xs:attribute>
             <xs:attribute name="IsUsed" type="xs:boolean" use="required">
                 <xs:annotation>
@@ -1197,7 +1336,7 @@
                      </xs:annotation>
                   </xs:element>
                </xs:sequence>
-               <xs:attribute name="FieldGroupID" type="typeFieldId" use="required">
+               <xs:attribute name="FieldGroupID" type="typeFieldID" use="required">
                   <xs:annotation>
                      <xs:documentation>The unique ID of the template field group (instance of a field group on a template) that this value is applied to.</xs:documentation>
                   </xs:annotation>
@@ -1243,10 +1382,26 @@
       </xs:complexType>
    </xs:element>
    
-    <xs:element name="FixedGroupUpdate" type="typeCommonEditableGroup">
+    <xs:element name="FixedGroupUpdate">
         <xs:annotation>
             <xs:documentation>Update the agency-defined attributes for a fixed field group. To remove a value, omit the attribute entirely.</xs:documentation>
         </xs:annotation>        
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="typeCommonEditableGroup">
+            <xs:attribute name="MaxOccurs" type="xs:nonNegativeInteger">
+            <xs:annotation>
+                <xs:documentation>Maximum number of instances permitted.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MinOccurs" type="xs:nonNegativeInteger">
+            <xs:annotation>
+                <xs:documentation>Minimum number of instances permitted (e.g., 0, 1).  Leave blank to indicate 0.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+                </xs:extension>
+                </xs:complexContent>
+        </xs:complexType>
     </xs:element>
       
     <xs:element name="HierarchyLevel">
@@ -1313,6 +1468,11 @@
                     <xs:attribute name="Number" type="common:StringLength1to255" use="required">
                         <xs:annotation>
                             <xs:documentation>A traveler's specific loyalty program number or alphanumeric identifier.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="ProgramName" type="common:StringLength1to128">
+                        <xs:annotation>
+                            <xs:documentation>Supplier's loyalty program name such as Frontier-EarlyReturns, Renaissance Intl-Marriott Rewards,Alamo-QuickSilver Service etc.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="Status" type="common:StringLength1to128">
@@ -1447,11 +1607,11 @@
                <xs:documentation>Indicate the action to be executed (add, delete, etc.)</xs:documentation>
             </xs:annotation>
          </xs:attribute>
-    	 <xs:attribute name="Force" type="xs:boolean" use="optional" default="false">
+         <xs:attribute name="Force" type="xs:boolean" use="optional" default="false">
             <xs:annotation>
                 <xs:documentation>To specify whether this is a Force Update or Force Delete.</xs:documentation>
             </xs:annotation>
-    	 </xs:attribute>         
+         </xs:attribute>         
       </xs:complexType>
    </xs:element>
         
@@ -1478,11 +1638,11 @@
                     <xs:documentation>To specify whether this is an  update or delete.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-	    	<xs:attribute name="Force" type="xs:boolean" use="optional" default="false">
-	            <xs:annotation>
-	                <xs:documentation>To specify whether this is a Force Update or Force Delete.</xs:documentation>
-	            </xs:annotation>
-	    	</xs:attribute>            
+            <xs:attribute name="Force" type="xs:boolean" use="optional" default="false">
+                <xs:annotation>
+                    <xs:documentation>To specify whether this is a Force Update or Force Delete.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>            
         </xs:complexType>
     </xs:element>
     
@@ -1668,33 +1828,48 @@
                   </xs:annotation>
                </xs:element>
             </xs:choice>
-            <xs:element name="OverrideTemplate" minOccurs="0" maxOccurs="unbounded">
-               <xs:annotation>
-                  <xs:documentation>List all override templates associated with the profile</xs:documentation>
-               </xs:annotation>
-               <xs:complexType>
-                  <xs:attribute name="TemplateID" type="typeTemplateID" use="required">
-                     <xs:annotation>
-                        <xs:documentation>Id of override template.</xs:documentation>
-                     </xs:annotation>
-                  </xs:attribute>
-                  <xs:attribute name="TemplateVersion" type="common:typeVersion" use="required">
-                     <xs:annotation>
-                        <xs:documentation>Version of override template</xs:documentation>
-                     </xs:annotation>
-                  </xs:attribute>
-                  <xs:attribute name="TemplateType" type="typeProfileType" use="required">
-                     <xs:annotation>
-                        <xs:documentation>Profile type for which override template has been created.</xs:documentation>
-                     </xs:annotation>
-                  </xs:attribute>
-               </xs:complexType>
-            </xs:element>
          </xs:sequence>
          <xs:attributeGroup ref="attrsProfileWithVersion"/>
       </xs:complexType>
    </xs:element>
-
+   
+    <xs:element name="PolicyReference">
+        <xs:annotation>
+            <xs:documentation>Used by the Traveler's employer to administer policy.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="typeKeyElement">
+                    <xs:attribute name="Type" type="common:StringLength1to128"
+                        use="required">
+                        <xs:annotation>
+                            <xs:documentation>A code for categorizing a reference for a Traveler's Policy. Valid values are Travelport Universal Policy and Other.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="Value" type="common:StringLength1to255" use="required">
+                        <xs:annotation>
+                            <xs:documentation>The value that the employer wants to be associated with the specified type.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="Desc" type="common:StringLength1to255">
+                        <xs:annotation>
+                            <xs:documentation>A description of the value being used.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="ControllingPolicyID" type="common:typeProfileID">
+                        <xs:annotation>
+                            <xs:documentation>A specific reference to a particular profile that is a parent of the Traveler.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="PriorityOrder" type="typePriorityOrder">
+                        <xs:annotation>
+                            <xs:documentation>Priority order associated with this PolicyReference.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
     
     <xs:element name="ProfileData">
       <xs:annotation>
@@ -1717,9 +1892,10 @@
             </xs:choice>
             <xs:element ref="TravelDocument" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="AccountingReference" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="PolicyReference" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="CommissionReference" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="Commission" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="PaymentDetails" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Commission" minOccurs="0" maxOccurs="unbounded"/>  
+            <xs:element ref="FormOfPayment" minOccurs="0" maxOccurs="unbounded"/>          
             <xs:element ref="AirPreference" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="HotelPreference" minOccurs="0" maxOccurs="unbounded"/>            
             <xs:element ref="RailPreference" minOccurs="0" maxOccurs="unbounded"/>
@@ -1739,7 +1915,7 @@
                <xs:annotation>
                   <xs:documentation>Field groups and child fields and groups and their associated data values for this entity. Each field group is linked to an instance, which defines the attributes of the group specific to the asociated template or its parent field group.</xs:documentation>
                </xs:annotation>
-            </xs:element>                        
+            </xs:element>                                                
          </xs:sequence>
       </xs:complexType>
    </xs:element>
@@ -1752,22 +1928,27 @@
             <xs:attributeGroup ref="attrsProfileLink"/>
             <xs:attribute name="GivenName" type="common:StringLength1to128">
                 <xs:annotation>
-                    <xs:documentation>The linked traveler's given name.  Will be returned on profile response.</xs:documentation>
+                    <xs:documentation>The linked traveler's given name.  No entry required. Common attribute data is taken from TravelerInfo and will be returned in the Create, Retrieve and Modify response. This is only used in the response.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute name="OtherName" type="common:StringLength1to128">
                 <xs:annotation>
-                    <xs:documentation>The linked traveler's other name.  Will be returned on profile response.</xs:documentation>
+                    <xs:documentation>The linked traveler's other name.  No entry required. Common attribute data is taken from TravelerInfo and will be returned in the Create, Retrieve and Modify response. This is only used in the response.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute name="Surname" type="common:StringLength1to128">
                 <xs:annotation>
-                    <xs:documentation>The linked traveler's surname.  Will be returned on profile response.</xs:documentation>
+                    <xs:documentation>The linked traveler's surname.  No entry required. Common attribute data is taken from TravelerInfo and will be returned in the Create, Retrieve and Modify response. This is only used in the response.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute name="Nickname" type="common:StringLength1to128">
                 <xs:annotation>
-                    <xs:documentation>The linked traveler's nickname.  Will be returned on profile response.</xs:documentation>
+                    <xs:documentation>The linked traveler's nickname.  No entry required. Common attribute data is taken from TravelerInfo and will be returned in the Create, Retrieve and Modify response. This is only used in the response.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="ElectronicAddress" type="common:StringLength1to128">
+                <xs:annotation>
+                    <xs:documentation>The linked traveler's email.  No entry required. Common attribute data is taken from TravelerInfo and will be returned in the Create, Retrieve and Modify response. This is only used in the response.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
         </xs:complexType>
@@ -1794,13 +1975,24 @@
                     <xs:documentation>Electronic Address belonging to the profile (will be updated in the  "Info" elements)</xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element ref="TravelerIdentityInformation" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                 <xs:documentation>An additional means to identify or verify a travelers profile when then are duplicate traveler names.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+             <xs:annotation>
+                  <xs:documentation>Meant for external identification of a Profile. This will be added in Info element of the Profile.</xs:documentation>
+              </xs:annotation>             
+            </xs:element>
             <xs:element ref="TravelDocument" maxOccurs="unbounded"/>
             <xs:element ref="AccountingReference" maxOccurs="unbounded"/>
+            <xs:element ref="PolicyReference" maxOccurs="unbounded"/>
             <xs:element ref="LoyaltyProgramEnrollment" maxOccurs="unbounded"/>
             <xs:element ref="Commission" maxOccurs="unbounded"/>
             <xs:element ref="Contract" maxOccurs="unbounded"/>
             <xs:element ref="ServiceFee" maxOccurs="unbounded"/>
-            <xs:element ref="PaymentDetails" maxOccurs="unbounded"/>
+            <xs:element ref="FormOfPayment" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="AirPreference" maxOccurs="unbounded"/>
             <xs:element ref="HotelPreference" maxOccurs="unbounded"/>
             <xs:element ref="OtherPreference" maxOccurs="unbounded"/>
@@ -1887,8 +2079,19 @@
                         <xs:documentation>Electronic Address belonging to the profile (will be updated in the  "Info" elements)</xs:documentation>
                     </xs:annotation>
             </xs:element>
+            <xs:element ref="TravelerIdentityInformation" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>An additional means to identify or verify a travelers profile when then are duplicate traveler names.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+             <xs:annotation>
+                  <xs:documentation>Meant for external identification of a Profile. This will be updated in Info element of the Profile.</xs:documentation>
+              </xs:annotation>             
+          </xs:element>
             <xs:element ref="TravelDocument" maxOccurs="unbounded"/>
             <xs:element ref="AccountingReference" maxOccurs="unbounded"/>
+            <xs:element ref="PolicyReference" maxOccurs="unbounded"/>
             <xs:element ref="LoyaltyProgramEnrollment" maxOccurs="unbounded"/>
             <xs:element ref="Commission" maxOccurs="unbounded"/>
             <xs:element ref="Contract" maxOccurs="unbounded"/>
@@ -1897,7 +2100,7 @@
             <xs:element ref="AlternateContactAddress" maxOccurs="unbounded"/>
             <xs:element ref="AlternateContactPhone" maxOccurs="unbounded"/>
             <xs:element ref="AlternateContactElectronicAddress" maxOccurs="unbounded"/>
-            <xs:element ref="PaymentDetails" maxOccurs="unbounded"/>
+            <xs:element ref="FormOfPayment"  minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="AirPreference" maxOccurs="unbounded"/>
             <xs:element ref="HotelPreference" maxOccurs="unbounded"/>
             <xs:element ref="OtherPreference" maxOccurs="unbounded"/>
@@ -2109,12 +2312,12 @@
                     <xs:documentation>The latest date that the change was made. Leave blank to define an open end date.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="FieldID" type="typeFieldId" use="optional">
+            <xs:attribute name="FieldID" type="typeFieldID" use="optional">
                 <xs:annotation>
                     <xs:documentation>To filter by a specific custom field, enter the field ID. To filter by a specific instance of a fixed field or field group, send the field or field group Key. Must also send the relevant FieldGroupType value.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="FieldGroupID" type="typeFieldId" use="optional">
+            <xs:attribute name="FieldGroupID" type="typeFieldID" use="optional">
                 <xs:annotation>
                     <xs:documentation>To filter by a specific custom field group, enter the field group ID. Must also send the relevant FieldGroupType value.</xs:documentation>
                 </xs:annotation>
@@ -2390,6 +2593,7 @@
                             <xs:documentation>Surname wild card</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="AlternateAgentID" type="typeAlternateAgentID" use="optional"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -2400,7 +2604,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileSearchCriteria">
+                <xs:extension base="typeAccountTypeProfileSearchCriteria">
                     <xs:attribute name="Name" type="common:typeWildcard">
                         <xs:annotation>
                             <xs:documentation>Account name wild card</xs:documentation>
@@ -2416,7 +2620,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileSearchCriteria">
+                <xs:extension base="typeAccountTypeProfileSearchCriteria">
                     <xs:attribute name="GivenName" type="common:typeWildcard">
                         <xs:annotation>
                             <xs:documentation>Given name wild card</xs:documentation>
@@ -2437,7 +2641,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileSearchCriteria">
+                <xs:extension base="typeAccountTypeProfileSearchCriteria">
                     <xs:attribute name="Name" type="common:typeWildcard">
                         <xs:annotation>
                             <xs:documentation>Traveler Group name wild card</xs:documentation>
@@ -2540,16 +2744,17 @@
                         <xs:documentation>The accounting reference matched in the search.</xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                 <xs:element ref="PolicyReference" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The policy reference matched in the search.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
                 <xs:element ref="LoyaltyProgramEnrollment" minOccurs="0" maxOccurs="unbounded">
                     <xs:annotation>
                         <xs:documentation>The loyalty program matched in the search.</xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element ref="PaymentDetails" minOccurs="0" maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation>The payment details matched in the search.</xs:documentation>
-                    </xs:annotation>
-                </xs:element>
+                <xs:element ref="FormOfPayment" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="FieldData" minOccurs="0" maxOccurs="unbounded">
                     <xs:annotation>
                         <xs:documentation>The custom fields matched in the search.</xs:documentation>
@@ -2746,8 +2951,8 @@
                         <xs:documentation>Removes an endpoint from a particular field or field group</xs:documentation>
                     </xs:annotation>
                 </xs:element>
-				<xs:element ref="CustomFieldDelete"/>
-            	<xs:element ref="CustomFieldGroupDelete"/>
+                <xs:element ref="CustomFieldDelete"/>
+                <xs:element ref="CustomFieldGroupDelete"/>
             </xs:choice>
         </xs:complexType>
     </xs:element>
@@ -2778,12 +2983,12 @@
                     </xs:attribute>
                     <xs:attribute name="IssuedDate" type="xs:date">
                         <xs:annotation>
-                            <xs:documentation>The date the travel document was issued</xs:documentation>
+                            <xs:documentation>The date the travel document was issue - YYYY-MM-DD</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="ExpirationDate" type="xs:date" use="optional">
                         <xs:annotation>
-                            <xs:documentation>The date the travel document expires</xs:documentation>
+                            <xs:documentation>The date the travel document expires - YYYY-MM-DD</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="LocationIssuedDescription" type="common:StringLength1to255" use="optional">
@@ -2808,7 +3013,7 @@
                     </xs:attribute>
                     <xs:attribute name="Gender" type="common:typeGender" use="optional">
                         <xs:annotation>
-                            <xs:documentation>Value is tied to ref pub.</xs:documentation>
+                            <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode PersonGenderType</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="NationalIdentifier" type="common:StringLength1to255" use="optional">
@@ -2818,7 +3023,7 @@
                     </xs:attribute>
                     <xs:attribute name="BirthDate" type="xs:date" use="optional">
                         <xs:annotation>
-                            <xs:documentation>Date of birth as given on this document</xs:documentation>
+                            <xs:documentation>Date of birth as given on this document - YYYY-MM-DD</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="PlaceOfBirth" type="common:StringLength1to128" use="optional">
@@ -2833,17 +3038,17 @@
                     </xs:attribute>
                     <xs:attribute name="Citizenship" type="common:typeCountry">
                         <xs:annotation>
-                            <xs:documentation>Country of citizenship</xs:documentation>
+                            <xs:documentation>Country of citizenship. Util: ReferenceDataRetrieveReq, TypeCode Country</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="IssuedByCountry" type="common:typeCountry">
                         <xs:annotation>
-                            <xs:documentation>Country this document was issued in</xs:documentation>
+                            <xs:documentation>Country this document was issued in. Util: ReferenceDataRetrieveReq, TypeCode Country</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="IssuedByOtherCountryName" type="common:StringLength1to128">
                         <xs:annotation>
-                            <xs:documentation>Another name decrioption of the Issued By Country</xs:documentation>
+                            <xs:documentation>Another name description of the Issued By Country</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="Height" use="optional">
@@ -2922,7 +3127,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileInfo">
+                <xs:extension base="typeAccountTypeProfileInfo">
                     <xs:sequence>
                         <xs:element ref="Address" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
@@ -2939,11 +3144,21 @@
                                 <xs:documentation>Traveler Group Electronic Address</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>Traveler Group External Identifier</xs:documentation>
+                           </xs:annotation>
+                       </xs:element>
                     </xs:sequence>
                     <xs:attribute name="Name" type="common:StringLength1to128" use="required">
                         <xs:annotation>
                             <xs:documentation>Name of the TravelerGroup</xs:documentation>
                         </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="LocalLanguageName" type="common:StringLength1to128">
+                        <xs:annotation>
+                            <xs:documentation>The name of the TravelerGroup in the user's local language.</xs:documentation>
+                    </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
@@ -2955,7 +3170,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="typeProfileInfo">
+                <xs:extension base="typeAccountTypeProfileInfo">
                     <xs:sequence>
                         <xs:element ref="Address" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
@@ -2972,6 +3187,11 @@
                                 <xs:documentation>Traveler Electronic Address</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="TravelerIdentityInformation" minOccurs="0" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>An additional means to identify or verify a travelers profile when then are duplicate traveler names.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                         <xs:element ref="ProprietaryData" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation>ProprietaryData for a Traveler which can be overridden for immediate parent like BranchGroup,Branch,Account and TravelerGroup.</xs:documentation>
@@ -2979,37 +3199,120 @@
                         </xs:element>  
                         <xs:element name="PassengerTypeCode" type="common:typePTC" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Three character code representing a passenger type. All in the list must be specified on modify to keep.</xs:documentation>
+                                <xs:documentation>Three character code representing a passenger type. All in the list must be specified on modify to keep. Util: ReferenceDataRetrieveReq, TypeCode PassengerTypeCode</xs:documentation>
                             </xs:annotation>
-                        </xs:element>                      
+                        </xs:element>
+                        <xs:element ref="ExternalIdentifier" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>Traveler External Identifier</xs:documentation>
+                           </xs:annotation>
+                        </xs:element>                    
                     </xs:sequence>
-                    <xs:attribute name="Title" type="common:StringLength1to128" use="optional"/>
-                    <xs:attribute name="Nickname" type="common:StringLength1to128" use="optional"/>
+                    <xs:attributeGroup ref="attrsTravelerInfoBase"/>   
                     <xs:attribute name="GivenName" type="common:StringLength1to128" use="required"/>
-                    <xs:attribute name="OtherName" type="common:StringLength1to128" use="optional"/>
-                    <xs:attribute name="Surname" type="common:StringLength1to128" use="required"/>
-                    <xs:attribute name="Suffix" type="common:StringLength1to128" use="optional"/>
-                    <xs:attribute name="BirthDate" type="xs:date" use="optional"/>
-                    <xs:attribute name="Gender" type="common:typeGender" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Value is tied to ref pub.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="VipStatus" type="xs:boolean" default="false"/>
-                    <xs:attribute name="Disability" type="common:StringLength1to255">
-                        <xs:annotation>
-                            <xs:documentation>Text describing a traveler's disability</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="HomeCityOrAirport" type="typeCityOrAirport">
-                        <xs:annotation>
-                            <xs:documentation>The City or  Airport designated as Home for the traveler</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:extension>
-            </xs:complexContent>
+             		<xs:attribute name="Surname" type="common:StringLength1to128" use="required"/>                    	
+        	</xs:extension>
+        	</xs:complexContent>
         </xs:complexType>
     </xs:element>
+        
+    	<xs:attributeGroup name="attrsTravelerInfoBase">
+                 <xs:attribute name="UniqueProfileID" type="common:StringLength6to128" use="optional" >
+                        <xs:annotation>
+                            <xs:documentation>Used as a primary identification for a traveler profile. Data transmitted must be unique for each traveler profile and will be validated system wide.</xs:documentation>
+                        </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Title" type="common:StringLength1to128" use="optional">
+                  <xs:annotation>
+                      <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode MiscellaneousTable Category Code Title.</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Nickname" type="common:StringLength1to128" use="optional"/>
+                <xs:attribute name="OtherName" type="common:StringLength1to128" use="optional"/>
+                <xs:attribute name="Suffix" type="common:StringLength1to128" use="optional"/>
+                <xs:attribute name="BirthDate" type="xs:date" use="optional">
+                  <xs:annotation>
+                       <xs:documentation>Date of Birth of Traveler - YYYY-MM-DD</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Gender" type="common:typeGender" use="optional">
+                  <xs:annotation>
+                      <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode PersonGenderType</xs:documentation>
+                        </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="VipStatus" type="xs:boolean" default="false"/>
+                <xs:attribute name="JobTitle" type="common:StringLength1to50" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>The job title of the traveler.</xs:documentation>
+                   </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Disability" type="common:StringLength1to255">
+                     <xs:annotation>
+                         <xs:documentation>Text describing a traveler's disability</xs:documentation>
+                     </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="HomeCityOrAirport" type="typeCityOrAirport">
+                    <xs:annotation>
+                        <xs:documentation>The City or  Airport designated as Home for the traveler</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="LocalLanguage" use="optional">
+                     <xs:annotation>
+                           <xs:documentation>A field to identify the Local Language of the traveler.  This field references the ISO 639-1 table and the IETF BCP 47 list to get languages.  The expected format would be a 2 letter language code if coming from the ISO 639-1 table (xx) or if coming from the IETF BCP 47 list then it will be a 2 letter language code followed by a 2 letter qualifier (xx-YY).</xs:documentation>
+                     </xs:annotation>
+                      <xs:simpleType>
+                           <xs:restriction base="xs:language">
+                               <xs:minLength value="2"/>
+                               <xs:maxLength value="5"/>
+                           </xs:restriction>
+                      </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="LocalLanguageGivenName" type="common:StringLength1to128" use="optional"/>
+                <xs:attribute name="LocalLanguageSurname" type="common:StringLength1to128" use="optional"/>
+                <xs:attribute name="LocalLanguageUsername" type="common:StringLength1to128" use="optional"/>
+        </xs:attributeGroup>
+    
+    <xs:element name="TravelerIdentityInformation">
+   <xs:annotation>
+    <xs:documentation>An additional means to identify or verify a travelers profile when then are duplicate traveler names.  Security Questions and answers must come in pairs.</xs:documentation>
+   </xs:annotation>
+   <xs:complexType>
+    <xs:complexContent>
+     <xs:extension base="typeKeyElement">
+      <xs:attribute name="SecondaryIdCode" type="common:StringLength1to50" use="optional">
+       <xs:annotation>
+        <xs:documentation>A Secondary Identification Code could be used to further verification of a Traveler’s profile when there are duplicate names. The Secondary Identification Code could be partially masked and case sensitive. If masking is requested, Secondary identification code is required.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="MaskSecondaryIdCode" type="typeMasked">
+       <xs:annotation>
+        <xs:documentation>Indicator to specify if the secondary ID code is to be masked or not and if so how.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="SecurityQuestion1" type="common:StringLength1to128" use="optional">
+       <xs:annotation>
+        <xs:documentation>If the Security Question is transmitted then the Corresponding Security Answer is required.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="SecurityAnswer1" type="common:StringLength1to128" use="optional">
+       <xs:annotation>
+        <xs:documentation>If the Security Answer is transmitted then the corresponding Security Question is required.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="SecurityQuestion2" type="common:StringLength1to128" use="optional">
+       <xs:annotation>
+        <xs:documentation>If the Security Question is transmitted then the Corresponding Security Answer is required.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="SecurityAnswer2" type="common:StringLength1to128" use="optional">
+       <xs:annotation>
+        <xs:documentation>If the Security Answer is transmitted then the corresponding Security Question is required.</xs:documentation>
+       </xs:annotation>
+      </xs:attribute>
+     </xs:extension>
+    </xs:complexContent>
+   </xs:complexType>
+ </xs:element>
     
     <xs:element name="ProfileTemplate">
         <xs:annotation>
@@ -3017,11 +3320,11 @@
         </xs:annotation>
         <xs:complexType>
             <xs:choice>
-	            <xs:sequence>	                
-	                <xs:element ref="FixedFieldGroup" minOccurs="0" maxOccurs="unbounded"/>
-	                <xs:element ref="CustomField" minOccurs="0" maxOccurs="unbounded"/>
-	                <xs:element ref="CustomFieldGroup" minOccurs="0" maxOccurs="unbounded"/>
-	            </xs:sequence>
+                <xs:sequence>                   
+                    <xs:element ref="FixedFieldGroup" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="CustomField" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="CustomFieldGroup" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
                 <xs:element ref="OverrideDefinition" minOccurs="0" maxOccurs="unbounded"/>
             </xs:choice>
             <xs:attribute name="ID" type="typeTemplateID" use="required">
@@ -3196,10 +3499,10 @@
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="ReadOnly" type="xs:boolean">
-		                <xs:annotation>
-		                    <xs:documentation>Defines if field as editable or not.</xs:documentation>
-		                </xs:annotation>
-		            </xs:attribute>
+                        <xs:annotation>
+                            <xs:documentation>Defines if field as editable or not.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="Overriden" type="xs:boolean" default="false"/>
                 </xs:extension>
             </xs:complexContent>
@@ -3482,7 +3785,7 @@
                     </xs:attribute>
                     <xs:attribute name="AccountingRemarkType" type="typeAccountingRemarkType">
                         <xs:annotation>
-                         <xs:documentation>A code for categorizing an Accounting remark. This may include Account, Canned, Fare, Ticket, Other, etc.</xs:documentation>
+                         <xs:documentation>A code for categorizing an Accounting remark. This may include Account, Canned, Fare, Ticket, Other, etc... Util:ReferenceDataRetrieveReq, TypeCode AccountingRemarkType</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>                 
                     <xs:attribute name="Provider" type="common:typeProviderCode">
@@ -3550,11 +3853,31 @@
     <xs:complexType name="typeBasePreference">
         <xs:complexContent>
             <xs:extension base="typeKeyTaggedElement">
-                <xs:attribute name="BookingStartDate" type="xs:date"/>
-                <xs:attribute name="BookingEndDate" type="xs:date"/>
-                <xs:attribute name="Currency" type="common:typeCurrency"/>
-                <xs:attribute name="DepartureGeoPoliticalAreaType" type="typeGeoPoliticalAreaType"/>
-                <xs:attribute name="DepartureGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode"/>
+                <xs:attribute name="BookingStartDate" type="xs:date">
+                    <xs:annotation>
+                        <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="BookingEndDate" type="xs:date">
+                    <xs:annotation>
+                        <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Currency" type="common:typeCurrency">
+                    <xs:annotation>
+                        <xs:documentation>ReferencedataRetrieveReq, Type Code Currency</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="DepartureGeoPoliticalAreaType" type="typeGeoPoliticalAreaType">
+                    <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="DepartureGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode">
+                   <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="Emphasis" type="xs:boolean" default="false"/>
                 <xs:attribute name="GeneralPreference" type="common:StringLength1to255"/>
                 <xs:attribute name="Inclusive" type="xs:boolean" use="optional" default="true">
@@ -3564,7 +3887,7 @@
                 </xs:attribute>
                 <xs:attribute name="LoyaltyProgramEnrollmentRef" type="common:typeRef">
                     <xs:annotation>
-                        <xs:documentation>A reference to a loyalty card element.</xs:documentation>
+                        <xs:documentation>Used to sync up Keys in  LoyaltyProgramEnrollment element with Preference LoyaltyProgramEnrollmentRef by entering same key number.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="OtherLoyaltyProgramNumber">
@@ -3576,10 +3899,14 @@
                 </xs:attribute>
                 <xs:attribute name="PaymentDetailsRef" type="common:typeRef">
                     <xs:annotation>
-                        <xs:documentation>A reference to a payment details element list elsewhere.</xs:documentation>
+                        <xs:documentation>Used to sync up Keys in FormOfPayment element with Preference attribute PaymentDetailsRef by entering same key number.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="PreferencePaymentMethod" type="typePreferencePaymentMethod"/>
+                <xs:attribute name="PreferencePaymentMethod" type="typePreferencePaymentMethod">
+                    <xs:annotation>
+                        <xs:documentation>See uAPI Profile Help and ReferenceDataRetrieveReq, TypeCode PaymentFormatType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="Purpose" type="typePreferencePurpose">
                     <xs:annotation>
                         <xs:documentation>The purpose of the preference.</xs:documentation>
@@ -3590,7 +3917,11 @@
                         <xs:documentation>Priority order associated with this Preference.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="Supplier" type="typeSupplier"/>
+                <xs:attribute name="Supplier" type="typeSupplier">
+                    <xs:annotation>
+                            <xs:documentation>a. Util:ReferenceDataRetrieveReq, TypeCode HotelSupplierType b.Util:ReferenceDataRetrieveReq, TypeCode VehicleSupplierType c. Util:ReferenceDataRetrieveReq, TypeCode AirAndRailSupplierType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="TripApproval" type="xs:boolean" default="false"/>
             </xs:extension>
         </xs:complexContent>
@@ -3605,27 +3936,21 @@
                 <xs:extension base="typeBasePreference">
                     <xs:attributeGroup ref="attrsCommonAirRailPreference"/>
                     <xs:attribute name="AirFareType" type="typeAirFare"/>
-                    <xs:attribute name="CRSCode">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:maxLength value="2"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
                     <xs:attributeGroup ref="attrsCabinTypeMisc"/>
-                    <xs:attribute name="EndingFlightNumber">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:maxLength value="10"/>
-                            </xs:restriction>
-                        </xs:simpleType>
+                    <xs:attribute name="StartingFlightNumber" type="common:typeFlightNumber">                        
+                    </xs:attribute>
+                    <xs:attribute name="EndingFlightNumber" type="common:typeFlightNumber">                       
                     </xs:attribute>
                     <xs:attribute name="Interline" type="xs:boolean" default="false"/>
-                    <xs:attribute name="MaxFareAmount" type="common:typeMoney"/>
+                    <xs:attribute name="MaxFareAmount" type="common:typeMoney">
+                        <xs:annotation>
+                            <xs:documentation>See uAPI Profile Help.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="MaxConnectionMinutes" type="xs:int"/>
-                    <xs:attribute name="MaxDomesticTripHours" type="xs:int"/>
                     <xs:attribute name="MaxEmployeesPerFlight" type="xs:int"/>
-                    <xs:attribute name="MaxInternationalTripHours" type="xs:int"/>
+                    <xs:attribute name="MaxDomesticTripHours" type="xs:nonNegativeInteger"/>
+                    <xs:attribute name="MaxInternationalTripHours" type="xs:nonNegativeInteger"/>
                     <xs:attribute name="SeatNumber">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -3634,19 +3959,20 @@
                         </xs:simpleType>
                     </xs:attribute>
                     <xs:attributeGroup ref="attrsSeatTypeMisc"/>
-                    <xs:attribute name="SSRCode">
+                    <xs:attribute name="CRSCode">
+                        <xs:annotation>
+                            <xs:documentation>Required if transmitting an SSR Code. Values are 1G or 1V</xs:documentation>
+                        </xs:annotation>
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
-                                <xs:maxLength value="4"/>
+                                <xs:maxLength value="2"/>
                             </xs:restriction>
                         </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attribute name="StartingFlightNumber">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:maxLength value="10"/>
-                            </xs:restriction>
-                        </xs:simpleType>
+                      </xs:attribute>
+                      <xs:attribute name="SSRCode" type="common:typeSSRCode">
+                        <xs:annotation>
+                            <xs:documentation>a. ReferenceDataSearchReq Type  SsrType</xs:documentation>
+                        </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
@@ -3662,8 +3988,14 @@
             <xs:complexContent>
                 <xs:extension base="typeBasePreference">
                     <xs:attributeGroup ref="attrsCommonAirRailPreference"/>
-                     <xs:attribute name="CabinType" type="common:typeRailCabin"/>
                     <xs:attribute name="DomesticTripJourneyHours" type="xs:int"/>
+                    <xs:attribute name="StartingTrainNumber">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:maxLength value="10"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
                     <xs:attribute name="EndingTrainNumber">
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
@@ -3673,20 +4005,22 @@
                     </xs:attribute>
                     <xs:attribute name="InternationalTripJourneyHours" type="xs:int"/>
                     <xs:attribute name="MaxEmployeesPerTrain" type="xs:int"/>
-                    <xs:attribute name="MaxFareAmount" type="common:typeMoney"/>
+                    <xs:attribute name="MaxFareAmount" type="common:typeMoney">
+                        <xs:annotation>
+                            <xs:documentation>See uAPI Profile Help.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="CabinType" type="common:typeRailCabin">
+                    	<xs:annotation>
+                            <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode RailCabinType</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="GenderCompartmentType" type="typeRailGenderCompartment"/>
                     <xs:attribute name="CoachCompartmentType" type="typeRailCoachCompartment"/>
                     <xs:attribute name="SeatArrangementType" type="typeRailSeatArrangement"/>
                     <xs:attribute name="SeatingType" type="typeRailSeating"/>
                     <xs:attributeGroup ref="attrsSeatPositionMisc"/>
                     <xs:attribute name="Smoking" type="xs:boolean" default="false"/>
-                    <xs:attribute name="StartingTrainNumber">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:maxLength value="10"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
                     <xs:attribute name="TicketFulfillmentType" type="typeRailTicketFulfillmentOption"/>
                 </xs:extension>
             </xs:complexContent>
@@ -3781,73 +4115,75 @@
     </xs:element>
     
     <xs:element name="OverrideDefinition">
+      <xs:annotation>
+         <xs:documentation>Element to override setting of fields defined in default template .Can be used to override custom filed,custom group , fixed field group and fixed field.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attribute name="TemplateFieldID" type="typeID" use="required">
+            <xs:annotation>
+               <xs:documentation>Unique identifier of the base template field or group id .</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="Hide" type="xs:boolean" default="false">
+            <xs:annotation>
+               <xs:documentation>A flag that determines if the UI should show this field.  Default to false.</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="Label" type="common:StringLength1to128">
+            <xs:annotation>
+               <xs:documentation>Alternate name of the field for display on the UI</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="MinOccursOverride" type="xs:nonNegativeInteger" use="optional">
+            <xs:annotation>
+               <xs:documentation>Agency-defined override defining the minimum number of values permitted for this field on profiles using this template. Value cannot be less than the boundary MinOccurs defined on the field or field group itself.</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="ReadOnly" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Defines if field as editable or not.</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="TemplateFieldType" type="typeCustomFieldOrGroupType" use="optional"/>
+      </xs:complexType>
+   </xs:element> 
+    
+    <xs:element name="InsertOverrideDefinition">
         <xs:annotation>
-            <xs:documentation>Element to override setting of fields defined in default template .Can be used to override custom filed,custom group , fixed field group and fixed field.</xs:documentation>
+            <xs:documentation>Insert new override Definition.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:attribute name="TemplateFieldID" type="typeID" use="required">
-                <xs:annotation>
-                    <xs:documentation>Unique identifier of the base template field or group id .</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
-            <xs:attribute name="Hide" type="xs:boolean" default="false">
-                <xs:annotation>
-                    <xs:documentation>A flag that determines if the UI should show this field.  Default to false.</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
-            <xs:attribute name="Label" type="common:StringLength1to128">
-                <xs:annotation>
-                    <xs:documentation>Alternate name of the field for display on the UI</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
-            <xs:attribute name="MinOccursOverride" type="xs:nonNegativeInteger" use="optional">
-                <xs:annotation>
-                    <xs:documentation>Agency-defined override defining the minimum number of values permitted for this field on profiles using this template. Value cannot be less than the boundary MinOccurs defined on the field or field group itself.</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
-            <xs:attribute name="ReadOnly" type="xs:boolean">
-                <xs:annotation>
-                    <xs:documentation>Defines if field as editable or not.</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
+            <xs:sequence>
+                <xs:element ref="OverrideDefinition" maxOccurs="unbounded" />
+            </xs:sequence>
         </xs:complexType>
-    </xs:element> 
+    </xs:element>
     
-	<xs:element name="InsertOverrideDefinition">
-		<xs:annotation>
-			<xs:documentation>Insert new override Definition.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="OverrideDefinition" maxOccurs="unbounded" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+    <xs:element name="UpdateOverrideDefinition">
+        <xs:annotation>
+            <xs:documentation>Update esisting override Definition.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="OverrideDefinition" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     
-	<xs:element name="UpdateOverrideDefinition">
-		<xs:annotation>
-			<xs:documentation>Update esisting override Definition.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="OverrideDefinition" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+    <xs:element name="DeleteOverrideDefinition">
+      <xs:annotation>
+         <xs:documentation>Delete existing override Definition.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attribute name="TemplateFieldID" type="typeID" use="required">
+            <xs:annotation>
+               <xs:documentation>Unique identifier of the base template field or group id .</xs:documentation>
+            </xs:annotation>
+         </xs:attribute>
+         <xs:attribute name="TemplateFieldType" type="typeCustomFieldOrGroupType" use="optional"/>
+      </xs:complexType>
+   </xs:element>
     
-	<xs:element name="DeleteOverrideDefinition">
-		<xs:annotation>
-			<xs:documentation>Delete existing override Definition.</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:attribute name="TemplateFieldID" type="typeID" use="required">
-				<xs:annotation>
-					<xs:documentation>Unique identifier of the base template field or group id .</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:element>
-	
     <xs:complexType name="typeBasePreferenceHistory">
         <xs:annotation>
             <xs:documentation>Base history element for the preference elements
@@ -3859,9 +4195,17 @@
                 <xs:attribute name="BookingEndDate" type="xs:date" />
                 <xs:attribute name="Currency" type="common:typeCurrency" />
                 <xs:attribute name="DepartureGeoPoliticalAreaType"
-                    type="typeGeoPoliticalAreaType" />
+                    type="typeGeoPoliticalAreaType" >
+                      <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="DepartureGeoPoliticalAreaCode"
-                    type="typeGeoPoliticalAreaCode" />
+                    type="typeGeoPoliticalAreaCode" >
+                     <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="Emphasis" type="xs:boolean" />
                 <xs:attribute name="GeneralPreference" type="common:StringLength1to255" />
                 <xs:attribute name="Inclusive" type="xs:boolean" use="optional">
@@ -3908,6 +4252,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
     <xs:complexType name="typeRailPreferenceHistory">
         <xs:annotation>
             <xs:documentation>Defines a rail preference for a particular set of
@@ -4124,11 +4469,16 @@
             <xs:documentation>History Element for Account Info</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="typeProfileInfo">
+            <xs:extension base="typeAccountTypeProfileInfo">
                 <xs:attribute name="Name" type="common:StringLength1to128">
                     <xs:annotation>
                         <xs:documentation>The name of the account.</xs:documentation>
                     </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="LocalLanguageName" type="common:StringLength1to128">
+                        <xs:annotation>
+                        <xs:documentation>The name of the account in the user's local language.</xs:documentation>
+                </xs:annotation>
                 </xs:attribute>
             </xs:extension>
         </xs:complexContent>
@@ -4136,11 +4486,10 @@
 
     <xs:complexType name="typeTravelerInfoHistory">
         <xs:annotation>
-            <xs:documentation>History Element for Traveler Info
-            </xs:documentation>
+            <xs:documentation>History Element for Traveler Info</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="typeProfileInfo">
+            <xs:extension base="typeAccountTypeProfileInfo">
                 <xs:sequence>
                     <xs:element ref="ProprietaryData" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
@@ -4153,33 +4502,13 @@
                        </xs:annotation>
                     </xs:element>
                 </xs:sequence>
-                <xs:attribute name="Title" type="common:StringLength1to128"
-                    use="optional" />
-                <xs:attribute name="Nickname" type="common:StringLength1to128"
-                    use="optional" />
+                <xs:attributeGroup ref="attrsTravelerInfoBase"/>
                 <xs:attribute name="GivenName" type="common:StringLength1to128" />
-                <xs:attribute name="OtherName" type="common:StringLength1to128"
-                    use="optional" />
-                <xs:attribute name="Surname" type="common:StringLength1to128" />
-                <xs:attribute name="Suffix" type="common:StringLength1to128"
-                    use="optional" />
-                <xs:attribute name="BirthDate" type="xs:date" use="optional" />
-                <xs:attribute name="Gender" type="common:typeGender" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Value is tied to ref pub.</xs:documentation>
-                        </xs:annotation>
-                </xs:attribute>
-                <xs:attribute name="VipStatus" type="xs:boolean" />
-                <xs:attribute name="Disability" type="common:StringLength1to255" />
-                <xs:attribute name="HomeCityOrAirport" type="typeCityOrAirport">
-                    <xs:annotation>
-                        <xs:documentation>The City or  Airport designated as Home for the traveler</xs:documentation>
-                    </xs:annotation>
-                </xs:attribute>
+                <xs:attribute name="Surname" type="common:StringLength1to128" />    
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>
-    
+    </xs:complexType> 
+      
     <xs:complexType name="typeProprietaryDataHistory">
         <xs:annotation>
             <xs:documentation>History Element for Proprietary Data
@@ -4415,13 +4744,16 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="typeKeyElement">
+            	<xs:sequence>
+                    <xs:element name="PaymentDetailsRef" minOccurs="0" maxOccurs="unbounded" type="common:typeRef">
+                        <xs:annotation>
+                            <xs:documentation>Used to sync up Keys in FormOfPayment element with AccountingReference, PaymentDetailsRef by entering same key number.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
                 <xs:attribute name="Type" type="xs:string">
                     <xs:annotation>
-                        <xs:documentation>A code for categorizing a reference for a
-                            Traveler's bookings. This is often used by the Traveler's
-                            employer for budgeting, internal billing or other cost accounting
-                            purposes. Examples include Budget Codes, Department Codes,
-                            Project Codes, etc.</xs:documentation>
+                           <xs:documentation>A code for categorizing a reference for a Traveler’s bookings. This is often used by the Traveler’s employer for budgeting, internal billing, or other cost accounting purposes. Util:ReferenceDataRetrieveReq, TypeCode AccountingReferenceType</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="Value" type="common:StringLength1to255">
@@ -4446,6 +4778,11 @@
                   <xs:annotation>
                        <xs:documentation>Id of the profile who owns the Traveler's proprietary data.Should be the immediate parent id of the traveler.</xs:documentation>
                   </xs:annotation>
+               </xs:attribute>
+               <xs:attribute name="Active" type="xs:boolean"> 
+                        <xs:annotation> 
+                            <xs:documentation>Denotes whether the Accounting Reference is Active or Not.</xs:documentation> 
+                        </xs:annotation> 
                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
@@ -4472,6 +4809,11 @@
                     <xs:annotation>
                         <xs:documentation>A traveler's specific loyalty program number or
                             alphanumeric identifier.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="ProgramName" type="common:StringLength1to128">
+                    <xs:annotation>
+                        <xs:documentation>Supplier's loyalty program name such as Frontier-EarlyReturns, Renaissance Intl-Marriott Rewards,Alamo-QuickSilver Service etc.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="Status" type="common:StringLength1to128">
@@ -4846,11 +5188,17 @@
                      <xs:documentation>The value of this instance of the field.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
-               <xs:attribute name="FieldID" type="typeFieldId">
+               <xs:attribute name="FieldID" type="typeFieldID">
                   <xs:annotation>
                      <xs:documentation>The unique ID of the template field (instance of a field on a template) that this value is applied to.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
+               <xs:attribute name="Name" type="common:StringLength1to255" use="optional">
+                  <xs:annotation>
+                     <xs:documentation>Name of the custom field that this value is applied to.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
+               
                <xs:attribute name="OwnerID" type="common:typeProfileID">
                   <xs:annotation>
                      <xs:documentation>Id of the profile who owns the Traveler's proprietary data.Should be the immediate parent id of the traveler.</xs:documentation>
@@ -4874,7 +5222,7 @@
                      </xs:annotation>
                   </xs:element>
                </xs:sequence>
-               <xs:attribute name="FieldGroupID" type="typeFieldId">
+               <xs:attribute name="FieldGroupID" type="typeFieldID">
                   <xs:annotation>
                      <xs:documentation>The unique ID of the template field group (instance of a field group on a template) that this value is applied to.</xs:documentation>
                   </xs:annotation>
@@ -4972,7 +5320,28 @@
                           <xs:annotation>
                                 <xs:documentation>Zircon site ID</xs:documentation>
                           </xs:annotation>
-                      </xs:attribute>   
+                      </xs:attribute>
+                      <xs:attribute name="UsesTemplate" type="xs:boolean" use="optional">
+                 		  <xs:annotation>
+                        		<xs:documentation>If set to true, it denotes that the customer uses templates and during parent data inheritance, templates will be used. Value can be altered through modify service.Default is false.</xs:documentation>
+                  		  </xs:annotation>
+              		  </xs:attribute>
+                      <xs:attribute name="URSyncData" use="optional">
+                         <xs:annotation>
+                            <xs:documentation>If set to 'Masked' then Form Of Payment card number will be masked when Universal Record is sent to EventHandler.</xs:documentation>
+                         </xs:annotation>
+                         <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                               <xs:enumeration value="Masked"/>
+                               <xs:enumeration value="Unmasked"/>
+                            </xs:restriction>
+                         </xs:simpleType>
+                      </xs:attribute>
+                      <xs:attribute name="URSyncTo" type="xs:boolean" use="optional">
+                         <xs:annotation>
+                            <xs:documentation>Identify if Universal Record synch is activated at Agency Level. </xs:documentation>
+                         </xs:annotation>
+                      </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
    </xs:complexType>
@@ -4992,6 +5361,11 @@
                     <xs:attribute name="BranchGroupCode" type="common:typeProvisioningCode">
                         <xs:annotation>
                             <xs:documentation>Zircon site ID</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="URSyncTo" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                           <xs:documentation>Identify if Universal Record synch is activated at Branch Group Level. </xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
@@ -5038,6 +5412,11 @@
                         </xs:annotation>
                     </xs:attribute> 
                     <xs:attributeGroup ref="attrsProfileSync"/>
+                    <xs:attribute name="URSyncTo" type="xs:boolean" use="optional">
+                        <xs:annotation>
+                           <xs:documentation>Identify if Universal Record synch is activated at Branch Level. </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
    </xs:complexType>
@@ -5071,6 +5450,7 @@
                                 <xs:documentation>The branch code of the branch indicated as the default branch for this agent.  On create and modify either DefaultBranchID or DefaultBranchCode is required.  If both are indicated the ID will be used.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute> 
+                        <xs:attribute name="AlternateAgentID" type="typeAlternateAgentID" use="optional"/>
                 </xs:extension>
             </xs:complexContent>
    </xs:complexType>
@@ -5081,10 +5461,15 @@
             <xs:documentation>History Element for Traveler Group.</xs:documentation>
         </xs:annotation>
          <xs:complexContent>
-                <xs:extension base="typeProfileInfo">
+                <xs:extension base="typeAccountTypeProfileInfo">
                       <xs:attribute name="Name" type="common:StringLength1to128">
                         <xs:annotation>
                             <xs:documentation>Name of the TravelerGroup</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute> 
+                        <xs:attribute name="LocalLanguageName" type="common:StringLength1to128">
+                        <xs:annotation>
+                            <xs:documentation>The name of the TravelerGroup in the user's local language.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute> 
                 </xs:extension>
@@ -5135,6 +5520,11 @@
                 <xs:annotation>
                     <xs:documentation>The linked traveler's nickname.  Will be returned on profile response.</xs:documentation>
                 </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ElectronicAddress" type="common:StringLength1to128">
+            <xs:annotation>
+                <xs:documentation>The linked traveler's email.  Will be returned on profile response.</xs:documentation>
+            </xs:annotation>
         </xs:attribute>   
     </xs:complexType>
 
@@ -5229,6 +5619,7 @@
             <xs:element name="TravelerInfo" type="typeTravelerInfoHistory" />
             <xs:element name="TravelDocument" type="typeTravelDocumentHistory" />
             <xs:element name="AccountingReference" type="typeAccountingReferenceHistory" />
+            <xs:element name="PolicyReference" type="typePolicyReferenceHistory"/> 
             <xs:element name="CommissionReference" type="typeCommissionReferenceHistory"/>
             <xs:element name="LoyaltyProgramEnrollment" type="typeLoyaltyProgramEnrollmentHistory" />
             <xs:element name="Contract" type="typeContractHistory" />
@@ -5280,11 +5671,13 @@
                     </xs:complexContent>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="PaymentDetails" type="typePaymentDetailsHistory" />
+            <xs:element name="FormOfPayment" type="typeFormOfPaymentHistory"/>
             <xs:element name="Remark" type="typeRemarkHistory" />
             <xs:element name="Address" type="typeAddressHistory" />
             <xs:element name="Phone" type="typePhoneHistory" />
             <xs:element name="ElectronicAddress" type="typeElectronicAddressHistory" />
+            <xs:element ref="TravelerIdentityInformation"/>
+            <xs:element name="ExternalIdentifier" type="typeExternalIdentifierHistory" />
             <xs:element name="AirPreference" type="typeAirPreferenceHistory" />
             <xs:element name="VehiclePreference" type="typeVehiclePreferenceHistory" />
             <xs:element name="HotelPreference" type="typeHotelPreferenceHistory" />
@@ -5362,10 +5755,9 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:attribute>
-                <xs:attribute name="Type" type="typeAddressType">
+                <xs:attribute name="Type" type="common:StringLength1to128">
                     <xs:annotation>
-                        <xs:documentation>Category of address (Home, Business, etc.)
-                        </xs:documentation>
+                        <xs:documentation>Category of address (Mailing, Shipping, ...)</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="Purpose" type="typeContactPurpose">
@@ -5413,10 +5805,10 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-	    <xs:attribute name="OtherStateProvince" type="common:StringLength1to128">
-	        <xs:annotation>
-	             <xs:documentation>Alternate freeform state value</xs:documentation>
-	        </xs:annotation>
+        <xs:attribute name="OtherStateProvince" type="common:StringLength1to128">
+            <xs:annotation>
+                 <xs:documentation>Alternate freeform state value</xs:documentation>
+            </xs:annotation>
         </xs:attribute>
         <xs:attribute name="Country" type="common:StringLength1to128">
             <xs:annotation>
@@ -5563,22 +5955,7 @@
             <xs:enumeration value="Delete"/>
         </xs:restriction>
     </xs:simpleType>
-    
-    <xs:simpleType name="typeAccountingReferenceType">
-        <xs:annotation>
-            <xs:documentation>Categorizes Accounting Reference. ie Employee ID, Budget Codes, etc</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Employee ID"/>
-            <xs:enumeration value="Budget Code"/>
-            <xs:enumeration value="Department Code"/>
-            <xs:enumeration value="Project Code"/>
-            <xs:enumeration value="Cost Center"/>
-            <xs:enumeration value="Market Code"/>
-            <xs:enumeration value="Account Code"/>
-            <xs:enumeration value="Authorization Code"/>
-        </xs:restriction>
-    </xs:simpleType>
+        
     
     <xs:simpleType name="typeAccountingRemarkType">
         <xs:annotation>
@@ -5799,14 +6176,7 @@
             <xs:enumeration value="Time in Milliseconds with Time Zone"/>
         </xs:restriction>
     </xs:simpleType>
-   
-   <xs:simpleType name="typeFieldId">
-      <xs:annotation>
-         <xs:documentation>Unique identifier of the field. </xs:documentation>
-      </xs:annotation>
-      <xs:restriction base="xs:string"/>
-   </xs:simpleType>
-   
+      
    <xs:simpleType name="typeFieldName">
       <xs:annotation>
          <xs:documentation>Name of the field. </xs:documentation>
@@ -5897,6 +6267,16 @@
             <xs:enumeration value="TravelerGroup"/>
         </xs:restriction>
     </xs:simpleType>
+    
+    <xs:simpleType name="typeCustomFieldOrGroupType">
+      <xs:annotation>
+         <xs:documentation>This is an optional field.  If the element is not passed then the  TemplateFieldID value passed will be considered a Fixed Field or a Fixed Field Group.. </xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="CustomField"/>
+         <xs:enumeration value="CustomFieldGroup"/>
+      </xs:restriction>
+   </xs:simpleType>
       
     <xs:simpleType name="typeHierarchyName">
         <xs:annotation>
@@ -5990,13 +6370,14 @@
       <xs:restriction base="xs:string">
          <xs:enumeration value="AccountInfo"/>
          <xs:enumeration value="TravelerInfo"/>
+         <xs:enumeration value="TravelerIdentityInformation"/>
          <xs:enumeration value="TravelDocument"/>
          <xs:enumeration value="AccountingReference"/>
+          <xs:enumeration value="PolicyReference"/>
          <xs:enumeration value="LoyaltyProgramEnrollment"/>
          <xs:enumeration value="Contract"/>
          <xs:enumeration value="Commission"/>
          <xs:enumeration value="ServiceFee"/>
-         <xs:enumeration value="PaymentDetails"/>
          <xs:enumeration value="Remark"/>
          <xs:enumeration value="AlternateContact"/>
          <xs:enumeration value="AlternateContactAddress"/>
@@ -6023,6 +6404,8 @@
          <xs:enumeration value="ProfileStatus"/>
          <xs:enumeration value="ProfileLink"/>
          <xs:enumeration value="OtherPreference"/>
+         <xs:enumeration value="FormOfPayment"/>
+         <xs:enumeration value="ExternalIdentifier"/>
       </xs:restriction>
    </xs:simpleType>
 
@@ -6101,6 +6484,7 @@
                     <xs:documentation>All loyalty program enrollment for the Other supplier type (i.e., LoyaltyProgramEnrollment.Supplier Type=Other) and basic information</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
+            <xs:enumeration value="PolicyReference"/>
             <xs:enumeration value="Preferences - All">
               <xs:annotation>
                     <xs:documentation>All preference data for each preference type (i.e., Air, Vehicle, Hotel, Rail, Other) and basic information</xs:documentation>
@@ -6161,6 +6545,11 @@
                     <xs:documentation>All the links for all the profiles who are related to the requested Traveler profile and basic information</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
+        <xs:enumeration value="TravelerIdentityInformation">
+            <xs:annotation>
+                <xs:documentation>All data for all traveler identity information</xs:documentation>
+            </xs:annotation>
+         </xs:enumeration>
     </xs:restriction>
      </xs:simpleType>   
    
@@ -6171,12 +6560,12 @@
       <xs:restriction base="xs:string">
          <xs:enumeration value="TravelDocument"/>
          <xs:enumeration value="AccountingReference"/>
+         <xs:enumeration value="PolicyReference"/>
          <xs:enumeration value="CommissionReference"/>
          <xs:enumeration value="LoyaltyProgramEnrollment"/>      
          <xs:enumeration value="Commission"/>
          <xs:enumeration  value="Contract"/>
          <xs:enumeration value="ServiceFee"/>
-         <xs:enumeration value="PaymentDetails"/>
          <xs:enumeration value="Remark"/>
          <xs:enumeration value="FieldData"/>
          <xs:enumeration value="FieldGroupData"/>
@@ -6187,6 +6576,8 @@
          <xs:enumeration value="Address"/>
          <xs:enumeration value="Phone"/>
          <xs:enumeration value="ElectronicAddress"/>
+         <xs:enumeration value="TravelerIdentityInformation"/>
+         <xs:enumeration value="ExternalIdentifier"/>
          <xs:enumeration value="AlternateContactAddress"/>
          <xs:enumeration value="AlternateContactPhone"/>
          <xs:enumeration value="AlternateContactElectronicAddress"/>
@@ -6195,6 +6586,7 @@
          <xs:enumeration value="ProviderInfo"/>
          <xs:enumeration value="OtherPreference"/>
          <xs:enumeration value="ProprietaryData"/>
+         <xs:enumeration value="FormOfPayment"/>
       </xs:restriction>
    </xs:simpleType>
    
@@ -6347,8 +6739,7 @@
             <xs:enumeration value="ElectronicAddress"/>
             <xs:enumeration value="AlternateContactAddress"/>
             <xs:enumeration value="AlternateContactPhone"/>
-            <xs:enumeration value="AlternateContactElectronicAddress"/>
-            <xs:enumeration value="PaymentDetails"/>
+            <xs:enumeration value="AlternateContactElectronicAddress"/>            
             <xs:enumeration value="AirPreference"/>
             <xs:enumeration value="HotelPreference"/>
             <xs:enumeration value="VehiclePreference"/>
@@ -6357,6 +6748,7 @@
             <xs:enumeration value="Remark"/>
             <xs:enumeration value="FieldData"/>
             <xs:enumeration value="FieldGroupData"/>
+            <xs:enumeration value="FormOfPayment"/>            
         </xs:restriction>
     </xs:simpleType>
     
@@ -6421,19 +6813,9 @@
             <xs:documentation>The preference payment method</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Agency Check"/>
-            <xs:enumeration value="Cash"/>
-            <xs:enumeration value="Check/Cheque"/>
-            <xs:enumeration value="Credit Card"/>
-            <xs:enumeration value="E-Voucher"/>
-            <xs:enumeration value="Invoice on Account"/>
-            <xs:enumeration value="Miscellaneous"/>
-            <xs:enumeration value="Non-Standard Credit Card"/>
-            <xs:enumeration value="GTR"/>
-            <xs:enumeration value="STR"/>
+            <xs:maxLength value="6"/>
         </xs:restriction>
     </xs:simpleType>
-
     <xs:simpleType name="typeIntegerRestrictionValue">
     <xs:annotation>
         <xs:documentation>Specify the Restriction over min/max of
@@ -6458,7 +6840,7 @@
     
     <xs:simpleType name="typeDay">
         <xs:annotation>
-            <xs:documentation xml:lang="en">Used for Day Strings, length 1 to 2.</xs:documentation>
+            <xs:documentation xml:lang="en">Expiration Day, Length 1 to 2.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="1"/>
@@ -6467,7 +6849,7 @@
     </xs:simpleType> 
     <xs:simpleType name="typeMonth">
         <xs:annotation>
-            <xs:documentation xml:lang="en">Used for Month Strings, length 1 to 2.</xs:documentation>
+            <xs:documentation xml:lang="en">Expiration Month, Length 1 to 2.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="1"/>
@@ -6476,23 +6858,14 @@
     </xs:simpleType> 
     <xs:simpleType name="typeYear">
         <xs:annotation>
-            <xs:documentation xml:lang="en">Used for Month Strings, length 1 to 2.</xs:documentation>
+            <xs:documentation xml:lang="en">Expiration Year, Length 4.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="4"/>
             <xs:maxLength value="4"/>
         </xs:restriction>
     </xs:simpleType> 
-    
-    <xs:simpleType name="typeOverrideTemplateType">
-        <xs:annotation>
-            <xs:documentation>Profile type for which override template can be created.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="typeProfileType">
-            <xs:enumeration value="Traveler"/>
-        </xs:restriction>
-    </xs:simpleType>
-    
+
    <!--*** Complex Types  ***-->
    <xs:complexType name="typeActionRef">
         <xs:annotation>
@@ -6633,9 +7006,9 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:attribute>
-                <xs:attribute name="Type" type="typeAddressType" use="required">
+                <xs:attribute name="Type" type="common:StringLength1to128" use="required">
                     <xs:annotation>
-                        <xs:documentation>Category of address (POBox, etc.)</xs:documentation>
+                        <xs:documentation>Category of address (Mailing, Shipping, Collection, Other, Delivery, Location, Billing, LocalLangInvoice, Home, Work). Util: ReferenceDataRetrieveReq, TypeCode PostalAddressType</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
             </xs:extension>
@@ -6947,17 +7320,54 @@
         <xs:annotation>
             <xs:documentation>Base type for Profile Infos.</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="ExternalIdentifier" type="common:StringLength1to255">
-            <xs:annotation>
-                <xs:documentation>An identifier managed by an external system.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="AdditionalIdentifier" type="common:StringLength1to255">
             <xs:annotation>
                 <xs:documentation>Additional identifier managed by an external system.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="Description" type="typeDescription"/>
+    </xs:complexType>
+    
+    <xs:element name="ExternalIdentifier">
+      <xs:annotation>
+       <xs:documentation>This is meant for external identification of a Profile. </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+       <xs:complexContent>
+        <xs:extension base="typeKeyElement">
+         <xs:attribute name="ExtID" type="common:StringLength1to255" use="required">
+          <xs:annotation>
+           <xs:documentation>The actual value of the External Id of the Profile.</xs:documentation>
+          </xs:annotation>
+         </xs:attribute>
+          <xs:attribute name="Source" type="common:StringLength1to128" use="optional">
+         <xs:annotation>
+            <xs:documentation>The Source code for External ID. This depicts the origin/source of the External ID. If the Source is a host provider i.e, 1G, 1V etc., the ExtID and Source data may not be updated.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+        </xs:extension>
+       </xs:complexContent>
+      </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="typeExternalIdentifierHistory">
+      <xs:annotation>
+       	<xs:documentation>This is meant for external identification of a Profile. </xs:documentation>
+      </xs:annotation>
+       <xs:complexContent>
+        <xs:extension base="typeKeyElement">
+         <xs:attribute name="ExtID" type="common:StringLength1to255" use="optional">
+          <xs:annotation>
+           <xs:documentation>Value of the External Id of the Profile.</xs:documentation>
+          </xs:annotation>
+         </xs:attribute>
+          <xs:attribute name="Source" type="common:StringLength1to128" use="optional">
+         <xs:annotation>
+            <xs:documentation>The Source code for External ID. This depicts the origin/source of the External ID.</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+        </xs:extension>
+       </xs:complexContent>
     </xs:complexType>
    
     <xs:complexType name="typeProfileParentWithData">
@@ -6988,12 +7398,8 @@
             <xs:element name="Address" type="typeSearchAddress" minOccurs="0"/>
             <xs:element name="Phone" type="typeSearchPhone" minOccurs="0"/>
             <xs:element name="ElectronicAddress" type="typeSearchElectronicAddress" minOccurs="0"/>
+            <xs:element name="ExternalIdentifier" type="typeSearchExternalIdentifier" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute name="ExternalIdentifier" type="common:typeWildcard">
-            <xs:annotation>
-                <xs:documentation>An identifier managed by an external system (e.g. Employee ID)</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="AdditionalIdentifier" type="common:typeWildcard">
             <xs:annotation>
                 <xs:documentation>Additional identifier managed by an external system.</xs:documentation>
@@ -7080,7 +7486,7 @@
         <xs:annotation>
             <xs:documentation>The Searchable fields on AccountingReference</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="Type" type="typeAccountingReferenceType" use="required">
+        <xs:attribute name="Type" type="common:StringLength1to128" use="required">
             <xs:annotation>
                 <xs:documentation>A code for categorizing a reference for a Traveler's bookings.  This is often used by the Traveler's employer for budgeting, internal billing or other cost accounting purposes.  Examples include Budget Codes, Department Codes, Project Codes, etc.</xs:documentation>
             </xs:annotation>
@@ -7147,6 +7553,22 @@
                 <xs:documentation>A code for categorizing a contact mechanism based on purpose or use.  Examples include business, persona., etc.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="typeSearchExternalIdentifier">
+        <xs:annotation>
+      		 <xs:documentation>This is meant for external identification of a Profile. </xs:documentation>
+      	</xs:annotation>
+        <xs:attribute name="ExtID" type="common:StringLength1to255" use="required">
+          <xs:annotation>
+           <xs:documentation>The actual value of the External Id of the Profile.</xs:documentation>
+          </xs:annotation>
+         </xs:attribute>
+          <xs:attribute name="Source" type="common:StringLength1to128" use="optional">
+         <xs:annotation>
+            <xs:documentation>The Source code for External ID. This depicts the origin/source of the External ID.</xs:documentation>
+         </xs:annotation>
+      	</xs:attribute>
     </xs:complexType>
     
     <xs:complexType name="typeSearchLoyaltyProgram">
@@ -7418,6 +7840,9 @@
             <xs:enumeration value="Sibling"/>
             <xs:enumeration value="Relative"/>
             <xs:enumeration value="Friend"/>
+            <xs:enumeration value="Infant"/>
+            <xs:enumeration value="Travel Arranger"/>
+            <xs:enumeration value="Authorizer"/>
             <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType>
@@ -7580,6 +8005,15 @@
             </xs:enumeration>
         </xs:restriction>
    </xs:simpleType> 
+   
+    <xs:simpleType name="typeAlternateAgentID">
+        <xs:annotation>
+            <xs:documentation>A value entered by the user and stored in the profile to sort PNRs for a Host Queue Sort Function. Wild card search is not supported for this field and * is not considered as a wild card.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="128"/>
+        </xs:restriction>
+    </xs:simpleType>
 
    <!--*** Attribute Groups  ***-->
     <xs:attributeGroup name="attrsActions">
@@ -7621,6 +8055,9 @@
    
    <xs:attributeGroup name="attrsBedTypeMisc">
         <xs:attribute name="BedTypeMiscTravel">
+        	<xs:annotation>
+				<xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode 'HotelMiscType'</xs:documentation>
+			</xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
@@ -7628,6 +8065,9 @@
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="BedTypeRefCategory">
+        	<xs:annotation>
+				<xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode 'HotelMiscType'</xs:documentation>
+			</xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="3"/>
@@ -7851,6 +8291,9 @@
    
    <xs:attributeGroup name="attrsSpecialReqMisc">
         <xs:attribute name="SpecialRequestMiscTravel">
+        	<xs:annotation>
+				<xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode 'HotelMiscType', Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType.</xs:documentation>
+			</xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
@@ -7858,6 +8301,9 @@
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="SpecialRequestRefCategory">
+        	<xs:annotation>
+				<xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode 'HotelMiscType', Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType.</xs:documentation>
+			</xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="3"/>
@@ -7959,6 +8405,32 @@
                     </xs:simpleContent>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="UniqueProfileID">
+                <xs:annotation>
+                    <xs:documentation>Applicable to retrieve, modify and delete a traveler profile. Combination of UniqueProfileID and AgencyCode can be used in place of Profile ID. Cannot be used with ProfileParentAdd, ProfileParentDelete or ProfileChildSearch.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="common:StringLength6to128">
+                            <xs:attribute name="ProfileType" use="required">
+                                <xs:annotation>
+                                    <xs:documentation>Specify the Profile Type (limited to only the ones where Profile Identifier is relevant)</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="typeProfileType">
+                                        <xs:enumeration value="Traveler"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                            <xs:attribute name="AgencyCode" type="common:typeProvisioningCode" use="optional">
+	                            <xs:annotation>
+	                            	<xs:documentation>'AgencyCode' is the Provisioning code of the parent Agency. This is an optional attribute and if not provided, the system will determine 'AgencyCode' by Agent's WAB/target Branch or Agent's agency.</xs:documentation>
+	                            </xs:annotation>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
         </xs:choice>
     </xs:group>
    
@@ -8005,17 +8477,7 @@
             <xs:annotation>
                 <xs:documentation>Flag to indicate if the field is searchable.</xs:documentation>
             </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="MaxOccurs" type="xs:nonNegativeInteger">
-            <xs:annotation>
-                <xs:documentation>Maximum number of instances permitted. Leave blank to indicate unlimited (i.e., ..*).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="MinOccurs" type="xs:nonNegativeInteger">
-            <xs:annotation>
-                <xs:documentation>Minimum number of instances permitted (e.g., 0, 1).  Leave blank to indicate 0.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
+        </xs:attribute>        
         <xs:attribute name="Inheritable" type="xs:boolean" default="false">
             <xs:annotation>
                 <xs:documentation>A flag to indicate if the field can be inherited. Default to false.  Only applies to root level fields. Fields within field groups are not inheritable.</xs:documentation>
@@ -8062,6 +8524,16 @@
                <xs:documentation>Maximum Agency-defined override defining the maximum number of instances permitted by the agency.</xs:documentation>
             </xs:annotation>
          </xs:attribute>
+         <xs:attribute name="MaxOccurs" type="xs:nonNegativeInteger">
+            <xs:annotation>
+                <xs:documentation>Maximum number of instances permitted. Leave blank to indicate unlimited (i.e., ..*).</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MinOccurs" type="xs:nonNegativeInteger">
+            <xs:annotation>
+                <xs:documentation>Minimum number of instances permitted (e.g., 0, 1).  Leave blank to indicate 0.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
     
     <xs:attributeGroup name="attrsFixedGroup">
@@ -8158,11 +8630,27 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="ArrivalGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode"/>
-        <xs:attribute name="ArrivalGeoPoliticalAreaType" type="typeGeoPoliticalAreaType"/>
-        <xs:attribute name="BenchMarkAmount" type="common:typeMoney"/>
-        <xs:attribute name="ConnectionGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode"/>
-        <xs:attribute name="ConnectionGeoPoliticalAreaType" type="typeGeoPoliticalAreaType"/>
+        <xs:attribute name="ArrivalGeoPoliticalAreaType" type="typeGeoPoliticalAreaType">
+                <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+        <xs:attribute name="ArrivalGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode">
+                 <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>        
+        <xs:attribute name="BenchMarkAmount" type="common:typeMoney"/>        
+        <xs:attribute name="ConnectionGeoPoliticalAreaType" type="typeGeoPoliticalAreaType">
+              <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>  
+        <xs:attribute name="ConnectionGeoPoliticalAreaCode" type="typeGeoPoliticalAreaCode">
+              <xs:annotation>
+                        <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCodes  Airport, City Airport, City, Country, StateProvince and GeoPoliticalAreaType</xs:documentation>
+                    </xs:annotation>
+        </xs:attribute>  
         <xs:attribute name="ContractCode">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -8178,12 +8666,23 @@
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="PseudoCityCode" type="common:typePCC"/>
-        <xs:attribute name="TravelStartDate" type="xs:date"/>
-        <xs:attribute name="TravelEndDate" type="xs:date"/>
-    </xs:attributeGroup>  
+        <xs:attribute name="TravelStartDate" type="xs:date">
+            <xs:annotation>
+                <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TravelEndDate" type="xs:date">
+            <xs:annotation>
+                <xs:documentation>A valid date in YYYY-MM-DD format.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
     
     <xs:attributeGroup name="attrsSeatPositionMisc">
         <xs:attribute name="SeatPositionMiscTravel">
+            <xs:annotation>
+                <xs:documentation>Util:ReferenceDataRetrieveReq, TypeCode AirAndRailMiscType</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
@@ -8199,15 +8698,21 @@
         </xs:attribute>
     </xs:attributeGroup>
     
-        <xs:attributeGroup name="attrsSeatTypeMisc">
+    <xs:attributeGroup name="attrsSeatTypeMisc">
         <xs:attribute name="SeatTypeMiscTravel">
+              <xs:annotation>
+                        <xs:documentation>: Util:ReferenceDataRetrieveReq, TypeCode AirAndRailMiscType</xs:documentation>
+                </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="SeatTypeMiscRefCategory">
+        <xs:attribute name="SeatTypeMiscRefCategory" default="ASS">
+                    <xs:annotation>
+                        <xs:documentation>: Util:ReferenceDataRetrieveReq, TypeCode AirAndRailMiscType</xs:documentation>
+                </xs:annotation>  
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="3"/>
@@ -8218,13 +8723,19 @@
     
     <xs:attributeGroup name="attrsSpecialEquipMisc">
         <xs:attribute name="SpecialEquipMiscTravel">
+        	<xs:annotation>
+                     <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="SpecialEquipRefCategory">
+        <xs:attribute name="SpecialEquipRefCategory" default="CEQ">
+        	<xs:annotation>
+                     <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="4"/>
@@ -8235,13 +8746,19 @@
 
     <xs:attributeGroup name="attrsVehicleTypeMisc">
         <xs:attribute name="VehicleTypeMiscTravel">
+        	<xs:annotation>
+                     <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="VehicleTypeRefCategory">
+        <xs:attribute name="VehicleTypeRefCategory" default="CTP">
+        	<xs:annotation>
+                     <xs:documentation>Util: ReferenceDataRetrieveReq, TypeCode VehicleMiscType</xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="4"/>
@@ -8251,13 +8768,19 @@
     </xs:attributeGroup>
     <xs:attributeGroup name="attrsCabinTypeMisc">
         <xs:attribute name="CabinTypeMiscTravel">
+           <xs:annotation>
+                      <xs:documentation>: Util:ReferenceDataRetrieveReq, TypeCode AirAndRailMiscType</xs:documentation>
+             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="6"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="CabinTypeRefCategory">
+        <xs:attribute name="CabinTypeRefCategory" default="ASC">
+           <xs:annotation>
+                      <xs:documentation>: Util:ReferenceDataRetrieveReq, TypeCode AirAndRailMiscType</xs:documentation>
+             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:maxLength value="3"/>
@@ -8342,6 +8865,613 @@
        </xs:annotation>
       </xs:attribute>
      </xs:attributeGroup>
+     
+     <xs:complexType name="typeFormOfPaymentType">
+        <xs:complexContent>
+            <xs:extension base="typeKeyTaggedElement">
+                <xs:choice>
+                    <xs:element ref="CreditCard" minOccurs="0"/>
+                    <xs:element name="DebitCard" type="common:typePaymentCard" minOccurs="0"/>
+                    <xs:group ref="common:FormOfPaymentSequenceGroup"/>
+                    <xs:element name="Guarantee" type="common:typeGuaranteeInformation" minOccurs="0"/>
+                    <xs:element name="Voucher" type="common:typeVoucherInformation" minOccurs="0"/>
+                    <xs:element name="Cash" type="common:typeMoney" minOccurs="0"/>
+                </xs:choice>
+                <xs:attribute name="Type">
+                 <xs:annotation>
+                    <xs:documentation>The code from the PAYMENT_FORMAT_TYPE_CD (CRECRD, DEBDRC, REQSTN…).</xs:documentation>
+                 </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Description" type="common:StringLength1to255">
+                    <xs:annotation>
+                        <xs:documentation>Description of the Payment</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="PriorityOrder" type="typePriorityOrder">
+                    <xs:annotation>
+                        <xs:documentation>Priority order associated with this PaymentDetails.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="OwnerID" type="common:typeProfileID" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>Id of the profile who owns the Traveler's proprietary data.Should be the immediate parent id of the traveler.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>  
     
+    <xs:element name="FormOfPayment" type="typeFormOfPaymentType"/>
     
+    <xs:complexType name="typeFormOfPaymentHistory">
+                <xs:complexContent>
+                        <xs:extension base="typeKeyElement">
+                                <xs:choice>
+                                        <xs:element name="CreditCard" type="typeCreditCardTypeHistory" minOccurs="0"/>
+                                        <xs:element name="DebitCard" type="typePaymentCardHistory" minOccurs="0"/>
+                                        <xs:group ref="FormOfPaymentSequenceGroupHistory"  minOccurs="0"/>
+                                        <xs:element name="Guarantee" type="typeGuaranteeInformationHistory" minOccurs="0"/>
+
+                                        <xs:element name="Voucher" type="typeVoucherInformationHistory" minOccurs="0"/>
+                                        <xs:element name="Cash" type="common:typeMoney" minOccurs="0"/>
+                                </xs:choice>
+                                <xs:attribute name="Type" use="optional">
+                                 <xs:annotation>
+                                <xs:documentation>The code from the PAYMENT_FORMAT_TYPE_CD (CRECRD, DEBDRC, REQSTN…).</xs:documentation>
+
+                         </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="Description" type="common:StringLength1to255" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Description of the Payment</xs:documentation>
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="PriorityOrder" type="typePriorityOrder" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Priority order associated with this PaymentDetails.</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="OwnerID" type="common:typeProfileID" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Id of the profile who owns the Traveler's proprietary data.Should be the immediate parent id of the traveler.</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                        </xs:extension>
+                </xs:complexContent>
+        </xs:complexType>
+       
+        <xs:complexType name="typeCreditCardTypeHistory">
+                <xs:complexContent>
+                        <xs:extension base="typePaymentCardHistory">
+                                <xs:attribute name="ExtendedPayment" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Used for American Express cards.
+                            </xs:documentation>
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="CustomerReference" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Agencies use this to pass the traveler information to the credit card company.</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="AcceptanceOverride" type="xs:boolean" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Override airline restriction on the credit card.</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="ThirdPartyPayment" type="xs:boolean" use="optional" default="false">
+
+                                        <xs:annotation>
+                                                <xs:documentation>If true, this indicates that the credit card holder is not one of the passengers.</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="BankName" type="xs:string" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>Issuing bank name for this credit card</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="BankCountryCode" type="common:typeCountry" use="optional">
+                                        <xs:annotation>
+                                                <xs:documentation>ISO Country code associated with the issuing bank</xs:documentation>
+
+                                        </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="ExtractIndicator" type="xs:boolean" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>This is supported for all Profile Types by Universal Profile.This indicator will be used by MOS to create a Credit Card Extract.</xs:documentation>
+                                    </xs:annotation>
+                               </xs:attribute>
+                               <xs:attribute name="Active"  type="xs:boolean" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Denotes whether the Credit Card is Active or Not.</xs:documentation>
+                                    </xs:annotation>
+                               </xs:attribute>
+                        </xs:extension>
+                </xs:complexContent>
+        </xs:complexType>
+       
+        <xs:complexType name="typePaymentCardHistory">
+        <xs:annotation>
+            <xs:documentation>Container for all credit and debit card
+                information.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="PhoneNumberHistory" minOccurs="0" />
+            <xs:element name="BillingAddress" type="common:typeStructuredAddress"
+                minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>The address to where the billing statements
+                        for this card are sent. Used for address verification purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Type" use="optional" type="common:typeCardMerchantType">
+            <xs:annotation>
+                <xs:documentation>The 2 letter credit/ debit card type.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Number" type="common:typeCreditCardNumber" use="optional"/>
+        <xs:attribute name="ExpDate" type="xs:gYearMonth" use="optional">
+            <xs:annotation>
+                <xs:documentation>The Expiration date of this card in YYYY-MM format.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Name" use="optional">
+            <xs:annotation>
+                <xs:documentation>The name as it appears on the card.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="CVV" use="optional">
+            <xs:annotation>
+                <xs:documentation>Card Verification Code</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:maxLength value="4" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="ApprovalCode" use="optional">
+            <xs:annotation>
+                <xs:documentation>This code is optional for an authorization process from the Credit Card company directly,optional for some of the CCH carriers.</xs:documentation>
+
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:maxLength value="16" />
+                    <xs:minLength value="1" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+   
+    <xs:element name="PhoneNumberHistory">
+        <xs:annotation>
+            <xs:documentation>Consists of type (office, home, fax), location (city code), the country code, the number, and an extension.</xs:documentation>
+
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                    <xs:annotation>
+                       <xs:documentation>Tagging provider reservation info with PhoneNumber.</xs:documentation>
+                    </xs:annotation>
+                    <xs:element ref="common:ProviderReservationInfoRef" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="Key" type="common:typeRef" use="optional"/>
+            <xs:attribute name="Type" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Agency"/>
+                        <xs:enumeration value="Business"/>
+                        <xs:enumeration value="Mobile"/>
+                        <xs:enumeration value="Home"/>
+                        <xs:enumeration value="Fax"/>
+                        <xs:enumeration value="Hotel"/>
+                        <xs:enumeration value="Other"/>
+                        <xs:enumeration value="None"/>
+                        <xs:enumeration value="Email"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="Location" use="optional">
+                <xs:annotation>
+                    <xs:documentation>IATA code for airport or city</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="CountryCode" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Hosts/providers will expect this to be international dialing digits</xs:documentation>
+
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="5"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="AreaCode" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="Number" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The local phone number</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="83"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="Extension" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="Text" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="1024"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:group name="FormOfPaymentSequenceGroupHistory">
+                <xs:choice>
+                        <xs:element ref="CertificateHistory" minOccurs="0"/>
+                        <xs:element ref="TicketNumberHistory" minOccurs="0"/>
+                        <xs:element ref="common:Check" minOccurs="0"/>
+                        <xs:element ref="common:Requisition" minOccurs="0"/>
+                        <xs:element ref="MiscFormOfPaymentHistory" minOccurs="0"/>
+                        <xs:element ref="AgencyPaymentHistory" minOccurs="0"/>
+                        <xs:element ref="UnitedNationsHistory" minOccurs="0"/>
+                        <xs:element ref="common:DirectPayment" minOccurs="0"/>
+                        <xs:element ref="AgentVoucherHistory" minOccurs="0"/>
+                </xs:choice>
+        </xs:group>
+        
+        <xs:element name="TicketNumberHistory" type="StringLength0to13">
+         <xs:annotation>
+            <xs:documentation>The identifying number for the actual ticket</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        
+        <xs:simpleType name="StringLength0to13">
+         <xs:annotation>
+         <xs:documentation xml:lang="en">Used for Character Strings, length 0 to 13.</xs:documentation>
+        </xs:annotation>
+         <xs:restriction base="xs:string">
+         <xs:minLength value="0"/>
+         <xs:maxLength value="13"/>
+         </xs:restriction>
+     </xs:simpleType>
+       
+        <xs:element name="CertificateHistory">
+        <xs:annotation>
+            <xs:documentation>Certificate Form of Payment</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Number" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The Certificate number</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Amount" type="common:typeMoney" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The monetary value of the certificate.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="DiscountAmount" type="common:typeMoney" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The monetary discount amount of this certificate.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="DiscountPercentage" type="xs:integer" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The percentage discount value of this certificate.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="NotValidBefore" type="xs:date" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The date that this certificate becomes valid.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="NotValidAfter" type="xs:date" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The date that this certificate expires.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:element name="MiscFormOfPaymentHistory">
+        <xs:annotation>
+            <xs:documentation>Miscellaneous Form of Payments</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="CreditCardType" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The 2 letter credit/ debit card type or code which may not have been issued using the standard bank card types  - i.e. an airline issued card</xs:documentation>
+
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:length value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="CreditCardNumber" type="common:typeCreditCardNumber" use="optional"/>
+            <xs:attribute name="ExpDate" type="xs:gYearMonth" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The Expiration date of this card in YYYY-MM format.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Text" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Any free form text which may be associated with the Miscellaneous Form of Payment. This text may be provider or GDS specific</xs:documentation>
+
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Category" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Indicates what Category the Miscellaneous Form Of Payment is being used for payment - The category may vary by GDS.</xs:documentation>
+
+                    <xs:documentation>Allowable values are
+                        "Text"
+                        "Credit"
+                        "CreditCard"
+                        "FreeFormCreditCard"
+                        "Invoice"
+                        "NonRefundable"
+                        "MultipleReceivables"
+                        "Exchange"
+                        "Cash"
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string" />
+                </xs:simpleType>
+            </xs:attribute>
+             <xs:attribute name="AcceptanceOverride" type="xs:boolean" use="optional">
+                    <xs:annotation>
+                          <xs:documentation>Override airline restriction on the credit card.</xs:documentation>
+                   </xs:annotation>
+             </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:element name="AgencyPaymentHistory" type="typeAgencyPaymentHistory">
+      <xs:annotation>
+         <xs:documentation>Container for Agency Payment</xs:documentation>
+      </xs:annotation>
+    </xs:element>
+   
+    <xs:complexType name="typeAgencyPaymentHistory">
+        <xs:annotation>
+            <xs:documentation>Type for Agency Payment.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="AgencyBillingIdentifier" use="optional">
+            <xs:annotation>
+                <xs:documentation>Value of the billing id</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                   <xs:maxLength value="128"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="AgencyBillingNumber" use="optional">
+            <xs:annotation>
+                <xs:documentation>Value of billing number</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                   <xs:maxLength value="128"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="AgencyBillingPassword"  use="optional">
+            <xs:annotation>
+                <xs:documentation>Value of billing password</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                   <xs:maxLength value="128"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+   </xs:complexType>
+  
+   <xs:element name="UnitedNationsHistory">
+        <xs:annotation>
+            <xs:documentation>United Nations Form of Payments</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Number" type="xs:string" use="optional" />
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:element name="AgentVoucherHistory">
+        <xs:annotation>
+            <xs:documentation>Agent Voucher Form of Payments</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Number" type="xs:string" use="optional" />
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:complexType name="typeGuaranteeInformationHistory">
+                <xs:annotation>
+                        <xs:documentation>Information pertaining to the payment of type Guarantee.</xs:documentation>
+                </xs:annotation>
+                <xs:attribute name="Type" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Guarantee only or Deposit</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Guarantee"/>
+                                        <xs:enumeration value="Deposit"/>
+                                </xs:restriction>
+                        </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="AgencyType" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Guarantee to Agency IATA or Guarantee to Another Agency IATA</xs:documentation>
+
+                        </xs:annotation>
+                        <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                        <xs:enumeration value="AgencyIATA"/>
+                                        <xs:enumeration value="OtherAgencyIATA"/>
+                                </xs:restriction>
+                        </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="IATANumber" type="common:StringLength1to128" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Payment IATA number. (ie. IATA of Agency or Other Agency)</xs:documentation>
+
+                        </xs:annotation>
+                </xs:attribute>
+        </xs:complexType>
+       
+         <xs:complexType name="typeVoucherInformationHistory">
+                <xs:annotation>
+                        <xs:documentation>Information pertaining to the payment of a Vehicle Rental.</xs:documentation>
+                </xs:annotation>
+                <xs:attribute name="VoucherType" type="common:typeVoucherType" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Specifies if the Voucher is for Full Credit or a Group/Day or a Monetary Amount.</xs:documentation>
+
+                        </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Amount" type="common:typeMoney" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Amount associated with the Voucher.</xs:documentation>
+                        </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="ConfirmationNumber" type="xs:string" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Confirmation from the vendor for the voucher</xs:documentation>
+                        </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="AccountName" type="xs:string" use="optional">
+                        <xs:annotation>
+                                <xs:documentation>Associated account name for the voucher</xs:documentation>
+                        </xs:annotation>
+                </xs:attribute>
+        </xs:complexType>
+        
+        <xs:element name="CreditCard">
+        <xs:annotation>
+            <xs:documentation>UProfile Specific Credit Card Element.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                     <xs:extension base="common:typeCreditCardType">                                
+                      <xs:attribute name="ExtractIndicator" type="xs:boolean" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>This is supported for all Profile Types by Universal Profile.This indicator will be used by MOS to create a Credit Card Extract.</xs:documentation>
+                            </xs:annotation>
+                     </xs:attribute>
+                     <xs:attribute name="Active"  type="xs:boolean" use="optional" default="true">
+                        <xs:annotation>
+                            <xs:documentation>Denotes whether the Credit Card is Active or Not.Default is true</xs:documentation>
+                        </xs:annotation>
+                 </xs:attribute>             
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+   </xs:element>   
+    
+    <xs:complexType name="typeAccountTypeProfileInfo">
+        <xs:annotation>
+            <xs:documentation>History Element for Traveler Group.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="typeProfileInfo">
+                <xs:attribute name="MidOfficeID" type="common:StringLength1to255">
+                    <xs:annotation>
+                        <xs:documentation>Mid Office identifier managed by an external system.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="typeAccountTypeProfileSearchCriteria">
+        <xs:annotation>
+            <xs:documentation>Search criteria for Accounts, Traveler Groups and Travellers.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="typeProfileSearchCriteria">
+                <xs:attribute name="MidOfficeID" type="common:typeWildcard">
+                    <xs:annotation>
+                        <xs:documentation>Mid Office ID managed by an external system.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="typePolicyReferenceHistory">
+        <xs:annotation>
+            <xs:documentation>History Element for Accounting Reference</xs:documentation>
+        </xs:annotation>
+            <xs:complexContent>
+                <xs:extension base="typeKeyElement">
+                <xs:attribute name="Type" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>A code used to reference a traveler's policy. Valid values are Travelport Universal Policy and Other.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Value" type="common:StringLength1to255">
+                    <xs:annotation>
+                        <xs:documentation>The number or alphanumeric code for an employer reference.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="ControllingProfileID" type="common:typeProfileID">
+                    <xs:annotation>
+                        <xs:documentation>A list of policies are created in a parent of a traveler, then one of those is applied to the traveler. This profileID is to contain the ID of the Parent who has the list of policies</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="PriorityOrder" type="typePriorityOrder">
+                    <xs:annotation>
+                        <xs:documentation>Priority order associated with this AccountingReference.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Desc" type="common:StringLength1to255">
+                    <xs:annotation>
+                        <xs:documentation>An optional description.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
  </xs:schema>

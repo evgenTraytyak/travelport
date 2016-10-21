@@ -4,11 +4,11 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://www.travelport.com/service/uprofile_v18_0"
-             xmlns:ns1="http://www.travelport.com/schema/uprofile_v18_0"
-             targetNamespace="http://www.travelport.com/service/uprofile_v18_0">
+             xmlns:tns="http://www.travelport.com/service/uprofile_v37_0"
+             xmlns:ns1="http://www.travelport.com/schema/uprofile_v37_0"
+             targetNamespace="http://www.travelport.com/service/uprofile_v37_0">
 
-    <import namespace="http://www.travelport.com/service/uprofile_v18_0"
+    <import namespace="http://www.travelport.com/service/uprofile_v37_0"
             location="UProfileAbstract.wsdl" />
 
     <binding name="ProfileCreateFieldBinding" type="tns:ProfileCreateFieldPortType">
@@ -428,13 +428,13 @@
                  <soap:fault name="ProfileSummaryErrorInfoMsg" use="literal" />
             </fault>
         </operation>
-    </binding>    
+    </binding>
     
-    <binding name="ProfileCreateOverrideTemplateBinding" type="tns:ProfileCreateOverrideTemplatePortType">
+     <binding name="SingleProfileMigrationBinding" type="tns:SingleProfileMigrationPortType">
         <soap:binding style="document"
                       transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="service">
-            <soap:operation soapAction="http://localhost:8080/kestrel/UProfileService"/>
+            <soap:operation soapAction="http://localhost:9080/kestrel/UProfileService"/>
             <input>
                 <soap:body use="literal" />
             </input>
@@ -445,42 +445,7 @@
                 <soap:fault name="ErrorInfoMsg" use="literal" />
             </fault>
         </operation>
-    </binding>
-    
-    <binding name="ProfileModifyOverrideTemplateBinding" type="tns:ProfileModifyOverrideTemplatePortType">
-        <soap:binding style="document"
-                      transport="http://schemas.xmlsoap.org/soap/http" />
-        <operation name="service">
-            <soap:operation soapAction="http://localhost:8080/kestrel/UProfileService"/>
-            <input>
-                <soap:body use="literal" />
-            </input>
-            <output>
-                <soap:body use="literal" />
-            </output>
-            <fault name="ErrorInfoMsg">
-                <soap:fault name="ErrorInfoMsg" use="literal" />
-            </fault>
-        </operation>
-    </binding>
-    
-        
-    <binding name="ProfileDeleteOverrideTemplateBinding" type="tns:ProfileDeleteOverrideTemplatePortType">
-        <soap:binding style="document"
-                      transport="http://schemas.xmlsoap.org/soap/http" />
-        <operation name="service">
-            <soap:operation soapAction="http://localhost:8080/kestrel/UProfileService"/>
-            <input>
-                <soap:body use="literal" />
-            </input>
-            <output>
-                <soap:body use="literal" />
-            </output>
-            <fault name="ErrorInfoMsg">
-                <soap:fault name="ErrorInfoMsg" use="literal" />
-            </fault>
-        </operation>
-    </binding>
+    </binding>   
 
     <service name="UProfileService">        
         <port name="ProfileCreateFieldPort" binding="tns:ProfileCreateFieldBinding">
@@ -581,18 +546,10 @@
             <soap:address
                     location="http://localhost:8080/kestrel/UProfileService" />
         </port>
-        <port name="ProfileCreateOverrideTemplatePort" binding="tns:ProfileCreateOverrideTemplateBinding">
+        <port name="SingleProfileMigrationPort" binding="tns:SingleProfileMigrationBinding">
             <soap:address
-                    location="http://localhost:8080/kestrel/UProfileService" />
+                    location="http://localhost:9080/kestrel/UProfileService" />
         </port>
-        <port name="ProfileModifyOverrideTemplatePort" binding="tns:ProfileModifyOverrideTemplateBinding">
-            <soap:address
-                    location="http://localhost:8080/kestrel/UProfileService" />
-        </port>
-        <port name="ProfileDeleteOverrideTemplatePort" binding="tns:ProfileDeleteOverrideTemplateBinding">
-            <soap:address
-                    location="http://localhost:8080/kestrel/UProfileService" />
-        </port>         
     </service>
 
 </definitions>
