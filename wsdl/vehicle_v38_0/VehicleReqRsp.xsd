@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
-    xmlns="http://www.travelport.com/schema/vehicle_v28_0" 
+    xmlns="http://www.travelport.com/schema/vehicle_v38_0" 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"     
-    xmlns:common="http://www.travelport.com/schema/common_v28_0" 
-    targetNamespace="http://www.travelport.com/schema/vehicle_v28_0" 
+    xmlns:common="http://www.travelport.com/schema/common_v38_0" 
+    targetNamespace="http://www.travelport.com/schema/vehicle_v38_0" 
     elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
     </xs:annotation>
-    <xs:import namespace="http://www.travelport.com/schema/common_v28_0" schemaLocation="../common_v28_0/CommonReqRsp.xsd"/>    
-    <xs:include schemaLocation="../vehicle_v28_0/Vehicle.xsd"/>
+    <xs:import namespace="http://www.travelport.com/schema/common_v38_0" schemaLocation="../common_v38_0/CommonReqRsp.xsd"/>    
+    <xs:include schemaLocation="../vehicle_v38_0/Vehicle.xsd"/>
     <xs:element name="VehicleSearchAvailabilityReq">
       <xs:complexType>
          <xs:complexContent>
             <xs:extension base="BaseVehicleSearchAvailabilityReq">
                <xs:attribute name="ReturnMediaLinks" type="xs:boolean" use="optional" default="false">
                   <xs:annotation>
-                     <xs:documentation>Set indicator to true to retrieve the media links.</xs:documentation>
+                     <xs:documentation>Set indicator to true to retrieve the media links. Default False</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
                 <xs:attribute name="ReturnAllRates" type="xs:boolean" use="optional" default="false">
@@ -39,6 +39,11 @@
                      <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
+			   <xs:attribute name="ReturnPolicyExclusion" type="xs:boolean" use="optional" default="false">
+                  <xs:annotation>
+                     <xs:documentation>If "False" (default), items with an Excluded status based on the associated policy settings are not returned in the response. If "True", items marked as Excluded by the policy are returned.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>  
             </xs:extension>
          </xs:complexContent>
       </xs:complexType>
@@ -47,6 +52,13 @@
       <xs:complexType>
          <xs:complexContent>
             <xs:extension base="BaseVehicleSearchAvailabilityRsp">
+            	<xs:sequence>
+                   <xs:element ref="common:MarketingInformation"  minOccurs="0" maxOccurs="1">
+                      <xs:annotation>
+                        <xs:documentation>Marketing text or notices by Suppliers. 1P/1J only.</xs:documentation>
+                      </xs:annotation>
+                   </xs:element>
+               </xs:sequence>
                <xs:attribute name="MediaLinksSearchId" type="xs:string" use="optional">
                   <xs:annotation>
                      <xs:documentation>Unique search id to retrieve the media links using VehicleMediaLinksReq.</xs:documentation>
@@ -65,6 +77,16 @@
                         <xs:element ref="VehicleDateLocation"/>
                         <xs:element ref="common:PointOfSale" minOccurs="0"/>
                     </xs:sequence>
+                    <xs:attribute name="PolicyReference" type="common:typePolicyReference" use="optional">
+	                  <xs:annotation>
+	                     <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
+	                  </xs:annotation>
+               		</xs:attribute>
+               		<xs:attribute name="ReturnPolicyExclusion" type="xs:boolean" use="optional" default="false">
+	                  <xs:annotation>
+	                     <xs:documentation>If “False” (default), items with an Excluded status based on the associated policy settings are not returned in the response. If “True”, items marked as Excluded by the policy are returned.</xs:documentation>
+	                  </xs:annotation>
+               		</xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -196,9 +218,41 @@
                                 </xs:sequence>
                             </xs:complexType>
                         </xs:element>
-                        <xs:element name="DepositGuaranteeRule" minOccurs="0" maxOccurs="2">
+                        <xs:element name="PrePayCancelInfo" minOccurs="0" maxOccurs="99">
                             <xs:annotation>
-                                <xs:documentation>The deposit or guarantee rule for the vehicle rental.</xs:documentation>
+                                <xs:documentation>PrePayment cancellation Advisory Values use to construct custom Advisory text. 1P, 1J only.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:attribute name="Code" type="xs:int" use="required">
+                                    <xs:annotation>
+                                        <xs:documentation>Code value associated to policy line advisory cancellation text (values 001 up to 999) 1P, 1J only.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="Amount" type="common:typeMoney" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Rate amount preceded by the ISO currency code charged to cancel, e.g. USD25.00 1P, 1J only.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="Percent" type="xs:int" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Percentage value (e.g. 010=10%     025=25%      050=50%       100) 1P, 1J only.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="NumberOfDaysHours" type="xs:int" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Number of Days or Hours (e.g. 002 days  024 hours), 1P, 1J only.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="RentalDays" type="xs:int" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Number of rental days (e.g. 001 up to 365), 1P, 1J only.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="PaymentRule" minOccurs="0" maxOccurs="2">
+                            <xs:annotation>
+                                <xs:documentation>The Deposit, Guarantee or PrePayment rule for the vehicle rental.</xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
                                 <xs:complexContent>
@@ -235,6 +289,17 @@
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="common:MarketingInformation" minOccurs="0" maxOccurs="1"/>
+                        <xs:element ref="Policy" minOccurs="0" maxOccurs="999"/>
+                        <xs:element name="PickupLocationInformation" type="typeVehicleLocationInformation" minOccurs="0">
+                         <xs:annotation>
+                                <xs:documentation>Pickup Location  Information ,  1P, 1J only.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="ReturnLocationInformation" type="typeVehicleLocationInformation" minOccurs="0">
+                         <xs:annotation>
+                                <xs:documentation>Return Location  Information ,  1P, 1J only.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -265,6 +330,16 @@
 		                    </xs:annotation>
 		                </xs:element>
                     </xs:sequence>
+                    <xs:attribute name="PolicyReference" use="optional" type="common:typePolicyReference">
+	                    <xs:annotation>
+	                        <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
+	                    </xs:annotation>
+	               	</xs:attribute>
+				    <xs:attribute name="ReturnPolicyExclusion" type="xs:boolean" use="optional" default="false">
+	                    <xs:annotation>
+	                        <xs:documentation>If "False" (default), items with an Excluded status based on the associated policy settings are not returned in the response. If "True", items marked as Excluded by the policy are returned.</xs:documentation>
+	                    </xs:annotation>
+	                </xs:attribute> 
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
