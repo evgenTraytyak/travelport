@@ -1,19 +1,9 @@
 class Travelport::Model::HotelProperty < Travelport::Model::Base
 
   attr_accessor :search_error,
-                :property_address,
-                :distance,
-                :amenities,
-                :hotel_chain,
-                :hotel_code,
-                :hotel_location,
-                :name,
-                :vendor_location_key,
-                :hotel_transportation,
-                :reserve_requirement,
-                :participation_level,
-                :availability,
-                :featured_property
+                :vendor_location,
+                :hotel_property,
+                :rate_info,
 
   class << self
 
