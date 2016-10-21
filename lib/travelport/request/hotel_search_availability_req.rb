@@ -19,8 +19,16 @@ module Travelport::Request
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root {
           xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
-          xml.HotelLocation('Location' => location)
-          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms)
+          xml.HotelSearchLocation {
+            xml.HotelLocation('Location' => location)
+          }
+          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms) {
+            xml.BookingGuestInformation {
+              xml.Room {
+                xml.Adults adults
+              }
+            }
+          }
           xml.HotelStay {
             xml.CheckinDate checkin.strftime("%Y-%m-%d")
             xml.CheckoutDate checkout.strftime("%Y-%m-%d")
