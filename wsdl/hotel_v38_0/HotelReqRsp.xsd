@@ -1,11 +1,11 @@
-<xs:schema xmlns="http://www.travelport.com/schema/hotel_v28_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.travelport.com/schema/hotel_v28_0"
-           xmlns:common="http://www.travelport.com/schema/common_v28_0"
+<xs:schema xmlns="http://www.travelport.com/schema/hotel_v38_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.travelport.com/schema/hotel_v38_0"
+           xmlns:common="http://www.travelport.com/schema/common_v38_0"
            elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
     </xs:annotation>
 
-    <xs:import schemaLocation="../common_v28_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v28_0"/>
+    <xs:import schemaLocation="../common_v38_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v38_0"/>
     <xs:include schemaLocation="Hotel.xsd" />   
     
     <!--*** Request Types ***-->
@@ -15,13 +15,7 @@
       </xs:annotation>
       <xs:complexType>
          <xs:complexContent>
-            <xs:extension base="BaseHotelSearchReq">
-               <xs:attribute name="PolicyReference" type="common:typePolicyReference" use="optional">
-                   <xs:annotation>
-                     <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
-                  </xs:annotation>
-               </xs:attribute>
-            </xs:extension>
+            <xs:extension base="BaseHotelSearchReq"/>
          </xs:complexContent>
       </xs:complexType>
    </xs:element>
@@ -114,6 +108,16 @@
                     <xs:element ref="HotelStay"/>
                     <xs:element ref="common:PointOfSale" minOccurs="0" />                         
                 </xs:sequence>
+                <xs:attribute name="PolicyReference" type="common:typePolicyReference" use="optional">
+                  <xs:annotation>
+                     <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
+               <xs:attribute name="ReturnPolicyExclusion" type="xs:boolean" use="optional" default="false">
+                  <xs:annotation>
+                     <xs:documentation>If “False” (default), items with an Excluded status based on the associated policy settings are not returned in the response. If “True”, items marked as Excluded by the policy are returned.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>            
@@ -126,10 +130,20 @@
         <xs:complexContent>
             <xs:extension base="common:BaseSearchRsp">
                 <xs:sequence>
+                	<xs:element name="ReferencePoint" type="typeHotelReferencePoint" minOccurs="0">
+	                  <xs:annotation>
+	                     <xs:documentation>Hotel reference point.  Applicable for 1G,1V,1P,1J. </xs:documentation>
+	                  </xs:annotation>  
+	                </xs:element>
                     <xs:element ref="HotelSearchResult" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element ref="common:MarketingInformation" minOccurs="0" maxOccurs="1" />
                     <xs:element ref="common:HostToken" minOccurs="0"/>
-                </xs:sequence>
+                </xs:sequence>                
+                <xs:attribute name="AddressSearchQuality" type="xs:int" use="optional">
+                  <xs:annotation>
+                     <xs:documentation>Indicates the address matching level success for hotel address or Postal Code searches. Valid values: "1"-"8". Providers 1G, 1V.</xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>          
@@ -159,6 +173,11 @@
                      <xs:documentation>This attribute will be used to pass in a value on the request which would be used to link to a ‘Policy Group’ in a policy engine external to UAPI.</xs:documentation>
                   </xs:annotation>
                </xs:attribute>
+               <xs:attribute name="ReturnPolicyExclusion" type="xs:boolean" use="optional" default="false">
+                  <xs:annotation>
+                     <xs:documentation>If “False” (default), items with an Excluded status based on the associated policy settings are not returned in the response. If “True”, items marked as Excluded by the policy are returned.</xs:documentation>
+                  </xs:annotation>
+               </xs:attribute>
             </xs:extension>
          </xs:complexContent>
       </xs:complexType>
@@ -173,10 +192,28 @@
                 <xs:extension base="common:BaseRsp">
                     <xs:sequence>
                         <xs:element ref="common:NextResultReference" minOccurs="0"/>
+                        <xs:element ref="common:HostToken" minOccurs="0"/>
                         <xs:choice>
-                            <xs:element ref="RequestedHotelDetails"/>
+                            <xs:element ref="RequestedHotelDetails" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Supported Provider GDS – 1G, 1V, 1P, 1J.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>    
+                            <xs:element name="AggregatorHotelDetails" minOccurs="0" maxOccurs="99">
+                                <xs:annotation>
+                                    <xs:documentation>Supported Provider TRM.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:complexContent>
+                                        <xs:extension base="typeHotelDetails">
+                                            <xs:attributeGroup ref="attrAggregatorHotelDetail"/>
+                                        </xs:extension>
+                                    </xs:complexContent>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element ref="HotelAlternateProperties"/>
                         </xs:choice>
+                        <xs:element ref="GuestReviews" minOccurs="0"/>
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -287,6 +324,18 @@
                                         </xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
+								<xs:attribute name="RulesDetailReqd" use="optional">
+                           			<xs:annotation>
+                              			<xs:documentation>Request details for Rules, Details, or All.  Default is All. Applicable for 1p/1j.</xs:documentation>
+                           			</xs:annotation>
+                          			<xs:simpleType>
+		                              	<xs:restriction base="xs:string">
+			                                 <xs:enumeration value="Rules"/>
+			                                 <xs:enumeration value="Details"/>
+			                                 <xs:enumeration value="All"/>
+		                              	</xs:restriction>
+                           			</xs:simpleType>
+                        		</xs:attribute>                                
                             </xs:complexType>
                         </xs:element>
                     </xs:choice>
@@ -479,6 +528,7 @@
                 <xs:extension base="common:BaseSearchRsp">
                     <xs:sequence>
                         <xs:element ref="common:VendorLocation" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="CurrencyRateConversion" minOccurs="0" maxOccurs="999"/>
                         <xs:element ref="HotelSuperShopperResults" minOccurs="0" maxOccurs="unbounded"/>
                         <xs:element ref="QuickResponse" minOccurs="0"/>
                     </xs:sequence>
