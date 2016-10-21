@@ -14,8 +14,8 @@ module Travelport::Request
     default_for :availability, 'Available'
     default_for :rate_rule, 'Complete'
     default_for :rate_category, 'All'
-    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v19_0'
-    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v24_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v38_0'
+    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v38_0'
 
     validates_presence_of :chain_code
     validates_presence_of :property_id
