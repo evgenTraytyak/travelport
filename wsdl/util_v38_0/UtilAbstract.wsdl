@@ -4,16 +4,16 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://www.travelport.com/service/util_v19_0"
-             xmlns:ns1="http://www.travelport.com/schema/util_v19_0"
-             xmlns:common="http://www.travelport.com/schema/common_v17_0"
-             targetNamespace="http://www.travelport.com/service/util_v19_0">
+             xmlns:tns="http://www.travelport.com/service/util_v38_0"
+             xmlns:ns1="http://www.travelport.com/schema/util_v38_0"
+             xmlns:common="http://www.travelport.com/schema/common_v38_0"
+             targetNamespace="http://www.travelport.com/service/util_v38_0">
 
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                targetNamespace="http://www.travelport.com/schema/util_v19_0">
+                targetNamespace="http://www.travelport.com/schema/util_v38_0">
             <include schemaLocation="Util.xsd"/>
         </schema>
     </types>
@@ -56,14 +56,6 @@
 
     <message name="UtilCreditCardAuthResponse">
         <part name="result" element="ns1:CreditCardAuthRsp" />
-    </message>
-
-    <message name="DocumentTransmissionRequest">
-        <part name="parameters" element="ns1:DocumentTransmissionReq" />
-    </message>
-
-    <message name="DocumentTransmissionResponse">
-        <part name="result" element="ns1:DocumentTransmissionRsp" />
     </message>
 
     <message name="McoCreateAgencyFeeRequest">
@@ -212,14 +204,6 @@
         <operation name="service">
             <input message="tns:UtilCreditCardAuthRequest" />
             <output message="tns:UtilCreditCardAuthResponse" />
-            <fault name="ErrorInfoMsg" message="tns:UtilFaultMessage" />
-        </operation>
-    </portType>
-
-    <portType name="DocumentTransmissionPortType">
-        <operation name="service">
-            <input message="tns:DocumentTransmissionRequest" />
-            <output message="tns:DocumentTransmissionResponse" />
             <fault name="ErrorInfoMsg" message="tns:UtilFaultMessage" />
         </operation>
     </portType>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://www.travelport.com/schema/util_v28_0"
+<xs:schema xmlns="http://www.travelport.com/schema/util_v38_0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.travelport.com/schema/util_v28_0"
-    xmlns:air="http://www.travelport.com/schema/air_v28_0"
-    xmlns:common="http://www.travelport.com/schema/common_v28_0"
+    targetNamespace="http://www.travelport.com/schema/util_v38_0"
+    xmlns:air="http://www.travelport.com/schema/air_v38_0"
+    xmlns:common="http://www.travelport.com/schema/common_v38_0"
     elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>
@@ -12,12 +12,12 @@
         </xs:documentation>
     </xs:annotation>
 
-    <xs:import schemaLocation="../common_v28_0/CommonReqRsp.xsd"
-        namespace="http://www.travelport.com/schema/common_v28_0" />
-    <xs:import namespace="http://www.travelport.com/schema/common_v28_0"
-        schemaLocation="../common_v28_0/Common.xsd" />
-    <xs:import namespace="http://www.travelport.com/schema/air_v28_0"
-        schemaLocation="../air_v28_0/Air.xsd" />
+    <xs:import schemaLocation="../common_v38_0/CommonReqRsp.xsd"
+        namespace="http://www.travelport.com/schema/common_v38_0" />
+    <xs:import namespace="http://www.travelport.com/schema/common_v38_0"
+        schemaLocation="../common_v38_0/Common.xsd" />
+    <xs:import namespace="http://www.travelport.com/schema/air_v38_0"
+        schemaLocation="../air_v38_0/Air.xsd" />
 
     <!-- Upsell Req/Rsp Start-->
 
@@ -533,43 +533,6 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-    <xs:element name="DocumentTransmissionReq">
-        <xs:annotation>
-            <xs:documentation>
-                Transmit reservation documents to one or more travelers
-                on a Pnr. Currently supported format is email.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:complexContent>
-                <xs:extension base="common:BaseReq">
-                    <xs:sequence>
-                        <xs:choice>
-                            <xs:element ref="common:LocatorCode"
-                                minOccurs="0" />
-                            <xs:element ref="common:TicketNumber"
-                                minOccurs="0" />
-                        </xs:choice>
-                        <xs:element ref="TemplateData" minOccurs="0"
-                            maxOccurs="unbounded" />
-                        <xs:element ref="EmailHeaderInfo" />
-                    </xs:sequence>
-                </xs:extension>
-            </xs:complexContent>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="DocumentTransmissionRsp">
-        <xs:complexType>
-            <xs:complexContent>
-                <xs:extension base="common:BaseRsp">
-                    <xs:sequence>
-                        <xs:element ref="EmailHeaderInfo" />
-                    </xs:sequence>
-                </xs:extension>
-            </xs:complexContent>
-        </xs:complexType>
-    </xs:element>
-
     <xs:element name="ReferenceDataRetrieveReq">
         <xs:annotation>
             <xs:documentation>
@@ -580,17 +543,88 @@
             <xs:complexContent>
                 <xs:extension base="common:BaseReq">
                     <xs:sequence>
-                         <xs:element ref="ReferenceDataSearchModifiers" minOccurs="0" />                                        
+                         <xs:element ref="ReferenceDataSearchModifiers" minOccurs="0" />     
+                         <xs:element ref="RequestReferenceDataItem" minOccurs="0" maxOccurs="1"/>                                   
                     </xs:sequence>
                     <xs:attribute name="TypeCode" type="common:typeTypeCode" use="required">
                         <xs:annotation>
-                            <xs:documentation>The code of the reference data type. Valid values are 'PaymentType', 'PaymentFormatType', 'MerchandisingOfferType', 'HotelTaxType', 'HotelAmenities','Airport','City','Country','CityAirport','BusinessType','Currency','PosChannel','StateProvince','SupplierType','RoleCategoryType','ResourceCategoryType','PaymentType','EmailType','HotelRateCategory','FulfillmentType','HotelRoomViewType', 'HotelMealPlans' , 'GeoPoliticalAreaType', 'AirAndRailMiscType', 'AirAndRailSupplierType', 'HotelMiscType' , 'HotelSupplierType' , 'VehicleMiscType' , 'VehicleSupplierType' , 'AccountingReferenceType' and 'TRMLocation'.</xs:documentation>
+                            <xs:documentation>The code of the reference data type. Valid values are 'PaymentType', 'PaymentFormatType', 'MerchandisingOfferType', 'HotelTaxType', 'HotelAmenities','Airport','City','Country','CityAirport','BusinessType','Currency','PosChannel','StateProvince','SupplierType','RoleCategoryType','ResourceCategoryType','PaymentType','EmailType','HotelRateCategory','FulfillmentType','HotelRoomViewType', 'HotelMealPlans' , 'GeoPoliticalAreaType', 'AirAndRailMiscType', 'AirAndRailSupplierType', 'HotelMiscType' , 'HotelSupplierType' , 'VehicleMiscType' , 'VehicleSupplierType' , 'AccountingReferenceType' , 'TRMLocation' , 'Title' , 'PassengerTypeCode' , 'Gender' , 'PostalAddressType' , 'AccountingRemarkType' , 'VehicleSpecialEquipment', 'ReferencePointSearch', 'RailStationLocation', 'RailAccommodation', and 'RailDiscountLoyalty'.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>                 
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
+    
+    <xs:element name="RailStationLocationModifiers">
+	<xs:annotation>
+		<xs:documentation>Request object used to request specific rail station
+			locations.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="common:RailLocation" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="CountryCode" type="common:typeCountry" use="optional">
+			<xs:annotation>
+				<xs:documentation>2 character country code such as FR.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Distributor" type="common:typeSupplierCode" use="optional">
+			<xs:annotation>
+				<xs:documentation>2 character Rail distributor code such as TL or
+					2C.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Description" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A city name or station name such as Paris or Paris
+					Nord.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Active" type="xs:boolean" use="optional"
+			default="true">
+			<xs:annotation>
+				<xs:documentation>The value “false” will return stations that are no
+					longer active but remain on the table because existing bookings may
+					reference them. The default is “true” which returns only active
+					locations.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:element>
+            
+    <xs:element name="RequestReferenceDataItem">
+      <xs:annotation>
+         <xs:documentation>
+                Limits the responses to the requested subcategories for a specific Reference Data Type, Currently supported only for @TypeCode="HotelAmenities".
+            </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="RequestAmenity" minOccurs="0" maxOccurs="9">
+               <xs:annotation>
+                  <xs:documentation>
+                         Requested decoded values only for the specified Hotel Amenity codes.
+                     </xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:attribute name="Type" use="required">
+                     <xs:annotation>
+                        <xs:documentation>Limits to the response to the requested amenity type. Can be a general type: “HA” (Hotel Property Amenity) or “RA” (Room Amenity). Or, a specific type, for example: “TR” (Transportation) or “BT” (Bed Type). If no type is specified, all amenity types are returned.</xs:documentation>
+                     </xs:annotation>
+                     <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                           <xs:length value="2"/>
+                        </xs:restriction>
+                     </xs:simpleType>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
 
     <xs:element name="ReferenceDataRetrieveRsp">
         <xs:annotation>
@@ -1310,79 +1344,6 @@
             <xs:attributeGroup ref="attrProviderSupplierCapabilities" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="TemplateData">
-        <xs:annotation>
-            <xs:documentation>
-                Takes, as content, the text used to add to the template.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:string">
-                    <xs:attribute name="FieldName" type="xs:string"
-                        use="required">
-                        <xs:annotation>
-                            <xs:documentation>
-                                Key, as defined in the template, where
-                                the TemplateData content is inserted.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="EmailHeaderInfo">
-        <xs:annotation>
-            <xs:documentation>
-                Takes a list of email recipients, sender, and a template
-                name to apply.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="Recipient" minOccurs="0"
-                    maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation>
-                            Email recipient.
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="typeEmailAddress">
-                                <xs:attribute name="RecipientType"
-                                    type="typeEmailRecipientType" use="optional" default="TO" />
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="From" type="typeEmailAddress">
-                    <xs:annotation>
-                        <xs:documentation>
-                            Email sender
-                        </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-                <xs:element name="Subject" type="xs:string">
-                    <xs:annotation>
-                        <xs:documentation>
-                            Email subject
-                        </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-            </xs:sequence>
-            <xs:attribute name="TemplateName" type="xs:string"
-                use="required">
-                <xs:annotation>
-                    <xs:documentation>
-                        The pre-defined template to use in sending this
-                        email
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
-        </xs:complexType>
-    </xs:element>
     
     <xs:element name="ReferenceDataItem">
       <xs:complexType>
@@ -1438,6 +1399,9 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
+        	<xs:sequence>
+            	<xs:element ref="RailStationLocationModifiers" minOccurs="0"/>
+            </xs:sequence>
             <xs:attribute name="MaxResults" use="optional"
                 default="20">
                 <xs:annotation>
@@ -1467,6 +1431,11 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
+            <xs:attribute name="ProviderCode" type="common:typeProviderCode" use="optional">
+	            <xs:annotation>
+	               <xs:documentation>Provider Specific restriction(e.g. 1G, 1P etc) .</xs:documentation>
+	            </xs:annotation>
+	       </xs:attribute>
         </xs:complexType>
     </xs:element>
 
