@@ -4,11 +4,11 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://www.travelport.com/service/gdsQueue_v28_0"
-             xmlns:ns1="http://www.travelport.com/schema/gdsQueue_v28_0"
-             targetNamespace="http://www.travelport.com/service/gdsQueue_v28_0">
+             xmlns:tns="http://www.travelport.com/service/gdsQueue_v38_0"
+             xmlns:ns1="http://www.travelport.com/schema/gdsQueue_v38_0"
+             targetNamespace="http://www.travelport.com/service/gdsQueue_v38_0">
 
-    <import namespace="http://www.travelport.com/service/gdsQueue_v28_0"
+    <import namespace="http://www.travelport.com/service/gdsQueue_v38_0"
             location="GDSQueueAbstract.wsdl"/>
 
     <binding name="GdsQueueCountServiceBinding" type="tns:GdsQueueCountServicePortType">
@@ -114,7 +114,7 @@
         </operation>
     </binding>
 
-    <binding name="GdsClearQueueServiceBinding" type="tns:GdsClearQueueServicePortType">
+    <binding name="GdsQueueRemoveServiceBinding" type="tns:GdsQueueRemoveServicePortType">
         <soap:binding style="document"
                       transport="http://schemas.xmlsoap.org/soap/http"/>
         <operation name="service">
@@ -166,7 +166,7 @@
         <port name="GdsNextOnQueueServicePort" binding="tns:GdsNextOnQueueServiceBinding">
             <soap:address location="http://localhost:8080/kestrel/GdsQueueService"/>
         </port>
-        <port name="GdsClearQueueServicePort" binding="tns:GdsClearQueueServiceBinding">
+        <port name="GdsQueueRemoveServicePort" binding="tns:GdsQueueRemoveServiceBinding">
             <soap:address location="http://localhost:8080/kestrel/GdsQueueService"/>
         </port>
         <port name="GdsQueueAgentListServicePort" binding="tns:GdsQueueAgentListServiceBinding">
