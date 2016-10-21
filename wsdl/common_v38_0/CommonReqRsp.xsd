@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
-		   xmlns="http://www.travelport.com/schema/common_v18_0" 
+		   xmlns="http://www.travelport.com/schema/common_v38_0" 
            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-           targetNamespace="http://www.travelport.com/schema/common_v18_0" 
+           targetNamespace="http://www.travelport.com/schema/common_v38_0" 
            elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
@@ -11,7 +11,18 @@
     <xs:include schemaLocation="Common.xsd"/>
     
     <!--*** Request Types ***-->
-    <xs:complexType name="BaseReq">    	           
+     <xs:complexType name="BaseReq">    	           
+		<xs:complexContent>
+			<xs:extension base="BaseCoreReq">
+				<xs:sequence>
+					<xs:element ref="OverridePCC" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="RetrieveProviderReservationDetails" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="BaseCoreReq">    	           
         <xs:sequence>
         	<xs:element ref="BillingPointOfSaleInfo"/>
         	<xs:element ref="AgentIDOverride" minOccurs="0"  maxOccurs="unbounded"/>
@@ -43,6 +54,11 @@
                 <xs:documentation>Use to override the default logging level</xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="LanguageCode" type="xs:language" use="optional">
+            <xs:annotation>
+                <xs:documentation>ISO 639 two-character language codes are used to retrieve specific information in the requested language. For Rich Content and Branding, language codes ZH-HANT (Chinese Traditional), ZH-HANS (Chinese Simplified), FR-CA (French Canadian) and PT-BR (Portuguese Brazil) can also be used. For RCH, language codes ENGB, ENUS, DEDE, DECH can also be used. Only certain services support this attribute. Providers: ACH, RCH, 1G, 1V, 1P, 1J.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="BaseSearchReq">
         <xs:complexContent>
@@ -53,6 +69,18 @@
               </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+   <xs:complexType name="BaseCoreSearchReq">
+      <xs:annotation>
+         <xs:documentation>Base Request for Air Search</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="BaseCoreReq">
+            <xs:sequence>
+               <xs:element ref="NextResultReference" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>     
     <xs:complexType name="BaseSearchRsp">
         <xs:complexContent>
               <xs:extension base="BaseRsp">
@@ -112,8 +140,30 @@
                     <xs:element ref="CustomerID" minOccurs="0"/>
                     <xs:element ref="FileFinishingInfo" minOccurs="0"/>
                     <xs:element ref="CommissionRemark" minOccurs="0"/>
+                    <xs:element ref="ConsolidatorRemark" minOccurs="0"/>
                     <xs:element ref="InvoiceRemark" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="SSR" minOccurs="0" maxOccurs="unbounded" >
+                        <xs:annotation>
+                            <xs:documentation>SSR element outside Booking Traveler without any Segment Ref or Booking Traveler Ref.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element ref="EmailNotification" minOccurs="0" maxOccurs="1"/>
+                    <xs:element ref="QueuePlace" minOccurs="0" maxOccurs="1"> 
+                     <xs:annotation>
+                            <xs:documentation>Allow queue placement of a PNR at the time of booking in AirCreateReservationReq,HotelCreateReservationReq,PassiveCreateReservationReq and VehicleCreateReservationReq for providers 1G,1V,1P and 1J.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
                 </xs:sequence>
+                <xs:attribute name="RuleName" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>This attribute is meant to attach a mandatory custom check rule name to a PNR. A non-mandatory custom check rule too can be attached to a PNR.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                             <xs:maxLength value="10"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
                 <xs:attribute name="UniversalRecordLocatorCode" type="typeLocatorCode" use="optional">
                     <xs:annotation>
                         <xs:documentation>Which UniversalRecord should this new reservation be applied to.  If blank, then a new one is created.</xs:documentation>
@@ -161,4 +211,20 @@
             <xs:enumeration value="FATAL"/>
        </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="BaseCreateWithFormOfPaymentReq">
+      <xs:annotation>
+         <xs:documentation>Container for BaseCreateReservation along with Form Of Payment</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="BaseCreateReservationReq">
+            <xs:sequence>
+               <xs:element ref="FormOfPayment" minOccurs="0" maxOccurs="unbounded">
+                  <xs:annotation>
+                     <xs:documentation>Provider:1G,1V,1P,1J,ACH,SDK.</xs:documentation>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
 </xs:schema>
