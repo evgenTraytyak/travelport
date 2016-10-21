@@ -9,8 +9,8 @@ module Travelport::Request
 
     default_for :adults, 1
     default_for :rooms, 1
-    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v28_0'
-    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v28_0'
+    default_for :xmlns, 'http://www.travelport.com/schema/hotel_v38_0'
+    default_for :xmlns_common, 'http://www.travelport.com/schema/common_v38_0'
 
     validates_presence_of :location
     validates_presence_of :adults
