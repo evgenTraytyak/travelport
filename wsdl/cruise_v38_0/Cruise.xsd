@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2013 rel. 2 sp2 ( [[http://www.altova.com][http://www.altova.com]]) by Utsab Roy (Travelport) -->
-<xs:schema xmlns="http://www.travelport.com/schema/cruise_v28_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://www.travelport.com/schema/common_v28_0" xmlns:ns1="http://www.travelport.com/schema/cruise_v28_0" targetNamespace="http://www.travelport.com/schema/cruise_v28_0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns="http://www.travelport.com/schema/cruise_v38_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://www.travelport.com/schema/common_v38_0" xmlns:ns1="http://www.travelport.com/schema/cruise_v38_0" targetNamespace="http://www.travelport.com/schema/cruise_v38_0" elementFormDefault="qualified" attributeFormDefault="unqualified">
  <xs:annotation>
   <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
  </xs:annotation>
- <xs:import namespace="http://www.travelport.com/schema/common_v28_0" schemaLocation="../common_v28_0/Common.xsd"/>
+ <xs:import namespace="http://www.travelport.com/schema/common_v38_0" schemaLocation="../common_v38_0/Common.xsd"/>
 	<xs:element name="CruiseReservation">
 		<xs:annotation>
 			<xs:documentation>The parent container for all cruise booking data.</xs:documentation>
@@ -23,7 +23,6 @@
 						<xs:element ref="OptionalService" minOccurs="0" maxOccurs="unbounded" />
 						<xs:element ref="common:BookingTravelerRef" maxOccurs="unbounded" />
 						<xs:element ref="common:ProviderReservationInfoRef"	minOccurs="0" maxOccurs="1" />
-						<xs:element ref="common:FormOfPayment" minOccurs="0" maxOccurs="unbounded" />
 						<xs:element ref="common:Payment" minOccurs="0" maxOccurs="unbounded" />
 					</xs:sequence>
 				</xs:extension>
@@ -238,21 +237,39 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:attribute name="DepartureTime" type="xs:dateTime" use="optional">
+			<xs:attribute name="DepartureDate" type="xs:date" use="optional">
 				<xs:annotation>
-					<xs:documentation>The date and time at which this entity departs.
+					<xs:documentation>The date at which this entity departs.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="ArrivalTime" type="xs:dateTime" use="optional">
+			<xs:attribute name="DepartureTime" type="xs:time" use="optional">
 				<xs:annotation>
-					<xs:documentation>The date and time at which this entity arrives at
+					<xs:documentation>The  time at which this entity departs.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ArrivalDate" type="xs:date" use="optional">
+				<xs:annotation>
+					<xs:documentation>The date at which this entity arrives at
 						the destination.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="BoardingTime" type="xs:dateTime" use="optional">
+			<xs:attribute name="ArrivalTime" type="xs:time" use="optional">
 				<xs:annotation>
-					<xs:documentation>The date and time at which this passenger boards
+					<xs:documentation>The time at which this entity arrives at
+						the destination.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="BoardingDate" type="xs:date" use="optional">
+				<xs:annotation>
+					<xs:documentation>The date at which this passenger boards
+						the entity.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="BoardingTime" type="xs:time" use="optional">
+				<xs:annotation>
+					<xs:documentation>The time at which this passenger boards
 						the entity.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
@@ -294,7 +311,7 @@
 				</xs:element>
 				<xs:element ref="common:BookingTravelerRef" minOccurs="1" maxOccurs="5" />
 			</xs:sequence>
-			<xs:attribute name="Type" type="common:StringLength1" use="required">
+			<xs:attribute name="FeatureType" type="common:StringLength1" use="required">
 				<xs:annotation>
 					<xs:documentation>Type of Optional Service. F: Feature, O: Option
 					</xs:documentation>
@@ -306,13 +323,13 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="Count" type="xs:integer" use="optional">
+			<xs:attribute name="Quantity" type="xs:positiveInteger" use="optional">
 				<xs:annotation>
 					<xs:documentation>Number of Features/Options Requested.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="Identifier" type="common:StringLength1to10" use="optional">
+			<xs:attribute name="ProviderDefinedType" type="common:StringLength1to10" use="optional">
 				<xs:annotation>
 					<xs:documentation>Unique ID on vendors system</xs:documentation>
 				</xs:annotation>
@@ -350,20 +367,20 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="TotalAmount" type="common:typeMoney" use="optional">
+			<xs:attribute name="TotalPrice" type="common:typeMoney" use="optional">
 				<xs:annotation>
 					<xs:documentation>Feature/Option Price</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="TransportIndicator" type="xs:string" use="optional">
+			<xs:attribute name="TransportIndicator" type="xs:boolean" use="optional">
 				<xs:annotation>
-					<xs:documentation>Whether Features/ Options Affects Transportation
-						Indicator. Possible Vlaues : Y - This Feature or Option group
-						affects transportation
-						N - This Feature or Option group does not affect transportation.
+					<xs:documentation>Whether Features/ Options Affects
+						TransportationIndicator. True - This Feature or Option group affects
+						transportation
+						False - This Feature or Option group does not affect transportation.
 					</xs:documentation>
 				</xs:annotation>
-			</xs:attribute>
+         	</xs:attribute>
 			<xs:attribute name="AirCityIndicator" type="xs:boolean" use="optional">
 				<xs:annotation>
 					<xs:documentation>Feature/option is air or city dependent.
@@ -390,7 +407,7 @@
 						Examples:YVR</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="PickUpDateTime" type="xs:dateTime" use="optional">
+			<xs:attribute name="PickUpTime" type="xs:time" use="optional">
 				<xs:annotation>
 					<xs:documentation>PickUp Time</xs:documentation>
 				</xs:annotation>
@@ -419,7 +436,7 @@
 						Examples:YVR</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="ReturnDateTime" type="xs:dateTime" use="optional">
+			<xs:attribute name="ReturnTime" type="xs:time" use="optional">
 				<xs:annotation>
 					<xs:documentation>Return time</xs:documentation>
 				</xs:annotation>
@@ -464,7 +481,27 @@
 							<xs:documentation>Cruise Vendor Name.</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
-					<xs:attributeGroup ref="common:attrOrigDestDepatureInfo" />
+					<xs:attribute name="Origin" type="common:StringLength1to5" use="required">
+                        <xs:annotation>
+                            <xs:documentation>The location code for the origin of cruise segment.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="Destination" type="common:StringLength1to5" use="required">
+                        <xs:annotation>
+                            <xs:documentation>The location code for the destination of cruise segment.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="DepartureTime" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>The date and time at which this cruise segment departs from the origin.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="ArrivalTime" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>The date and time at which this cruise segment arrives at the destination.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+					
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -544,7 +581,7 @@
 					<xs:documentation>Length of stay</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="UnitOfStay" type="xs:integer" use="optional">
+			<xs:attribute name="UnitOfStay" type="xs:string" use="optional">
 				<xs:annotation>
 					<xs:documentation>Unit of duration of stay in Days or Night(Value -
 						Day/Night)</xs:documentation>
@@ -567,7 +604,7 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="OtherPartyConfNbr" type="common:StringLength1to16" use="optional">
+			<xs:attribute name="OtherPartyConfNbr" type="xs:integer" use="optional">
 				<xs:annotation>
 					<xs:documentation>Confirm number of the other parties travelling
 						with this party.</xs:documentation>
@@ -598,9 +635,15 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="CancellationTime" type="xs:string" use="optional">
+			<xs:attribute name="CancellationDate" type="xs:date" use="optional">
 				<xs:annotation>
-					<xs:documentation>The date and time at which the booking was
+					<xs:documentation>The date  at which the booking was
+						cancelled.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="CancellationTime" type="xs:time" use="optional">
+				<xs:annotation>
+					<xs:documentation>The time at which the booking was
 						cancelled.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
@@ -650,7 +693,7 @@
 			<xs:attribute name="SmokingIndicator" type="xs:boolean" use="optional">
 				<xs:annotation>
 					<xs:documentation>Whether user has specified his smoking
-						preference.Can be of the following values : Y' - Smoking' 'N' -
+						preference.Can be of the following values : true' - Smoking' 'false' -
 						Non-smoking
 					</xs:documentation>
 				</xs:annotation>
