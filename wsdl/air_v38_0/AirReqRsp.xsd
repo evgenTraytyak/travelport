@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
-        xmlns="http://www.travelport.com/schema/air_v28_0" 
+        xmlns="http://www.travelport.com/schema/air_v38_0" 
         xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-        targetNamespace="http://www.travelport.com/schema/air_v28_0"
-        xmlns:common="http://www.travelport.com/schema/common_v28_0"        
-        xmlns:rail="http://www.travelport.com/schema/rail_v28_0"
+        targetNamespace="http://www.travelport.com/schema/air_v38_0"
+        xmlns:common="http://www.travelport.com/schema/common_v38_0"        
+        xmlns:rail="http://www.travelport.com/schema/rail_v38_0"
 		elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:annotation>
         <xs:documentation>(c) Travelport GDS 2008 All rights reserved. Proprietary Information of Travelport GDS.</xs:documentation>
     </xs:annotation>
 
-    <xs:import schemaLocation="../common_v28_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v28_0"/>    
-    <xs:import schemaLocation="../rail_v28_0/Rail.xsd" namespace="http://www.travelport.com/schema/rail_v28_0"/>  
+    <xs:import schemaLocation="../common_v38_0/CommonReqRsp.xsd" namespace="http://www.travelport.com/schema/common_v38_0"/>    
+    <xs:import schemaLocation="../rail_v38_0/Rail.xsd" namespace="http://www.travelport.com/schema/rail_v38_0"/>  
     <xs:include schemaLocation="Air.xsd" />
 
     <xs:complexType name="AirBaseReq">
@@ -38,10 +38,10 @@
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="common:SearchPassenger" maxOccurs="18">
-				<xs:annotation>
-			                <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Maxinumber of passenger increased in to 18 to support 9 INF passenger along with 9 ADT,CHD,INS 					passenger</xs:documentation>
-			        </xs:annotation>
-			</xs:element>
+							<xs:annotation>
+					                <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Maxinumber of passenger increased in to 18 to support 9 INF passenger along with 9 ADT,CHD,INS 					passenger</xs:documentation>
+					        </xs:annotation>
+						</xs:element>
                         <xs:element ref="AirPricingCommand" maxOccurs="16" >
                             <xs:annotation>
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
@@ -49,7 +49,7 @@
                         </xs:element>
                         <xs:element ref="AirReservationLocatorCode" minOccurs="0" >
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Provider: ACH,1P,1J</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="OptionalServices" minOccurs="0">
@@ -64,9 +64,9 @@
                         </xs:element>
                         <xs:element ref="PCC" minOccurs="0"/>
                     </xs:sequence>
-                    <xs:attribute name="CheckOBFees" type="xs:boolean" use="optional" default="false">
+                    <xs:attribute name="CheckOBFees" type="xs:string" use="optional">
                         <xs:annotation>
-                            <xs:documentation>Provider: 1G,1V,1P,1J-It's a flag to return OB fees info or not in response.“OB” is the service “tax” code value specified for carrier “Ticketing Fees”.An OB fee applies to the electronic ticket transaction</xs:documentation>
+                             <xs:documentation>A flag to return fees for ticketing and for various forms of payment. The default is “TicketingOnly” and will return only ticketing fees.  The value “All” will return ticketing fees and the applicable form of payment fees for the form of payment information specified in the request.  “FOPOnly” will return the applicable form of payment fees for the form of payment information specified in the request. Form of payment fees are never included in the total unless specific card details are in the request.Provider notes:ACH - CheckOBFees is valid only for LowFareSearch.  The valid values are “All”, “TicketingOnly” and “None” and the default value is “None”. 1P/1J -The valid values are “All”, “None” and “TicketingOnly”.1G – All four values are supported.1V/RCH – CheckOBFees are not supported.” </xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                     <xs:attribute name="FareRuleType" type="typeFareRuleType" use="optional" default="none" >
@@ -74,7 +74,6 @@
                             <xs:documentation>Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="IgnoreAvailability" type="xs:boolean" use="optional" default="false" />
                     <xs:attribute name="SupplierCode" type="common:typeSupplierCode">
                         <xs:annotation>
                             <xs:documentation>Specifies the supplier/ vendor for vendor specific price requests</xs:documentation>
@@ -90,6 +89,22 @@
                     		<xs:documentation>To Include FlightDetails in Response set to “true” the Default value is “false”.</xs:documentation>
                     	</xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="ReturnMM" type="xs:boolean" use="optional" default="false">
+	               		<xs:annotation>
+	                  		<xs:documentation>If this attribute is set to “true”, Margin Manager processing will be invoked.</xs:documentation>
+	               		</xs:annotation>
+	            	</xs:attribute> 
+	            	<xs:attribute name="NSCC" use="optional">
+	            		<xs:annotation>
+	            			<xs:documentation>1 to 3 numeric that defines a Search Control Console filter.This attribute is used to override that filter.</xs:documentation>
+	            		</xs:annotation>
+	            		<xs:simpleType>
+	            			<xs:restriction base="xs:string">
+	            				<xs:minLength value="1"/>
+	            				<xs:maxLength value="3"/>
+	            			</xs:restriction>
+	            		</xs:simpleType>
+	            	</xs:attribute>                  
                 </xs:extension>
             </xs:complexContent>
      </xs:complexType>
@@ -185,16 +200,10 @@
                                 <xs:attribute name="Key" type="common:typeRef" use="required"/>
                             </xs:complexType>
                         </xs:element>
-                        <xs:element name="TicketingModifiersRef" minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="TicketingModifiersRef" type="typeTicketingModifiersRef" minOccurs="0" maxOccurs="unbounded">
                            <xs:annotation>
                               <xs:documentation>Provider: 1P,1J-Reference to a shared list of Ticketing Modifiers. This is supported for Worldspan and JAL providers only. When AirPricingInfoRef is used along with TicketingModifiersRef means that particular TicketingModifiers will to be applied while ticketing the Stored fare corresponding to the AirPricingInfo. Absence of AirPricingInfoRef means that particular TicketingModifiers will be applied to all Stored fares which are requested to be ticketed.</xs:documentation>
                            </xs:annotation>
-                           <xs:complexType>
-                              <xs:sequence>
-                                 <xs:element ref="AirPricingInfoRef" minOccurs="0" maxOccurs="unbounded"/>
-                              </xs:sequence>
-                              <xs:attribute name="Key" type="common:typeRef" use="required"/>
-                           </xs:complexType>
                         </xs:element>
                         <xs:element ref="WaiverCode" minOccurs="0" />
                         <xs:element ref="common:Commission" minOccurs="0" maxOccurs="18" />
@@ -255,25 +264,21 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-    <xs:element name="AirExchangeQuoteReq">
-        <xs:annotation>
-            <xs:documentation>Request to quote the exchange of an itinerary</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
+    
+    <xs:complexType name="BaseAirExchangeQuoteReq">
             <xs:complexContent>
-                <xs:extension base="common:BaseReq">
+                <xs:extension base="common:BaseCoreReq">
                     <xs:sequence>
-                        <xs:element ref="common:TicketNumber" minOccurs="0" maxOccurs="unbounded" />
-                        <xs:element name="TCRNumber" type="typeTCRNumber" minOccurs="0" maxOccurs="unbounded">
-                           <xs:annotation>
-                               <xs:documentation>Provider: ACH-The identifying number for a Ticketless Air Reservation</xs:documentation>
-                           </xs:annotation>
-                        </xs:element>  
-                        <xs:element ref="ExchangeAirSegment" maxOccurs="unbounded" >
+                    	<xs:element ref="common:TicketNumber" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="ProviderReservationInfo" minOccurs="1">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Provider: 1G/1V/1P/ACH - Represents a valid Provider Reservation/PNR whose itinerary is to be exchanged</xs:documentation>
                             </xs:annotation>
+                            <xs:complexType>
+                                <xs:attributeGroup ref="common:ProviderReservation" />
+                            </xs:complexType>
                         </xs:element>
+						<xs:element ref="AirPricingSolution" minOccurs="0" maxOccurs="2"/>
                         <xs:element ref="AirExchangeModifiers" minOccurs="0" >
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH.</xs:documentation>
@@ -294,6 +299,9 @@
                                 <xs:documentation>Provider: ACH-This would allow a user to see the fees if they are changing from one Form Of Payment to other .</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="RepricingModifiers" minOccurs="0" maxOccurs="1"/>
+                        <xs:element ref="OriginalItineraryDetails" minOccurs="0" maxOccurs="1"/>
+                        <xs:element ref="PCC" minOccurs="0" maxOccurs="1"/>
                     </xs:sequence>
                     <xs:attribute name="FareRuleType" type="typeFareRuleType" use="optional" default="none" >
                         <xs:annotation>
@@ -303,31 +311,38 @@
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
+    
+    <xs:element name="AirExchangeQuoteReq">
+        <xs:annotation>
+            <xs:documentation>Request to quote the exchange of an itinerary</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="BaseAirExchangeQuoteReq"/>
+            </xs:complexContent>
+        </xs:complexType>
     </xs:element>
+    
     <xs:element name="AirExchangeQuoteRsp">
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="common:BaseRsp">
                     <xs:sequence>
-                        <xs:element ref="AirPricingInfo" maxOccurs="unbounded" >
+                   	    <xs:element ref="common:TicketNumber" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element ref="AirPricingSolution" maxOccurs="unbounded" >
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Provider: 1G/1V/1P/1S/1A.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirSegment" maxOccurs="unbounded" >
+                        <xs:element ref="AirExchangeBundleTotal" minOccurs="0" maxOccurs="1" />
+                        <xs:element ref="AirExchangeBundle" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                        <xs:element ref="AirExchangeBundle" minOccurs="0" maxOccurs="9" />
-                        <xs:element ref="TCRExchangeBundle" minOccurs="0" maxOccurs="9" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Bundle exchange, pricing, and penalty information. Providers ACH/1G/1V/1P</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="common:HostToken" minOccurs="0" maxOccurs="unbounded" >
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Encrypted data from the host. Required to send the HostToken from the AirExchangeQuoteRsp in the AirExchangeReq. Providers ACH/1G/1V/1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="OptionalServices" minOccurs="0">
@@ -355,17 +370,18 @@
                     <xs:sequence>
                         <xs:element ref="AirReservationLocatorCode">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH-Identifies the PNR the new segments are going into</xs:documentation>
+                                <xs:documentation>Identifies the PNR locator code. Providers ACH/1G/1V/1P</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="common:TicketNumber" minOccurs="0" maxOccurs="unbounded" />
                         <xs:element ref="SpecificSeatAssignment" minOccurs="0" maxOccurs="unbounded" >
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Identifies the standard seat. Providers ACH/1G/1V/1P</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirPricingInfo" maxOccurs="unbounded" >
+                        <xs:element ref="AirPricingSolution" maxOccurs="unbounded" >
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Providers ACH/1G/1V/1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="AirExchangeModifiers" minOccurs="0" >
@@ -373,24 +389,19 @@
                                 <xs:documentation>Provider: ACH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirSegment" maxOccurs="unbounded" >
+                        <xs:element ref="AirExchangeBundleTotal" minOccurs="0" maxOccurs="1">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Provider: 1G/1V/1P/1S/1A.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="AirExchangeBundle" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                        <xs:element ref="TCRExchangeBundle" minOccurs="0" maxOccurs="unbounded">
-                            <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Bundle exchange, pricing, and penalty information. Providers ACH/1G/1V/1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="common:HostToken" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Encrypted data from the host. Required to send the HostToken from the AirExchangeQuoteRsp in the AirExchangeReq. Providers ACH/1G/1V/1P</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="OptionalServices" minOccurs="0">
@@ -400,7 +411,7 @@
                         </xs:element>
                         <xs:element ref="common:FormOfPayment" minOccurs="0">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH-Form of Payment for any Additional Collection charges for the Exchange. Most carriers will only allow refunds amounts to the original form of payment.</xs:documentation>
+                                <xs:documentation>Form of Payment for any additional collection charges for the Exchange. For ACH, most carriers will only allow refund amounts to the original form of payment. Providers ACH/1G/1V/1P</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="common:FormOfPaymentRef" minOccurs="0">
@@ -410,7 +421,7 @@
                         </xs:element>
                         <xs:element ref="common:SSRInfo" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Providers ACH, 1G, 1V, 1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                     </xs:sequence>
@@ -428,12 +439,13 @@
             <xs:complexContent>
                 <xs:extension base="common:BaseRsp">
                     <xs:sequence>
+                    	<xs:element ref="common:TicketNumber" minOccurs="0" maxOccurs="unbounded" />
                         <xs:element ref="common:BookingTraveler" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirReservation" minOccurs="0" >
+                        <xs:element name="AirReservation" type="typeAirReservationWithFOP" minOccurs="0" >
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH.</xs:documentation>
                             </xs:annotation>
@@ -443,6 +455,12 @@
                                 <xs:documentation>Provider: ACH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="AirExchangeBundleTotal" minOccurs="0" maxOccurs="1" />
+                        <xs:element ref="AirExchangeBundle" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>Bundle exchange, pricing, and penalty information. Providers ACH/1G/1V/1P</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -450,7 +468,7 @@
     </xs:element>
     <xs:element name="AirExchangeTicketingReq">
         <xs:annotation>
-            <xs:documentation>Request to ticket an exchanged itinerary</xs:documentation>
+            <xs:documentation>Request to ticket an exchanged itinerary. Providers 1G, 1V, 1P.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
@@ -458,23 +476,34 @@
                     <xs:sequence>
                         <xs:element ref="AirReservationLocatorCode">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH-Identifies the PNR to ticket</xs:documentation>
+                                <xs:documentation>Identifies the PNR to ticket. Providers 1G, 1V, 1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirExchangeTicketBundle" maxOccurs="unbounded" >
+                        <xs:element ref="common:TicketNumber">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Ticket number to reissue. Providers 1G, 1V, 1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="common:Commission" minOccurs="0" maxOccurs="27" >
+                        <xs:element name="TicketingModifiersRef" type="typeTicketingModifiersRef" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                              <xs:documentation>Provider: 1P-Reference to a shared list of Ticketing Modifiers. This is supported for Worldspan provider only. When AirPricingInfoRef is used along with TicketingModifiersRef means that particular TicketingModifiers will to be applied while ticketing the Stored fare corresponding to the AirPricingInfo. Absence of AirPricingInfoRef means that particular TicketingModifiers will be applied to all Stored fares which are requested to be ticketed.</xs:documentation>
+                           </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="WaiverCode" minOccurs="0" />
+                        <xs:element ref="DetailedBillingInformation" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
+                                <xs:documentation>Providers 1G, 1V, 1P.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="AirTicketingModifiers" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>Provider: 1G,1V,1P.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                     </xs:sequence>
                     <xs:attribute name="BulkTicket" type="xs:boolean" use="optional" default="false" >
                         <xs:annotation>
-                            <xs:documentation>Provider: ACH.</xs:documentation>
+                            <xs:documentation>Providers 1G, 1V, 1P.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                 </xs:extension>
@@ -482,21 +511,32 @@
         </xs:complexType>
     </xs:element>
     <xs:element name="AirExchangeTicketingRsp">
+        <xs:annotation>
+            <xs:documentation>Response to reissue a ticket.</xs:documentation>
+        </xs:annotation>
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="common:BaseRsp">
-                    <xs:sequence>
-                        <xs:element ref="ETR" minOccurs="0" maxOccurs="unbounded" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                        <xs:element ref="TicketFailureInfo" minOccurs="0" maxOccurs="unbounded" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: ACH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                    </xs:sequence>
+                	<xs:choice>
+                		<xs:element ref="AirSolutionChangedInfo" minOccurs="0" />
+                    	<xs:sequence>
+                        	<xs:element ref="ETR" minOccurs="0" maxOccurs="1" >
+                            	<xs:annotation>
+                                	<xs:documentation>Provider 1G, 1V, 1P.</xs:documentation>
+                            	</xs:annotation>
+                        	</xs:element>
+                        	<xs:element ref="TicketFailureInfo" minOccurs="0" maxOccurs="1" >
+                            	<xs:annotation>
+                                	<xs:documentation>Provider 1G, 1V, 1P.</xs:documentation>
+                            	</xs:annotation>
+                        	</xs:element>
+                        	<xs:element ref="DetailedBillingInformation" minOccurs="0" maxOccurs="1">
+                            	<xs:annotation>
+                                	<xs:documentation>Providers 1G, 1V, 1P.</xs:documentation>
+                            	</xs:annotation>
+                        	</xs:element>
+                    	</xs:sequence>
+                	</xs:choice>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -704,6 +744,33 @@
                             <xs:documentation>Provider: 1G,1V,1P,1J-Used to request unsaleable fares only also known as place of sale fares.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="ChannelId" use="optional">
+                    	<xs:annotation>
+                    		<xs:documentation>A Channel ID is 4 alpha-numeric characters used to activate the Search Control Console filter for a specific group of travelers being served by the agency credential.</xs:documentation>
+                    	</xs:annotation>
+                    	<xs:simpleType>
+                    		<xs:restriction base="xs:string">
+                    			<xs:minLength value="2"/>
+                    			<xs:maxLength value="4"/>
+                    		</xs:restriction>
+                    	</xs:simpleType>
+                    </xs:attribute>
+    				<xs:attribute name="NSCC" use="optional">
+				        <xs:annotation>
+				            <xs:documentation>1 to 3 numeric that define a Search Control Console filter.This attribute is used to override that filter.</xs:documentation>
+       					</xs:annotation>
+       					<xs:simpleType>
+    						<xs:restriction base="xs:string">
+       							 <xs:minLength value="1"/>
+        						 <xs:maxLength value="3"/>
+	    					</xs:restriction>
+						</xs:simpleType>
+    				</xs:attribute>
+                   <xs:attribute name="ReturnMM" type="xs:boolean" use="optional" default="false" >
+                        <xs:annotation>
+                            <xs:documentation>If this attribute is set to true, Margin Manager processing will be invoked.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -828,6 +895,7 @@
                                 <xs:documentation>Provider: 1G,1V,1P,1J.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="CO2Emissions" minOccurs="0" maxOccurs="99" />
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -848,19 +916,14 @@
                                 </xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirSegment" >
+                        <xs:element ref="AirSegment" minOccurs="0" maxOccurs="99">
                             <xs:annotation>
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="common:HostToken" minOccurs="0">
+                        <xs:element ref="common:HostToken" minOccurs="0" maxOccurs="99">
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH-Required if the carrier has multiple adapters.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                        <xs:element ref="BookingCode" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: 1G,1V,1P,1J,ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element ref="SearchTraveler" minOccurs="0"
@@ -874,12 +937,22 @@
                                 <xs:documentation>Provider: ACH,MCH-Required when seat price is requested.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="MerchandisingPricingModifiers" minOccurs="0" maxOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>Used to provide additional pricing options. Provider:ACH.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
-                    <xs:attribute name="ReturnSeatPricing" type="xs:boolean"
-                        use="optional" default="false">
+               		<xs:attribute name="ReturnSeatPricing" type="xs:boolean" use="required">
                         <xs:annotation>
                             <xs:documentation>Provider: 1G,1V,1P,1J,ACH-When set to true the price of the seat will be returned if it exists.</xs:documentation>
                         </xs:annotation>
+               		</xs:attribute>
+               		<xs:attribute name="ReturnBrandingInfo" type="xs:boolean" use="optional" default="false">
+                  		<xs:annotation>
+                     		<xs:documentation>A value of true will return the BrandingInfo block in the response if applicable. A value of false will not return the BrandingInfo block in the response. Providers: 1G, 1V, 1P, 1J, ACH 
+					 		</xs:documentation>
+                      	</xs:annotation>
                     </xs:attribute>
                 </xs:extension>
             </xs:complexContent>
@@ -890,17 +963,17 @@
             <xs:complexContent>
                 <xs:extension base="common:BaseRsp">
                     <xs:sequence>
-                        <xs:element ref="common:HostToken" minOccurs="0" >
+                         <xs:element ref="common:HostToken" minOccurs="0" maxOccurs="99">
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="common:CabinClass" >
+                        <xs:element ref="common:CabinClass" minOccurs="0" >
                             <xs:annotation>
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="AirSegment" minOccurs="0" >
+                        <xs:element ref="AirSegment" minOccurs="0" maxOccurs="99">
                             <xs:annotation>
                                 <xs:documentation>Provider: ACH,MCH.</xs:documentation>
                             </xs:annotation>
@@ -910,21 +983,29 @@
                                 <xs:documentation>Provider: ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                  		<xs:element ref="OptionalServices" minOccurs="0">
+                     		<xs:annotation>
+                        		<xs:documentation>A wrapper for all the information regarding each of the Optional Services.
+                                	Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
+                     		</xs:annotation>
+                	  	</xs:element>
                         <xs:element ref="common:Remark" minOccurs="0" >
                             <xs:annotation>
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH,MCH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="Row" minOccurs="0" maxOccurs="unbounded" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: 1G,1V,1P,1J,ACH,MCH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
+                  		<xs:element ref="Rows" minOccurs="0" maxOccurs="99"/>
                         <xs:element ref="common:PaymentRestriction" minOccurs="0" maxOccurs="unbounded" >
                             <xs:annotation>
                                 <xs:documentation>Provider: MCH-Information regarding valid payment types, if restrictions apply(supplier specific)</xs:documentation>
                             </xs:annotation>
                         </xs:element>                        
+                        <xs:element ref="SeatInformation" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="Copyright" type="xs:string" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Copyright text applicable for some seat content. Providers: 1G, 1V, 1P, 1J,ACH</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
                     <xs:attribute name="GroupSeatPrice" type="common:typeMoney">
                         <xs:annotation>
@@ -943,6 +1024,7 @@
         <xs:complexContent>
             <xs:extension base="common:BaseSearchReq">
                 <xs:sequence>
+                	<xs:element ref="common:PointOfCommencement" minOccurs="0" maxOccurs="1" />
                     <xs:choice>
                         <xs:element ref="SearchAirLeg" maxOccurs="16" />
                         <xs:element ref="SearchSpecificAirSegment" maxOccurs="unbounded" />
@@ -1013,6 +1095,7 @@
                         <xs:element ref="SearchSpecificAirSegment" maxOccurs="unbounded" />
                     </xs:choice>
                     <xs:element ref="AirSearchModifiers" minOccurs="0" />
+                    <xs:element ref="SplitTicketingSearch" minOccurs="0" maxOccurs="1"/>
                     <xs:element ref="JourneyData" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
@@ -1054,6 +1137,12 @@
                          </xs:annotation>
                     </xs:element>
                     <xs:element ref="PCC" minOccurs="0" />
+                    <xs:element ref="FareRulesFilterCategory" minOccurs="0"/>
+                     <xs:element ref="common:FormOfPayment" minOccurs="0" maxOccurs="99">
+                            <xs:annotation>
+                                <xs:documentation>Provider: 1P,1J</xs:documentation>
+                            </xs:annotation>
+                      </xs:element>
                 </xs:sequence>
                 <xs:attribute name="EnablePointToPointSearch" type="xs:boolean" use="optional" default="false">             
                     <xs:annotation>
@@ -1070,9 +1159,9 @@
                         <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Indicates the Maximum Number of Expert Solutions to be returned from the Knowledge Base for the provided search criteria</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="SolutionResult" type="xs:boolean" use="optional" default="true">
+                <xs:attribute name="SolutionResult" type="xs:boolean" use="optional" default="false">
                     <xs:annotation>
-                        <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Indicates whether the response will contain Solution result (AirPricingSolution) or Non Solution Result (AirPricingPoints). The default value is true. This attribute cannot be combined with EnablePointToPointSearch, EnablePointToPointAlternates and MaxNumberOfExpertSolutions.</xs:documentation>
+                        <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Indicates whether the response will contain Solution result (AirPricingSolution) or Non Solution Result (AirPricingPoints). The default value is false. This attribute cannot be combined with EnablePointToPointSearch, EnablePointToPointAlternates and MaxNumberOfExpertSolutions.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="PreferCompleteItinerary" type="xs:boolean" use="optional" default="true">
@@ -1091,6 +1180,52 @@
                 		</xs:restriction>
                 	</xs:simpleType>
                 </xs:attribute>
+                <xs:attribute name="ReturnUpsellFare" type="xs:boolean" use="optional" default="false">
+                   <xs:annotation>
+                       <xs:documentation>When set to “true”, Upsell information will be returned in the shop response. Provider supported : 1G, 1V, 1P, 1J</xs:documentation>
+                   </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="IncludeFareInfoMessages" type="xs:boolean" use="optional" default="false">
+			         <xs:annotation>
+			            <xs:documentation>Set to True to return FareInfoMessageList. Providers supported: 1G/1V/1P/1J</xs:documentation>
+			         </xs:annotation>
+      			</xs:attribute>
+      			<xs:attribute name="ReturnBrandedFares" type="xs:boolean" use="optional" default="true">
+			         <xs:annotation>
+			            <xs:documentation>When ReturnBrandedFares is set to “false”, Rich Content and Branding will not be returned in the shop response.  When ReturnBrandedFares it is set to “true” or is not sent, Rich Content and Branding will be returned in the shop response.  Provider: 1P/1J/ACH.</xs:documentation>
+			         </xs:annotation>
+      			</xs:attribute>
+      			<xs:attribute name="ReturnPolicyExclusion" type="xs:boolean">
+	               <xs:annotation>
+	                  <xs:documentation>This attributes allows user to flag the excluded policy options in the shop response.</xs:documentation>
+	               </xs:annotation>
+	            </xs:attribute>
+	            <xs:attribute name="MultiGDSSearch" type="xs:boolean" use="optional" default="false">
+	                <xs:annotation>
+	                	<xs:documentation>A "true" value indicates MultiGDSSearch. Specific provisioning is required.</xs:documentation>
+	                </xs:annotation>
+                </xs:attribute>
+	            <xs:attribute name="ReturnMM" type="xs:boolean" use="optional" default="false">
+	               <xs:annotation>
+	                  <xs:documentation>If this attribute is set to “true”, Margin Manager processing will be invoked.</xs:documentation>
+	               </xs:annotation>
+	            </xs:attribute>
+	            <xs:attribute name="CheckOBFees" type="xs:string" use="optional">
+                   <xs:annotation>
+                      <xs:documentation>A flag to return fees for ticketing and for various forms of payment. The default is “TicketingOnly” and will return only ticketing fees.  The value “All” will return ticketing fees and the applicable form of payment fees for the form of payment information specified in the request.  “FOPOnly” will return the applicable form of payment fees for the form of payment information specified in the request. Form of payment fees are never included in the total unless specific card details are in the request.Provider notes:ACH - CheckOBFees is valid only for LowFareSearch.  The valid values are “All”, “TicketingOnly” and “None” and the default value is “None”. 1P/1J -The valid values are “All”, “None” and “TicketingOnly”.1G – All four values are supported.1V/RCH – CheckOBFees are not supported.” </xs:documentation>
+                   </xs:annotation>
+                </xs:attribute>     
+	            <xs:attribute name="NSCC" use="optional">
+	            	<xs:annotation>
+	            		<xs:documentation>1 to 3 numeric that defines a Search Control Console filter.This attribute is used to override that filter.</xs:documentation>
+	            	</xs:annotation>
+	            	<xs:simpleType>
+	            		<xs:restriction base="xs:string">
+	            			<xs:minLength value="1"/>
+	            			<xs:maxLength value="3"/>
+	            		</xs:restriction>
+	            	</xs:simpleType>
+	            </xs:attribute>                
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -1106,10 +1241,11 @@
                     <xs:element ref="RouteList" minOccurs="0"/>
                     <xs:element ref="AlternateRouteList" minOccurs="0"/>
                     <xs:element ref="AlternateLocationDistanceList" minOccurs="0"/>
+                    <xs:element ref="FareInfoMessage" minOccurs="0" maxOccurs="99"/>
                     <xs:choice minOccurs="0">
                         <xs:element ref="AirPricingSolution" minOccurs="0" maxOccurs="unbounded"/>
                         <xs:element ref="AirPricePointList" minOccurs="0"/>
-                    </xs:choice>                    
+                    </xs:choice>                  
                     <xs:element ref="rail:RailSegmentList" minOccurs="0" />                    
                     <xs:element ref="rail:RailJourneyList" minOccurs="0"/>                    
                     <xs:element ref="rail:RailFareNoteList" minOccurs="0" />                    
@@ -1158,8 +1294,13 @@
                         <xs:annotation>
                             <xs:documentation>Provider: ACH.</xs:documentation>
                         </xs:annotation>
-                    </xs:element>
+                    	</xs:element>                    	
                     </xs:sequence>
+                    <xs:attribute name="ReturnBrandIndicator" type="xs:boolean" use="optional" default="false">
+                  		<xs:annotation>
+                     		<xs:documentation>When set to “true”, the Brand Indicator can be returned in the availability search response. Provider: 1G, 1V, 1P, 1J, ACH</xs:documentation>
+                  		</xs:annotation>
+               		</xs:attribute>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -1471,7 +1612,12 @@
                             <xs:annotation>
                                 <xs:documentation>Provider: 1G,1V,1P,1J-Will be optionally returned if there are duplicate ticket numbers.</xs:documentation>
                             </xs:annotation>
-                        </xs:element>   
+                        </xs:element> 
+                        <xs:element ref ="common:ServiceFeeInfo" minOccurs="0" maxOccurs="99">
+                        	<xs:annotation>
+                        		<xs:documentation>Provider: 1G,1V</xs:documentation>
+                        	</xs:annotation>
+                        </xs:element> 
                     </xs:sequence>
                     <xs:attribute name="UniversalRecordLocatorCode" type="common:typeLocatorCode" use="optional">
                         <xs:annotation>
@@ -1513,6 +1659,11 @@
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
+                        <xs:element ref="MerchandisingPricingModifiers" minOccurs="0" maxOccurs="1" >
+                            <xs:annotation>
+                                <xs:documentation>Used to provide additional pricing modifiers. Provider:ACH.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -1536,16 +1687,8 @@
                                 <xs:documentation>Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element ref="OptionalService" minOccurs="0" maxOccurs="unbounded" >
-                            <xs:annotation>
-                                <xs:documentation>Provider: 1G,1V,1P,1J,ACH.</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                        <xs:element name="OptionalServiceRules" type="common:ServiceRuleType" minOccurs="0" maxOccurs="unbounded">
-                            <xs:annotation>
-                                <xs:documentation>Provider: 1G,1V,1P,1J,ACH-Holds the rules for selecting the optional service in the itinerary</xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
+                        <xs:element ref="OptionalServices" minOccurs="0"/>
+						<xs:element ref="EmbargoList" minOccurs="0"/>
                     </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
@@ -1920,6 +2063,7 @@
 					<xs:choice>
 						<xs:element ref="MerchandisingDetails"/>
 						<xs:element ref="OptionalServiceModifiers"/>
+						<xs:element ref="MerchandisingAvailabilityDetails"/>
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -1936,6 +2080,16 @@
 					<xs:sequence>
 						<xs:element ref="OptionalServices" minOccurs="0"/>
 						<xs:element ref="Brand" minOccurs="0" maxOccurs="99"/>
+						<xs:element name="UnassociatedBookingCodeList" minOccurs="0">
+                     		<xs:annotation>
+                        		<xs:documentation>Lists classes of service by segment sent in the request which are not associated to a brand.</xs:documentation>
+                     		</xs:annotation>
+                     		<xs:complexType>
+                        		<xs:sequence>
+                           			<xs:element name="ApplicableSegment" type="typeApplicableSegment" minOccurs="0" maxOccurs="99"/>
+                        		</xs:sequence>
+                     		</xs:complexType>
+                  		</xs:element>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>

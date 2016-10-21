@@ -4,20 +4,25 @@
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://www.travelport.com/service/air_v36_0"
-             xmlns:ns1="http://www.travelport.com/schema/air_v36_0"
-             xmlns:common="http://www.travelport.com/schema/common_v36_0"
-             targetNamespace="http://www.travelport.com/service/air_v36_0">
-
+             xmlns:sc="http://www.travelport.com/soa/common/security/SessionContext_v1"
+             xmlns:tns="http://www.travelport.com/service/air_v38_0"
+             xmlns:ns1="http://www.travelport.com/schema/air_v38_0"
+             xmlns:common="http://www.travelport.com/schema/common_v38_0"
+             targetNamespace="http://www.travelport.com/service/air_v38_0">
+	<import namespace="http://www.travelport.com/soa/common/security/SessionContext_v1" location="../SessionContext_v1/SessionContext_v1.xsd"/>
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                targetNamespace="http://www.travelport.com/schema/air_v36_0">
+                targetNamespace="http://www.travelport.com/schema/air_v38_0">
             <include schemaLocation="AirReqRsp.xsd"/>
         </schema>
     </types>
-
+	
+	<message name="SessionContext">
+		<part name="sessionContext" element="sc:SessionContext"/>
+	</message>
+	
     <message name="AirLowFareSearchReq">
         <part name="parameters" element="ns1:LowFareSearchReq" />
     </message>
