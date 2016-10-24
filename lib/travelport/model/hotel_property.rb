@@ -3,7 +3,7 @@ class Travelport::Model::HotelProperty < Travelport::Model::Base
   attr_accessor :search_error,
                 :vendor_location,
                 :hotel_property,
-                :rate_info,
+                :rate_info
 
   class << self
 

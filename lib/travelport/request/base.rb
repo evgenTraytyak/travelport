@@ -35,6 +35,6 @@ module Travelport::Request
     def request_name
       self.class.name.split("::").last
     end
-  
+
   end
 end
