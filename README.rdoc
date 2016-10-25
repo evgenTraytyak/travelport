@@ -86,7 +86,7 @@ The Travelport::Bridge::Hotel provides direct access to core API methods. e.g.
     response = bridge.search_availability('NYC', { checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1})
     response.is_a?(Travelport::Response::HotelSearchAvailabilityRsp)
 
-    response = bridge.hotel_details('CP', '02743', { checkin:Time.new + 5.days, checkout:Time.new+10.days})
+    response = bridge.hotel_details('DS', 'NYCGP', { checkin:Time.new + 5.days, checkout:Time.new+10.days})
     response.is_a?(Travelport::Response::HotelDetailsRsp)
 
 
