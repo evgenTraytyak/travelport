@@ -2,7 +2,7 @@ require 'active_support/all'
 module Travelport::Model::AttributeMethods
   def attributes
     HashWithIndifferentAccess[instance_variables.map do |var|
-      [var.to_s.delete("@"), instance_variable_get(var)] unless instance_variable_get(var).nil?
+      [var.to_s.delete('@'), instance_variable_get(var)] unless instance_variable_get(var).nil?
     end.compact]
   end
 
@@ -10,13 +10,7 @@ module Travelport::Model::AttributeMethods
     new_hash = {}
 
     hash.each do |key, val|
-      if (val.is_a?(Hash))
-        updated_value = update_keys(val)
-      elsif (val.is_a?(Array))
-        updated_value = val.map{ |e| e.is_a?(Hash) ? update_keys(e) : e }
-      else
-        updated_value = val
-      end
+      updated_value = check_value(val)
 
       updated_key = key.to_s.delete('@').to_sym
 
@@ -30,7 +24,7 @@ module Travelport::Model::AttributeMethods
     hash.each do |key, val|
       attribute_setter = "#{key.to_s.delete('@')}=".to_sym
 
-      updated_value = val.is_a?(Hash) ? update_keys(val) : val
+      updated_value = check_value(val)
 
       if respond_to?(attribute_setter)
         send(attribute_setter, updated_value)
@@ -38,5 +32,16 @@ module Travelport::Model::AttributeMethods
         # unrecognised option
       end
     end
+  end
+
+  def check_value(val)
+    if val.is_a?(Hash)
+      updated_value = update_keys(val)
+    elsif val.is_a?(Array)
+      updated_value = val.map { |e| e.is_a?(Hash) ? update_keys(e) : e }
+    else
+      updated_value = val
+    end
+    updated_value
   end
 end
