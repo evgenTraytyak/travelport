@@ -62,7 +62,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'Checkin', 'Checkout', 'Travelers').update(xmlns: xmlns)
+      super.except('Xmlns', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers').update(xmlns: 'http://www.travelport.com/schema/universal_v38_0')
     end
   end
 end
