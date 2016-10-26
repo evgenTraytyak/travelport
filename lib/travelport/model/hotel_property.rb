@@ -6,9 +6,8 @@ class Travelport::Model::HotelProperty < Travelport::Model::Base
 
   class << self
     # Command: returns an array of HotelProperty matching the search criteria of +location+ and +options+.
-    def search_availability(location, options)
-      bridge.search_availability(location,
-                                 options).try(:hotel_search_results) || []
+    def search_availability(options)
+      bridge.search_availability(options).try(:hotel_search_results) || []
     end
 
     def bridge

@@ -6,7 +6,7 @@ describe Travelport::Bridge::Hotel do
 
   context 'general search query' do
     use_vcr_cassette
-    let(:query) { bridge.search_availability('NYC', { checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1}) }
+    let(:query) { bridge.search_availability({ location: 'NYC', checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1}) }
     subject { query }
     it { should be_a(Travelport::Response::HotelSearchAvailabilityRsp) }
     describe "#hotel_search_results" do

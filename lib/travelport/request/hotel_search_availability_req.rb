@@ -2,6 +2,7 @@ module Travelport::Request
   class HotelSearchAvailabilityReq < Base
 
     attr_accessor :location
+    attr_accessor :coordinates
     attr_accessor :adults
     attr_accessor :rooms
     attr_accessor :checkin
@@ -12,34 +13,38 @@ module Travelport::Request
     default_for :xmlns, 'http://www.travelport.com/schema/hotel_v38_0'
     default_for :xmlns_common, 'http://www.travelport.com/schema/common_v38_0'
 
-    validates_presence_of :location
+    validates :location, presence: true, if: "coordinates.blank?"
+    validates :coordinates, presence: true, if: "location.blank?"
     validates_presence_of :adults
 
     def request_body
       builder = Nokogiri::XML::Builder.new do |xml|
-        xml.root {
+        xml.root do
           xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
-          xml.HotelSearchLocation {
-            xml.HotelLocation('Location' => location)
-          }
-          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms) {
-            xml.BookingGuestInformation {
-              xml.Room {
+          xml.HotelSearchLocation do
+            xml.HotelLocation('Location' => location) if location
+            xml.CoordinateLocation('latitude' => coordinates[:latitude],
+                                   'longitude' => coordinates[:longitude],
+                                   'xmlns' => xmlns_common) if coordinates
+          end
+          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms) do
+            xml.BookingGuestInformation do
+              xml.Room do
                 xml.Adults adults
-              }
-            }
-          }
-          xml.HotelStay {
+              end
+            end
+          end
+          xml.HotelStay do
             xml.CheckinDate checkin.strftime("%Y-%m-%d")
             xml.CheckoutDate checkout.strftime("%Y-%m-%d")
-          }
-        }
+          end
+        end
       end
       builder.doc.root.children.to_xml
     end
 
     def request_attributes
-      super.except('Xmlns', 'Location', 'Adults', 'Rooms', 'Checkin', 'Checkout').update(:xmlns => xmlns)
+      super.except('Xmlns', 'Location', 'Coordinates', 'Adults', 'Rooms', 'Checkin', 'Checkout').update(:xmlns => xmlns)
     end
   end
 end

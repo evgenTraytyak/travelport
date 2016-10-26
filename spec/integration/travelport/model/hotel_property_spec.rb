@@ -5,7 +5,7 @@ describe Travelport::Model::HotelProperty do
 
   describe "##search_availability" do
     use_vcr_cassette
-    let(:query) { model_class.search_availability('NYC', { checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1}) }
+    let(:query) { model_class.search_availability({ location: 'NYC', checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1}) }
     subject { query }
     it { should be_an(Array) }
     its(:first) { should be_a(Travelport::Model::HotelProperty) }
