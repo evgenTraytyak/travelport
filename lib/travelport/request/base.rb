@@ -27,14 +27,13 @@ module Travelport::Request
     end
 
     def request_attributes
-      Hash[attributes.except(:agent_id_override, :errors, :billing_point_of_sale,:xmlns_common).map do |key, value|
+      Hash[attributes.except(:agent_id_override, :errors, :billing_point_of_sale, :xmlns_common).map do |key, value|
         [key.to_s.camelize, value]
       end]
     end
 
     def request_name
-      self.class.name.split("::").last
+      self.class.name.split('::').last
     end
-
   end
 end
