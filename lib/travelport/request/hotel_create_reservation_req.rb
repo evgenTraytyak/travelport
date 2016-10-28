@@ -68,7 +68,11 @@ module Travelport::Request
             xml.CheckoutDate checkout.strftime('%Y-%m-%d')
           end
 
-          xml.Guarantee('xmlns' => xmlns_common, 'Type' => 'Guarantee')
+          xml.Guarantee('xmlns' => xmlns_common, 'Type' => 'Guarantee') do
+            xml.CreditCard('BankCountryCode' => 'US', 'BankName' => 'USB',
+                           'ExpDate' => '2016-12', 'Type' => 'VI',
+                           'Number' => '4012888888881881')
+          end
 
           xml.GuestInformation('xmlns' => xmlns_hotel, 'NumberOfRooms' => rooms) do
             xml.NumberOfAdults adults
