@@ -59,11 +59,12 @@ To configure production settings, use the setup block:
 
 The Travelport::Model::HotelProperty class provides a somewhat sane interface for discovering hotels.
 
-    response = Travelport::Model::HotelProperty.search_availability('NYC', { checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1})
+    # find by IATA code
+    response = Travelport::Model::HotelProperty.search_availability({ location: 'NYC', checkin: Time.new + 5.days, checkout: Time.new+10.days, adults: 1, rooms: 1})
     # response is an array of Travelport::Model::HotelProperty
 
     response.each do |property|
-      rates = property.rates({ checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1})
+      rates = property.rates({ checkin: Time.new + 5.days, checkout: Time.new+10.days, adults: 1})
       # rates is an array of Travelport::Model::HotelRate
     end
 
@@ -83,7 +84,8 @@ The Travelport::Bridge::Hotel provides direct access to core API methods. e.g.
 
     bridge = Travelport::Bridge::Hotel.new
 
-    response = bridge.search_availability('NYC', { checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1})
+    # find by coordinates
+    response = bridge.search_availability({ coordinates: { latitude: 52.4411761, longitude: 30.987846200000035 }, checkin:Time.new + 5.days, checkout:Time.new+10.days, adults:1, rooms:1})
     response.is_a?(Travelport::Response::HotelSearchAvailabilityRsp)
 
     response = bridge.hotel_details('DS', 'NYCGP', { checkin:Time.new + 5.days, checkout:Time.new+10.days})
