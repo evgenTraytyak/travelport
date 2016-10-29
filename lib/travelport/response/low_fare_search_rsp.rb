@@ -1,17 +1,17 @@
 module Travelport::Response
-	class LowFareSearchRsp < Base
-
+  class LowFareSearchRsp < Base
     attr_accessor :flight_details_list
     attr_accessor :air_segment_list
     attr_accessor :fare_info_list
-    attr_accessor :pricing_solutions
+    # attr_accessor :route_list
+    attr_accessor :air_price_point_list
 
     def process
       process_raw_flight_details_list(raw_content[:flight_details_list])
       process_raw_air_segment_list(raw_content[:air_segment_list])
       process_raw_fare_info_list(raw_content[:fare_info_list])
       process_raw_route_list(raw_content[:route_list])
-      process_raw_air_pricing_solution(raw_content[:air_pricing_solution])
+      process_raw_air_pricing_solution(raw_content[:air_price_point_list])
     end
 
     def process_raw_flight_details_list(list)
@@ -38,12 +38,11 @@ module Travelport::Response
     def process_raw_route_list(list)
     end
 
-    def process_raw_air_pricing_solution(pricing_solutions)
-      array = pricing_solutions.is_a?(Array) ? pricing_solutions : [pricing_solutions]
-      self.pricing_solutions = Hash[array.map do |pricing_solution|
-        [pricing_solution[:@key], Travelport::Model::PricingSolution.new(pricing_solution)]
+    def process_raw_air_pricing_solution(list)
+      array = list[:air_price_point].is_a?(Array) ? list[:air_price_point] : [list[:air_price_point]]
+      self.air_price_point_list = Hash[array.map do |air_price_point|
+        [air_price_point[:@key], Travelport::Model::PricingSolution.new(air_price_point)]
       end]
     end
-
-	end
+  end
 end
