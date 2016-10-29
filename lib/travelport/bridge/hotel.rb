@@ -11,6 +11,14 @@ module Travelport::Bridge
       Travelport::Response::HotelSearchAvailabilityRsp.new(send_request(req))
     end
 
+    def hotel_media_links(chain_code, property_id)
+      req = Travelport::Request::HotelMediaLinksReq.new do |obj|
+        obj.chain_code = chain_code
+        obj.property_id = property_id
+      end
+      Travelport::Response::HotelMediaLinksRsp.new(send_request(req))
+    end
+
     def hotel_details(chain_code, property_id, options)
       options.assert_valid_keys(:availability, :adults, :rate_rule,
                                 :rate_category, :checkin, :checkout)
