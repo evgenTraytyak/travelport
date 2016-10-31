@@ -7,9 +7,13 @@ module Travelport::Request
     attr_accessor :rooms
     attr_accessor :checkin
     attr_accessor :checkout
+    attr_accessor :available_only
+    attr_accessor :provider_code
 
     default_for :adults, 1
     default_for :rooms, 1
+    default_for :available_only, true
+    default_for :provider_code, '1P'
     default_for :xmlns, 'http://www.travelport.com/schema/hotel_v38_0'
     default_for :xmlns_common, 'http://www.travelport.com/schema/common_v38_0'
 
@@ -27,7 +31,10 @@ module Travelport::Request
                                    'longitude' => coordinates[:longitude],
                                    'xmlns' => xmlns_common) if coordinates
           end
-          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms) do
+          xml.HotelSearchModifiers('NumberOfAdults' => adults, 'NumberOfRooms' => rooms, 'AvailableHotelsOnly' => available_only) do
+            xml.PermittedProviders('xmlns' => xmlns_common) do
+              xml.Provider('Code' => provider_code)
+            end
             xml.BookingGuestInformation do
               xml.Room do
                 xml.Adults adults
@@ -44,7 +51,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'Location', 'Coordinates', 'Adults', 'Rooms', 'Checkin', 'Checkout').update(:xmlns => xmlns)
+      super.except('Xmlns', 'Location', 'Coordinates', 'Adults', 'Rooms', 'Checkin', 'Checkout', 'AvailableOnly', 'ProviderCode').update(:xmlns => xmlns)
     end
   end
 end
