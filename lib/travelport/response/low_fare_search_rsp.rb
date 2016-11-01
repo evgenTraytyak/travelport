@@ -23,9 +23,9 @@ module Travelport::Response
 
     def process_raw_air_segment_list(list)
       array = list[:air_segment].is_a?(Array) ? list[:air_segment] : [list[:air_segment]]
-      self.air_segment_list = Hash[array.map do |air_segment|
-        [air_segment[:@key], Travelport::Model::AirSegment.new(air_segment)]
-      end]
+      self.air_segment_list = array.map do |air_segment|
+        Travelport::Model::AirSegment.new(air_segment)
+      end
     end
 
     def process_raw_fare_info_list(list)
