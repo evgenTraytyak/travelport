@@ -28,7 +28,18 @@ module Travelport::Bridge
         options.each { |k, v| obj.send("#{k}=", v) }
       end
       # Travelport::Response::VehicleLocationDetailRsp.new(send_request(req))
-      send_request(req)      
+      send_request(req)
+    end
+
+    def book_vehicle(vehicle, vehicle_date_location, number_of_periods, travelers)
+      req = Travelport::Request::VehicleCreateReservationReq.new do |obj|
+        obj.vehicle = vehicle
+        obj.vehicle_date_location = vehicle_date_location
+        obj.number_of_periods = number_of_periods
+        obj.travelers = travelers
+      end
+      #Travelport::Response::VehicleCreateReservationRsp.new(send_request(req))
+      send_request(req)
     end
   end
 end
