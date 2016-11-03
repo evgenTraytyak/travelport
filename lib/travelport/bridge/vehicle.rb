@@ -8,22 +8,23 @@ module Travelport::Bridge
       req = Travelport::Request::VehicleSearchAvailabilityReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
-      # Travelport::Response::VehicleSearchAvailabilityRsp.new(send_request(req))
-      send_request(req)
+      Travelport::Response::VehicleSearchAvailabilityRsp.new(send_request(req))
     end
 
-    def vehicle_media_links(vehicle, location)
+    def vehicle_media_links(options)
+      options.assert_valid_keys(:location, :vendor_code, :category,
+                                :air_conditioning, :vehicle_class,
+                                :door_count, :transmission_type)
       req = Travelport::Request::VehicleMediaLinksReq.new do |obj|
-        obj.vehicle = vehicle
-        obj.location = location
+        options.each { |k, v| obj.send("#{k}=", v) }
       end
       # Travelport::Response::VehicleMediaLinksRsp.new(send_request(req))
       send_request(req)
     end
 
     def vehicle_location_detail(options)
-      options.assert_valid_keys(:location, :pickup_date, :return_date,
-                                :vendor_code, :vendor_location_id, :provider_code)
+      options.assert_valid_keys(:location, :pickup_date, :vendor_location_id,
+                                :vendor_code, :return_date, :provider_code)
       req = Travelport::Request::VehicleLocationDetailReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
