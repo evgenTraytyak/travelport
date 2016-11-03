@@ -17,20 +17,20 @@ module Travelport::Request
           xml.AirItinerary do
             air_segment_list.each do |value|
               xml.AirSegment('ProviderCode' => provider_code,
-                             'Key' => value.key,
-                             'OptionalServicesIndicator' => value.optional_services_indicator,
-                             'Group' => value.group,
-                             'Equipment' => value.equipment,
-                             'ETicketability' => value.e_ticketability,
-                             'FlightNumber' => value.flight_number,
-                             'Carrier' => value.carrier,
-                             'ChangeOfPlane' => value.change_of_plane,
-                             'FlightTime' => value.flight_time,
-                             'DepartureTime' => value.departure_time,
-                             'ArrivalTime' => value.arrival_time,
-                             'Destination' => value.destination,
-                             'Distance' => value.distance,
-                             'Origin' => value.origin)
+                             'Key' => value[:key],
+                             'OptionalServicesIndicator' => value[:optional_services_indicator],
+                             'Group' => value[:group],
+                             'Equipment' => value[:equipment],
+                             'ETicketability' => value[:e_ticketability],
+                             'FlightNumber' => value[:flight_number],
+                             'Carrier' => value[:carrier],
+                             'ChangeOfPlane' => value[:change_of_plane],
+                             'FlightTime' => value[:flight_time],
+                             'DepartureTime' => value[:departure_time],
+                             'ArrivalTime' => value[:arrival_time],
+                             'Destination' => value[:destination],
+                             'Distance' => value[:distance],
+                             'Origin' => value[:origin])
             end
           end
           adults.times { xml.SearchPassenger('Code' => 'ADT', 'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==', 'xmlns' => xmlns_common) }
