@@ -33,9 +33,23 @@ module Travelport::Request
                              'Origin' => value[:origin])
             end
           end
-          adults.times { xml.SearchPassenger('Code' => 'ADT', 'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==', 'xmlns' => xmlns_common) }
-          children.times { xml.SearchPassenger('Code' => 'CNN', 'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==', 'Age' => 10, 'xmlns' => xmlns_common) }
-          infants.times { xml.SearchPassenger('Code' => 'INF', 'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==', 'Age' => 1, 'xmlns' => xmlns_common) }
+          adults.times { xml.SearchPassenger(
+              'Code' => 'ADT',
+              'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==',
+              'xmlns' => xmlns_common
+          )} if adults.present?
+          children.times { xml.SearchPassenger(
+              'Code' => 'CNN',
+              'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==',
+              'Age' => 10,
+              'xmlns' => xmlns_common
+          )} if children.present?
+          infants.times { xml.SearchPassenger(
+              'Code' => 'INF',
+              'BookingTravelerRef' => 'gr8AVWGCR064r57Jt0+8bA==',
+              'Age' => 1,
+              'xmlns' => xmlns_common
+          )} if infants.present?
           xml.AirPricingCommand
         end
       end
