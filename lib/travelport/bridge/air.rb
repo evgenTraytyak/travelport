@@ -26,8 +26,7 @@ module Travelport::Bridge
         obj.infants = options[:infants]
         obj.provider_code = options[:provider_code]
       end
-      # Travelport::Response::AirPriceRsp.new(send_request(req))
-      send_request(req)
+      Travelport::Response::AirPriceRsp.new(send_request(req))
     end
 
     def book(price, travelers)
