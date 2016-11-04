@@ -16,8 +16,12 @@ module Travelport::Model
       @total_price = to_price(price)
     end
 
-    def base_price(price)
+    def base_price=(price)
       @base_price = to_price(price)
+    end
+
+    def taxes=(price)
+      @taxes = to_price(price)
     end
 
     def approximate_total_price=(price)

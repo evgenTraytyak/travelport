@@ -1,6 +1,5 @@
 module Travelport::Model
   class AirSegment < Base
-
     attr_accessor :air_avail_info,
                   :flight_details_ref,
                   :key,
@@ -25,14 +24,6 @@ module Travelport::Model
                   :availability_source,
                   :codeshare_info,
                   :plating_carrier
-
-    def departure_time=(time)
-      @departure_time = time.to_time
-    end
-
-    def arrival_time=(time)
-      @arrival_time = time.to_time
-    end
 
     def flight_details_ref=(ref)
       @flight_details_ref = ref[:@key]
