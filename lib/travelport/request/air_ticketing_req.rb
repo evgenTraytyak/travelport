@@ -11,7 +11,7 @@ module Travelport::Request
         xml.root do
           xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
           xml.AirReservationLocatorCode book[:air_create_reservation_rsp][:universal_record][:air_reservation][:@locator_code]
-          xml.AirPricingInfoRef('Key' => book[:air_create_reservation_rsp][:universal_record][:provider_reservation_info][:@key])
+          xml.AirPricingInfoRef('Key' => book[:air_create_reservation_rsp][:universal_record][:air_reservation][:air_pricing_info][:@key])
           
           # air_price_rsp = price[:air_price_rsp]
           # air_price_result = air_price_rsp[:air_price_result]
