@@ -10,7 +10,9 @@ module Travelport::Model
                   :approximate_total_price,
                   :approximate_base_price,
                   :equivalent_base_price,
-                  :taxes
+                  :taxes,
+                  :host_token,
+                  :fare_note
 
     def total_price=(price)
       @total_price = to_price(price)

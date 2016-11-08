@@ -23,7 +23,8 @@ module Travelport::Model
                   :optional_services_indicator,
                   :availability_source,
                   :codeshare_info,
-                  :plating_carrier
+                  :plating_carrier,
+                  :provider_code
 
     def flight_details_ref=(ref)
       @flight_details_ref = ref[:@key]
