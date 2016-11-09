@@ -4,6 +4,7 @@ module Travelport::Request
     attr_accessor :location
     attr_accessor :coordinates
     attr_accessor :adults
+    attr_accessor :children
     attr_accessor :rooms
     attr_accessor :checkin
     attr_accessor :checkout
@@ -11,6 +12,7 @@ module Travelport::Request
     attr_accessor :provider_code
 
     default_for :adults, 1
+    default_for :children, 0
     default_for :rooms, 1
     default_for :available_only, true
     default_for :provider_code, '1P'
@@ -35,6 +37,7 @@ module Travelport::Request
             xml.PermittedProviders('xmlns' => xmlns_common) do
               xml.Provider('Code' => provider_code)
             end
+            xml.NumberOfChildren('Count' => children)
             xml.BookingGuestInformation do
               xml.Room do
                 xml.Adults adults
