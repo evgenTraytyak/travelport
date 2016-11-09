@@ -4,7 +4,7 @@ module Travelport::Bridge
     default_for :document, 'hotel_v38_0/Hotel.wsdl'
 
     def search_availability(options)
-      options.assert_valid_keys(:location, :coordinates, :adults, :rooms, :checkin, :checkout)
+      options.assert_valid_keys(:location, :coordinates, :adults, :children, :rooms, :checkin, :checkout)
       req = Travelport::Request::HotelSearchAvailabilityReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
