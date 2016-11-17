@@ -1,6 +1,6 @@
 module Travelport::Model
   class FareInfo < Base
-    
+
     attr_accessor :baggage_allowance,
                   :fare_rule_key,
                   :key,
@@ -16,5 +16,8 @@ module Travelport::Model
                   :not_valid_before,
                   :not_valid_after
 
+      def amount=(price)
+        @amount = to_price(price)
+      end
   end
 end
