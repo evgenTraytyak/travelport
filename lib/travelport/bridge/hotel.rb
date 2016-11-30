@@ -30,9 +30,10 @@ module Travelport::Bridge
       Travelport::Response::HotelDetailsRsp.new(send_request(req))
     end
 
-    def book_hotel(travelers, hotel, options)
+    def book_hotel(travelers, hotel, credit_card, options)
       options.assert_valid_keys(:rooms, :adults, :checkin, :checkout)
       req = Travelport::Request::HotelCreateReservationReq.new do |obj|
+        obj.credit_card = credit_card
         obj.travelers = travelers
         obj.hotel = hotel
         options.each { |k, v| obj.send("#{k}=", v) }
