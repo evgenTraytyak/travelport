@@ -6,6 +6,7 @@ module Travelport::Request
     attr_accessor :checkout
     attr_accessor :adults
     attr_accessor :rooms
+    attr_accessor :rate_plan_type
 
     attr_accessor :xmlns_hotel
 
@@ -53,7 +54,7 @@ module Travelport::Request
           #   end
           # end
 
-          xml.HotelRateDetail('xmlns' => xmlns_hotel, 'RatePlanType' => hotel.hotel_rate_detail.first[:rate_plan_type])
+          xml.HotelRateDetail('xmlns' => xmlns_hotel, 'RatePlanType' => rate_plan_type)
 
           xml.HotelProperty('xmlns' => xmlns_hotel, 'HotelChain' => hotel.hotel_property[:hotel_chain], 'HotelCode' => hotel.hotel_property[:hotel_code]) do
             xml.PropertyAddress do
@@ -85,7 +86,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers').update(xmlns: xmlns)
+      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers', 'RatePlanType').update(xmlns: xmlns)
     end
   end
 end
