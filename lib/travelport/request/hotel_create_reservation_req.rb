@@ -56,13 +56,7 @@ module Travelport::Request
 
           xml.HotelRateDetail('xmlns' => xmlns_hotel, 'RatePlanType' => rate_plan_type)
 
-          xml.HotelProperty('xmlns' => xmlns_hotel, 'HotelChain' => hotel.hotel_property[:hotel_chain], 'HotelCode' => hotel.hotel_property[:hotel_code]) do
-            xml.PropertyAddress do
-              hotel.hotel_property[:property_address][:address].each do |address|
-                xml.Address address
-              end
-            end
-          end
+          xml.HotelProperty('xmlns' => xmlns_hotel, 'HotelChain' => hotel.hotel_property[:hotel_chain], 'HotelCode' => hotel.hotel_property[:hotel_code])
 
           xml.HotelStay('xmlns' => xmlns_hotel) do
             xml.CheckinDate checkin.strftime('%Y-%m-%d')
