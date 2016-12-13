@@ -2,6 +2,7 @@ module Travelport::Request
   class HotelCreateReservationReq < Base
     attr_accessor :hotel
     attr_accessor :travelers
+    attr_accessor :card
     attr_accessor :checkin
     attr_accessor :checkout
     attr_accessor :adults
@@ -64,9 +65,7 @@ module Travelport::Request
           end
 
           xml.Guarantee('xmlns' => xmlns_common, 'Type' => 'Guarantee') do
-            xml.CreditCard('BankCountryCode' => 'US', 'BankName' => 'USB',
-                           'ExpDate' => '2016-12', 'Type' => 'VI',
-                           'Number' => '4012888888881881')
+            xml.CreditCard('CVV' => card['cvv'], 'ExpDate' => card['expiration_date'], 'Number' => card['number'], 'Name' => card['name'])
           end
 
           xml.GuestInformation('xmlns' => xmlns_hotel, 'NumberOfRooms' => rooms) do
@@ -80,7 +79,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers', 'RatePlanType').update(xmlns: xmlns)
+      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers', 'Card', 'RatePlanType').update(xmlns: xmlns)
     end
   end
 end

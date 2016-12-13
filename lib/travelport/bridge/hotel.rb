@@ -31,7 +31,7 @@ module Travelport::Bridge
     end
 
     def book_hotel(travelers, hotel, options)
-      options.assert_valid_keys(:rooms, :adults, :checkin, :checkout, :rate_plan_type)
+      options.assert_valid_keys(:rooms, :adults, :checkin, :checkout, :rate_plan_type, :card)
       req = Travelport::Request::HotelCreateReservationReq.new do |obj|
         obj.travelers = travelers
         obj.hotel = hotel
