@@ -22,7 +22,7 @@ module Travelport::Request
           travelers.each_with_index do |traveler, idx|
             xml.BookingTraveler('xmlns' => xmlns_common,
                                 'Key' => idx,
-                                'TravelerType' => traveler['type'],
+                                'TravelerType' => traveler['traveler_type'],
                                 'Gender' => traveler['gender']) do
               xml.BookingTravelerName('First' => traveler['first_name'],
                                       'Last' => traveler['last_name'],
@@ -30,13 +30,13 @@ module Travelport::Request
               xml.PhoneNumber('Number' => traveler['phone']) if traveler['phone']
               xml.Email('EmailID' => traveler['email']) if traveler['email']
               xml.Address do
-                xml.AddressName traveler['address']['address_name']
-                xml.Street traveler['address']['street']
-                xml.City traveler['address']['city']
-                xml.State traveler['address']['state']
-                xml.PostalCode traveler['address']['postal_code']
-                xml.Country traveler['address']['country']
-              end if traveler['address']
+                xml.AddressName traveler['address_name']
+                xml.Street traveler['street']
+                xml.City traveler['city']
+                xml.State traveler['state']
+                xml.PostalCode traveler['postal_code']
+                xml.Country traveler['country']
+              end if traveler
             end
           end
 
