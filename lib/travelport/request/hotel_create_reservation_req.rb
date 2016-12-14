@@ -65,7 +65,7 @@ module Travelport::Request
           end
 
           xml.Guarantee('xmlns' => xmlns_common, 'Type' => 'Guarantee') do
-            xml.CreditCard('CVV' => card['cvv'], 'ExpDate' => card['expiration_date'], 'Number' => card['number'], 'Name' => card['name'], 'Type' => 'VI')
+            xml.CreditCard('CVV' => card['cvv'], 'ExpDate' => card['expiration_date'], 'Number' => card['number'], 'Name' => card['name'], 'Type' => card['type'])
           end
 
           xml.GuestInformation('xmlns' => xmlns_hotel, 'NumberOfRooms' => rooms) do
