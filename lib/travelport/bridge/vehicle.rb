@@ -4,7 +4,7 @@ module Travelport::Bridge
     default_for :document, 'vehicle_v38_0/Vehicle.wsdl'
     
     def search_availability(options)
-      options.assert_valid_keys(:location, :pickup_date, :return_date)
+      options.assert_valid_keys(:pickup_location, :return_location, :pickup_date, :return_date)
       req = Travelport::Request::VehicleSearchAvailabilityReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
@@ -12,24 +12,24 @@ module Travelport::Bridge
     end
 
     def vehicle_media_links(options)
-      options.assert_valid_keys(:location, :vendor_code, :category,
+      options.assert_valid_keys(:pickup_location, :vendor_code, :category,
                                 :air_conditioning, :vehicle_class,
                                 :door_count, :transmission_type)
       req = Travelport::Request::VehicleMediaLinksReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
-      # Travelport::Response::VehicleMediaLinksRsp.new(send_request(req))
-      send_request(req)
+      Travelport::Response::VehicleMediaLinksRsp.new(send_request(req))
     end
 
     def vehicle_location_detail(options)
-      options.assert_valid_keys(:location, :pickup_date, :vendor_location_id,
-                                :vendor_code, :return_date, :provider_code)
+      options.assert_valid_keys(:pickup_location, :return_location,
+                                :pickup_date, :return_date,
+                                :vendor_location_id, :vendor_code,
+                                :provider_code)
       req = Travelport::Request::VehicleLocationDetailReq.new do |obj|
         options.each { |k, v| obj.send("#{k}=", v) }
       end
-      # Travelport::Response::VehicleLocationDetailRsp.new(send_request(req))
-      send_request(req)
+      Travelport::Response::VehicleLocationDetailRsp.new(send_request(req))
     end
 
     def book_vehicle(vehicle, vehicle_date_location, number_of_periods, travelers)
