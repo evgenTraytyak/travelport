@@ -18,7 +18,7 @@ module Travelport::Request
           travelers.each_with_index do |traveler, idx|
             xml.BookingTraveler('xmlns' => xmlns_common,
                                 'Key' => idx,
-                                'TravelerType' => traveler['type'],
+                                'TravelerType' => traveler['traveler_type'],
                                 'Gender' => traveler['gender']) do
               xml.BookingTravelerName('First' => traveler['first_name'],
                                       'Last' => traveler['last_name'],
@@ -98,7 +98,7 @@ module Travelport::Request
               end
               xml.FareCalc(air_pricing_info[:fare_calc])
               travelers.each_with_index do |traveler, idx|
-                xml.PassengerType('BookingTravelerRef' => idx, 'Code' => traveler['type'])
+                xml.PassengerType('BookingTravelerRef' => idx, 'Code' => traveler['traveler_type'])
               end
             end
             xml.HostToken(air_pricing_solution[:host_token], 'xmlns' => xmlns_common, 'Key' => @host_token_ref)
