@@ -38,10 +38,11 @@ module Travelport::Bridge
       send_request(req)
     end
 
-    def ticket(book)#, price)
+    def ticket(air_reservation_locator_code, air_pricing_info_ref, card)
       req = Travelport::Request::AirTicketingReq.new do |obj|
-        obj.book = book
-        #obj.price = price
+        obj.air_reservation_locator_code = air_reservation_locator_code
+        obj.air_pricing_info_ref = air_pricing_info_ref
+        obj.card = card
       end
       # Travelport::Response::AirTicketingRsp.new(send_request(req))
       send_request(req)
