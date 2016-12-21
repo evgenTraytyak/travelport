@@ -11,7 +11,7 @@ module Travelport::Request
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root do
           xml.BillingPointOfSaleInfo('OriginApplication' => billing_point_of_sale, 'xmlns' => xmlns_common)
-          xml.AirReservationLocatorCode locator_code
+          xml.AirReservationLocatorCode air_reservation_locator_code
           xml.AirPricingInfoRef('Key' => air_pricing_info_ref)
 
           xml.AirTicketingModifiers do
