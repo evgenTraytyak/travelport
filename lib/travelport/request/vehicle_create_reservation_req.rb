@@ -44,24 +44,24 @@ module Travelport::Request
           end
 
           xml.VehicleDateLocation('xmlns' => xmlns_vehicle,
-                                  'PickupLocation' => vehicle_date_location[:pickup_location],
-                                  'PickupDateTime' => vehicle_date_location[:pickup_date_time].to_time.strftime('%Y-%m-%dT%H:%M:00'),
-                                  'ReturnDateTime' => vehicle_date_location[:return_date_time].to_time.strftime('%Y-%m-%dT%H:%M:00'),
-                                  'ReturnLocation' => vehicle_date_location[:return_location])
+                                  'PickupLocation' => vehicle_date_location.pickup_location,
+                                  'PickupDateTime' => vehicle_date_location.pickup_date_time.to_time.strftime('%Y-%m-%dT%H:%M:00'),
+                                  'ReturnDateTime' => vehicle_date_location.return_date_time.to_time.strftime('%Y-%m-%dT%H:%M:00'),
+                                  'ReturnLocation' => vehicle_date_location.return_location)
           
           xml.Vehicle('xmlns' => xmlns_vehicle,
-                      'AirConditioning' => vehicle[:air_conditioning],
-                      'Category' => vehicle[:category],
-                      'DoorCount' => vehicle[:door_count],
-                      'TransmissionType' => vehicle[:transmission_type],
-                      'VehicleClass' => vehicle[:vehicle_class],
-                      'Location' => vehicle_date_location[:vendor_location].first[:location_type],
-                      'VendorCode' => vehicle[:vendor_code]) do
+                      'AirConditioning' => vehicle.air_conditioning,
+                      'Category' => vehicle.category,
+                      'DoorCount' => vehicle.door_count,
+                      'TransmissionType' => vehicle.transmission_type,
+                      'VehicleClass' => vehicle.vehicle_class,
+                      'Location' => vehicle_date_location.vendor_location.first[:location_type],
+                      'VendorCode' => vehicle.vendor_code) do
             xml.VehicleRate('NumberOfPeriods' => number_of_periods,
-                            'RateCategory' => vehicle[:vehicle_rate][:rate_category],
-                            'RateCode' => vehicle[:vehicle_rate][:rate_code],
-                            'RatePeriod' => vehicle[:vehicle_rate][:rate_period],
-                            'UnlimitedMileage' => vehicle[:vehicle_rate][:unlimited_mileage])
+                            'RateCategory' => vehicle.vehicle_rate[:rate_category],
+                            'RateCode' => vehicle.vehicle_rate[:rate_code],
+                            'RatePeriod' => vehicle.vehicle_rate[:rate_period],
+                            'UnlimitedMileage' => vehicle.vehicle_rate[:unlimited_mileage])
           end
         end
       end
