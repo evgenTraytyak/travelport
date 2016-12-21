@@ -2,10 +2,12 @@ module Travelport::Request
   class HotelCreateReservationReq < Base
     attr_accessor :hotel
     attr_accessor :travelers
+    attr_accessor :card
     attr_accessor :checkin
     attr_accessor :checkout
     attr_accessor :adults
     attr_accessor :rooms
+    attr_accessor :rate_plan_type
 
     attr_accessor :xmlns_hotel
 
@@ -21,7 +23,7 @@ module Travelport::Request
           travelers.each_with_index do |traveler, idx|
             xml.BookingTraveler('xmlns' => xmlns_common,
                                 'Key' => idx,
-                                'TravelerType' => traveler['type'],
+                                'TravelerType' => traveler['traveler_type'],
                                 'Gender' => traveler['gender']) do
               xml.BookingTravelerName('First' => traveler['first_name'],
                                       'Last' => traveler['last_name'],
@@ -29,13 +31,13 @@ module Travelport::Request
               xml.PhoneNumber('Number' => traveler['phone']) if traveler['phone']
               xml.Email('EmailID' => traveler['email']) if traveler['email']
               xml.Address do
-                xml.AddressName traveler['address']['address_name']
-                xml.Street traveler['address']['street']
-                xml.City traveler['address']['city']
-                xml.State traveler['address']['state']
-                xml.PostalCode traveler['address']['postal_code']
-                xml.Country traveler['address']['country']
-              end if traveler['address']
+                xml.AddressName traveler['address_name']
+                xml.Street traveler['street']
+                xml.City traveler['city']
+                xml.State traveler['state']
+                xml.PostalCode traveler['postal_code']
+                xml.Country traveler['country']
+              end if traveler
             end
           end
 
@@ -53,15 +55,9 @@ module Travelport::Request
           #   end
           # end
 
-          xml.HotelRateDetail('xmlns' => xmlns_hotel, 'RatePlanType' => hotel.hotel_rate_detail.first[:rate_plan_type])
+          xml.HotelRateDetail('xmlns' => xmlns_hotel, 'RatePlanType' => rate_plan_type)
 
-          xml.HotelProperty('xmlns' => xmlns_hotel, 'HotelChain' => hotel.hotel_property[:hotel_chain], 'HotelCode' => hotel.hotel_property[:hotel_code]) do
-            xml.PropertyAddress do
-              hotel.hotel_property[:property_address][:address].each do |address|
-                xml.Address address
-              end
-            end
-          end
+          xml.HotelProperty('xmlns' => xmlns_hotel, 'HotelChain' => hotel.hotel_property[:hotel_chain], 'HotelCode' => hotel.hotel_property[:hotel_code])
 
           xml.HotelStay('xmlns' => xmlns_hotel) do
             xml.CheckinDate checkin.strftime('%Y-%m-%d')
@@ -69,9 +65,7 @@ module Travelport::Request
           end
 
           xml.Guarantee('xmlns' => xmlns_common, 'Type' => 'Guarantee') do
-            xml.CreditCard('BankCountryCode' => 'US', 'BankName' => 'USB',
-                           'ExpDate' => '2016-12', 'Type' => 'VI',
-                           'Number' => '4012888888881881')
+            xml.CreditCard('CVV' => card['cvv'], 'ExpDate' => card['expiration_date'], 'Number' => card['number'], 'Name' => card['name'], 'Type' => card['type'])
           end
 
           xml.GuestInformation('xmlns' => xmlns_hotel, 'NumberOfRooms' => rooms) do
@@ -85,7 +79,7 @@ module Travelport::Request
     end
 
     def request_attributes
-      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers').update(xmlns: xmlns)
+      super.except('Xmlns', 'XmlnsHotel', 'Rooms', 'Hotel', 'Adults', 'Checkin', 'Checkout', 'Travelers', 'Card', 'RatePlanType').update(xmlns: xmlns)
     end
   end
 end

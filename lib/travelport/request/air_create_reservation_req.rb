@@ -18,7 +18,7 @@ module Travelport::Request
           travelers.each_with_index do |traveler, idx|
             xml.BookingTraveler('xmlns' => xmlns_common,
                                 'Key' => idx,
-                                'TravelerType' => traveler['type'],
+                                'TravelerType' => traveler['traveler_type'],
                                 'Gender' => traveler['gender']) do
               xml.BookingTravelerName('First' => traveler['first_name'],
                                       'Last' => traveler['last_name'],
@@ -31,7 +31,7 @@ module Travelport::Request
           air_price_result = air_price_rsp[:air_price_result]
           air_itinerary =  air_price_rsp[:air_itinerary]
           air_pricing_solution = air_price_result[:air_pricing_solution]
-          air_segment = air_itinerary[:air_segment]
+          air_segment_list = air_itinerary[:air_segment].is_a?(Array) ? air_itinerary[:air_segment] : [air_itinerary[:air_segment]]
           air_pricing_info = air_pricing_solution[:air_pricing_info]
           xml.AirPricingSolution('xmlns' => xmlns_air, 'Key' => air_pricing_solution[:@key],
                                  'TotalPrice' => air_pricing_info[:@total_price],
@@ -41,19 +41,21 @@ module Travelport::Request
                                  'EquivalentBasePrice' => air_pricing_info[:@equivalent_base_price],
                                  'ApproximateTaxes' => air_pricing_info[:@approximate_taxes],
                                  'Taxes' => air_pricing_info[:@taxes]) do
-            xml.AirSegment('Key' => air_segment[:@key],
-                           'FlightNumber' => air_segment[:@flight_number],
-                           'Group' => air_segment[:@group],
-                           'ChangeOfPlane' => air_segment[:@change_of_plane],
-                           'ProviderCode' => air_segment[:@provider_code],
-                           'Equipment' => air_segment[:@equipment],
-                           'OptionalServicesIndicator' => air_segment[:@optional_services_indicator],
-                           'ClassOfService' => 'E',
-                           'Carrier' => air_segment[:@carrier],
-                           'Origin' => air_segment[:@origin],
-                           'DepartureTime' => air_segment[:@departure_time],
-                           'ArrivalTime' => air_segment[:@arrival_time],
-                           'Destination' => air_segment[:@destination])
+            air_segment_list.each do |air_segment|
+              xml.AirSegment('Key' => air_segment[:@key],
+                             'FlightNumber' => air_segment[:@flight_number],
+                             'Group' => air_segment[:@group],
+                             'ChangeOfPlane' => air_segment[:@change_of_plane],
+                             'ProviderCode' => air_segment[:@provider_code],
+                             'Equipment' => air_segment[:@equipment],
+                             'OptionalServicesIndicator' => air_segment[:@optional_services_indicator],
+                             'ClassOfService' => 'E',
+                             'Carrier' => air_segment[:@carrier],
+                             'Origin' => air_segment[:@origin],
+                             'DepartureTime' => air_segment[:@departure_time],
+                             'ArrivalTime' => air_segment[:@arrival_time],
+                             'Destination' => air_segment[:@destination])
+            end
 
             fare_infos = [air_pricing_info[:fare_info]].flatten
             booking_infos = [air_pricing_info[:booking_info]].flatten
@@ -83,7 +85,7 @@ module Travelport::Request
                              'Amount' => fare_info[:@amount],
                              'TaxAmount' => fare_info[:@tax_amount]) do
                   xml.FareRuleKey(fare_rule_key, 'FareInfoRef' => fare_info[:@key],
-                                                 'ProviderCode' => air_segment[:@provider_code])
+                                                 'ProviderCode' => air_pricing_info[:@provider_code])
                 end
               end
               booking_infos.each do |booking_info|
@@ -98,7 +100,7 @@ module Travelport::Request
               end
               xml.FareCalc(air_pricing_info[:fare_calc])
               travelers.each_with_index do |traveler, idx|
-                xml.PassengerType('BookingTravelerRef' => idx, 'Code' => traveler['type'])
+                xml.PassengerType('BookingTravelerRef' => idx, 'Code' => traveler['traveler_type'])
               end
             end
             xml.HostToken(air_pricing_solution[:host_token], 'xmlns' => xmlns_common, 'Key' => @host_token_ref)
